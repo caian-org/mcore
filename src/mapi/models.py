@@ -35,8 +35,7 @@ class Company(Person):
     opening = db.Column(db.DateTime, nullable=False)
 
     # Relations
-    compan_addr_relat = db.relationship('compan_addr_relat', backref='addr', lazy='dynamic')
-    compan_offe_relat = db.relationship('offer', backref='offer', lazy='dynamic')
+    compan_addr_relat = db.relationship('CompanyAddressRelat', backref='addr', lazy='dynamic')
 
 
 class Worker(Person):
@@ -50,9 +49,9 @@ class Worker(Person):
     addr_uid     = db.Column(db.Integer, db.ForeignKey('address.uid'), nullable=False)
 
     # Relations
-    worker_addr_relat = db.relationship('worker_addr_relat', backref='addr', lazy='dynamic')
-    worker_offe_relat = db.relationship('offer', backref='addr', lazy='dynamic')
-    worker_vehi_relat = db.relationship('vehicle', backref='vehicle', lazy='dynamic')
+    worker_addr_relat = db.relationship('WorkerAddressRelat', backref='addr', lazy='dynamic')
+    worker_offe_relat = db.relationship('Offer', backref='addr', lazy='dynamic')
+    worker_vehi_relat = db.relationship('Vehicle', backref='vehicle', lazy='dynamic')
 
 
 class Vehicle(Entity):
@@ -78,11 +77,7 @@ class Address(Entity):
     complement = db.Column(db.String(16), nullable=True)
     postcode   = db.Column(db.String(8), index=True)
 
-    # Relations
-    addr_worker_relat = db.relationship('worker', backref='address', lazy='dynamic')
-    addr_compan_relat = db.relationship('company', backref='address', lazy='dynamic')
-
-
+"""
 class CompanyAddressRelat(Entity):
     """
     --- TODO: DOCUMENTATION ---
@@ -109,13 +104,14 @@ class Item(Entity):
     """
     __tablename__ = 'item'
 
+    # Fields
     fragile = db.Column(db.Boolean, nullable=False)
     weight  = db.Column(db.Float, nullable=False)
     width   = db.Column(db.Float, nullable=False)
     height  = db.Column(db.Float, nullable=False)
 
-    # Relations
-    item_propos_relat = db.relationship('propos_item_relat', backref='prop', lazy='dynamic')
+    # Foreign keys
+    propos_id = db.Column(db.Integer, db.ForeignKey('proposal.uid'), nullable=False)
 
 
 class Proposal(Entity):
@@ -124,24 +120,15 @@ class Proposal(Entity):
     """
     __tablename__ = 'proposal'
 
+    # Foreign keys
     origin      = db.Column(db.Integer, db.ForeignKey('address.uid'), nullable=False)
     destination = db.Column(db.Integer, db.ForeignKey('address.uid'), nullable=False)
     company_uid = db.Column(db.Integer, db.ForeignKey('company.uid'), nullable=False)
 
     # Relations
-    propos_offer_relat = db.relationship('offer', backref='offer', lazy='dynamic')
-    propos_job_relat   = db.relationship('job', backref='job', lazy='dynamic')
-    propos_item_relat  = db.relationship('propos_item_relat', backref='items', lazy='dynamic')
-
-
-class ProposalItemRelat(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
-    __tablename__ = 'propos_item_relat'
-
-    proposa_uid = db.Column(db.Integer, db.ForeignKey('proposal.uid'), nullable=False)
-    item_uid    = db.Column(db.Integer, db.ForeignKey('item.uid'), nullable=False)
+    items  = db.relationship('Item', back_populates='proposal', lazy='dynamic')
+    offers = db.relationship('Offer', back_populates='proposal', lazy='dynamic')
+    job    = db.relationship('Job', back_populates='proposal', lazy='dynamic', uselist=False)
 
 
 class Offer(Entity):
@@ -155,7 +142,7 @@ class Offer(Entity):
     price       = db.Column(db.Float, nullable=False)
 
     # Relations
-    offer_job_relat = db.relationship('job', backref='job', lazy='dynamic')
+    offer_job_relat = db.relationship('Job', backref='job', lazy='dynamic')
 
 
 class Job(Entity):
@@ -164,6 +151,13 @@ class Job(Entity):
     """
     __tablename__ = 'job'
 
-    proposa_uid = db.Column(db.Integer, db.ForeignKey('proposal.uid'), nullable=False)
-    offer_uid   = db.Column(db.Integer, db.ForeignKey('offer.uid'), nullable=False)
-    status      = db.Column(db.Integer, nullable=False)
+    # Fields
+    status = db.Column(db.Integer, nullable=False)
+
+    # Foreign keys
+    propos_uid = db.Column(db.Integer, db.ForeignKey('proposal.uid'), nullable=False)
+    offer_uid  = db.Column(db.Integer, db.ForeignKey('offer.uid'), nullable=False)
+
+    # Relations
+    proposal = db.relationship('Proposal', back_populates='job')
+"""

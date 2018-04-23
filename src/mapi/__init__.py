@@ -23,6 +23,7 @@ if os.environ.get('TEST_ENVIRON'):
 else:
     from config import Production as Config
 
+
 app = Flask(__name__)
 app.config.from_object(Config)
 
