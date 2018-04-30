@@ -11,7 +11,10 @@ sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 
 from mapi import db
-from mapi.models import (Address, Worker, WorkerAddressAssoc)
+from mapi.models import (Address,
+                         Worker,
+                         WorkerAddressAssoc,
+                         Vehicle)
 
 
 class TestModels(unittest.TestCase):
@@ -33,6 +36,21 @@ class TestModels(unittest.TestCase):
 
         address_entries = Address.query.all()
         self.assertEqual(len(address_entries), 2)
+
+    def test_vehicle(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        truck = Vehicle(license='MY-LICENSE-OMG',
+                        model='dunno bro',
+                        brand='Mercedez-Bens',
+                        year=2012)
+
+        db.session.add(truck)
+        db.session.commit()
+
+        worker_vehicle = Vehicle.query.get(1)
+        self.assertEqual(worker_vehicle.year, 2012)
 
     def test_worker(self):
         """
@@ -95,6 +113,9 @@ class TestModels(unittest.TestCase):
         self.assertEqual(len(worker_addresses), 2)
 
     def test_worker_repr(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
         worker = Worker.query.get(1)
         self.assertEqual(str(worker), "<Worker 'Caian R. Ertl', '45354686806'>")
 
