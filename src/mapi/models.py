@@ -1,16 +1,44 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
-from mapi import db
+# Primitive types
+from mapi.db import (Bol, Flo, Dat, Int, Str)
+
+# Database objects
+from mapi.db import (Col, Mod)
+
+# Relations
+from mapi.db import (BR, FK, Rel)
 
 
-class Entity(db.Model):
+class Entity(Mod):
     """
     --- TODO: DOCUMENTATION ---
     """
     __abstract__ = True
 
-    uid = db.Column(db.Integer, primary_key=True)
+    uid = Col(Int, primary_key=True, autoincrement=True)
+
+    def R(self, attrs):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        class_name = type(self).__name__
+        attributes = ', '.join("'{0}'".format(attr) for attr in attrs)
+
+        return '<{0} {1}>'.format(class_name, attributes)
+
+    def __attr__(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
+
+
+class Relation(Mod):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+    __abstract__ = True
 
 
 class Person(Entity):
@@ -19,10 +47,13 @@ class Person(Entity):
     """
     __abstract__ = True
 
-    name      = db.Column(db.String(64), nullable=False)
-    telephone = db.Column(db.String(11), nullable=False)
-    email     = db.Column(db.String(64), nullable=False, index=True, unique=True)
-    passhash  = db.Column(db.String())
+    name      = Col(Str(64), nullable=False)
+    telephone = Col(Str(11), nullable=False)
+    email     = Col(Str(64), nullable=False, index=True, unique=True)
+    passhash  = Col(Str(128))
+
+    def __attr__(self):
+        return self.R([self.name, self.email])
 
 
 class Company(Person):
@@ -31,11 +62,11 @@ class Company(Person):
     """
     __tablename__ = 'company'
 
-    cnpj    = db.Column(db.String(14), nullable=False, index=True, unique=True)
-    opening = db.Column(db.DateTime, nullable=False)
+    cnpj    = Col(Str(14), nullable=False, index=True, unique=True)
+    opening = Col(Dat, nullable=False)
 
-    # Relations
-    compan_addr_relat = db.relationship('CompanyAddressRelat', backref='addr', lazy='dynamic')
+    def __repr__(self):
+        return self.R([self.name, self.cnpj])
 
 
 class Worker(Person):
@@ -44,27 +75,15 @@ class Worker(Person):
     """
     __tablename__ = 'worker'
 
-    license_uid  = db.Column(db.String, nullable=False, index=True, unique=True)
-    license_type = db.Column(db.String, nullable=False)
-    addr_uid     = db.Column(db.Integer, db.ForeignKey('address.uid'), nullable=False)
+    # Fields
+    rg           = Col(Str(9), nullable=False, index=True, unique=True)
+    cpf          = Col(Str(11), nullable=False, index=True, unique=True)
+    birthday     = Col(Dat, nullable=False)
+    license_id   = Col(Str, nullable=False, index=True, unique=True)
+    license_type = Col(Str, nullable=False)
 
-    # Relations
-    worker_addr_relat = db.relationship('WorkerAddressRelat', backref='addr', lazy='dynamic')
-    worker_offe_relat = db.relationship('Offer', backref='addr', lazy='dynamic')
-    worker_vehi_relat = db.relationship('Vehicle', backref='vehicle', lazy='dynamic')
-
-
-class Vehicle(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
-    __tablename__ = 'vehicle'
-
-    license = db.Column(db.String(64), nullable=False, index=True, unique=True)
-    model   = db.Column(db.String(24), nullable=False)
-    brand   = db.Column(db.String(16), nullable=False)
-    year    = db.Column(db.Integer, nullable=False)
-    worker_uid = db.Column(db.Integer, db.ForeignKey('worker.uid'), nullable=False)
+    def __repr__(self):
+        return self.R([self.name, self.cpf])
 
 
 class Address(Entity):
@@ -73,91 +92,66 @@ class Address(Entity):
     """
     __tablename__ = 'address'
 
-    number     = db.Column(db.Integer)
-    complement = db.Column(db.String(16), nullable=True)
-    postcode   = db.Column(db.String(8), index=True)
+    number     = Col(Int)
+    complement = Col(Str(16), nullable=True)
+    postcode   = Col(Str(8), index=True)
 
-"""
-class CompanyAddressRelat(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
-    __tablename__ = 'compan_addr_relat'
+    # Relations
+    workers = Rel(Worker, secondary='worker_addr_assoc')
 
-    company_uid = db.Column(db.Integer, db.ForeignKey('company.uid'), nullable=False)
-    address_uid = db.Column(db.Integer, db.ForeignKey('address.uid'), nullable=False)
-
-
-class WorkerAddressRelat(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
-    __tablename__ = 'worker_addr_relat'
-
-    worker_uid  = db.Column(db.Integer, db.ForeignKey('worker.uid'), nullable=False)
-    address_uid = db.Column(db.Integer, db.ForeignKey('address.uid'), nullable=False)
+    def __repr__(self):
+        return self.R([self.postcode, self.number])
 
 
 class Item(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'item'
 
-    # Fields
-    fragile = db.Column(db.Boolean, nullable=False)
-    weight  = db.Column(db.Float, nullable=False)
-    width   = db.Column(db.Float, nullable=False)
-    height  = db.Column(db.Float, nullable=False)
-
-    # Foreign keys
-    propos_id = db.Column(db.Integer, db.ForeignKey('proposal.uid'), nullable=False)
+    fragile = Col(Bol, nullable=False)
+    weight  = Col(Flo, nullable=False)
+    width   = Col(Flo, nullable=False)
+    height  = Col(Flo, nullable=False)
 
 
-class Proposal(Entity):
+class Vehicle(Entity):
     """
     --- TODO: DOCUMENTATION ---
     """
-    __tablename__ = 'proposal'
+    __tablename__ = 'vehicle'
 
-    # Foreign keys
-    origin      = db.Column(db.Integer, db.ForeignKey('address.uid'), nullable=False)
-    destination = db.Column(db.Integer, db.ForeignKey('address.uid'), nullable=False)
-    company_uid = db.Column(db.Integer, db.ForeignKey('company.uid'), nullable=False)
+    license = Col(Str(64), nullable=False, index=True, unique=True)
+    model   = Col(Str(24), nullable=False)
+    brand   = Col(Str(16), nullable=False)
+    year    = Col(Int, nullable=False)
 
-    # Relations
-    items  = db.relationship('Item', back_populates='proposal', lazy='dynamic')
-    offers = db.relationship('Offer', back_populates='proposal', lazy='dynamic')
-    job    = db.relationship('Job', back_populates='proposal', lazy='dynamic', uselist=False)
+    def __repr__(self):
+        return self.R([self.brand, self.year])
 
 
-class Offer(Entity):
+class WorkerAddressAssoc(Relation):
     """
     --- TODO: DOCUMENTATION ---
     """
-    __tablename__ = 'offer'
+    __tablename__ = 'worker_addr_assoc'
 
-    proposa_uid = db.Column(db.Integer, db.ForeignKey('proposal.uid'), nullable=False)
-    worker_uid  = db.Column(db.Integer, db.ForeignKey('worker.uid'), nullable=False)
-    price       = db.Column(db.Float, nullable=False)
+    # Foreign keys
+    worker_uid = Col(Int, FK('worker.uid'), primary_key=True)
+    address_uid = Col(Int, FK('address.uid'), primary_key=True)
 
     # Relations
-    offer_job_relat = db.relationship('Job', backref='job', lazy='dynamic')
+    worker  = Rel(Worker, backref=BR('address_assoc'))
+    address = Rel(Address, backref=BR('worker_assoc'))
 
 
-class Job(Entity):
+class CompanyAddressAssoc(Relation):
     """
     --- TODO: DOCUMENTATION ---
     """
-    __tablename__ = 'job'
-
-    # Fields
-    status = db.Column(db.Integer, nullable=False)
+    __tablename__ = 'company_addr_assoc'
 
     # Foreign keys
-    propos_uid = db.Column(db.Integer, db.ForeignKey('proposal.uid'), nullable=False)
-    offer_uid  = db.Column(db.Integer, db.ForeignKey('offer.uid'), nullable=False)
+    company_uid = Col(Int, FK('company.uid'), primary_key=True)
+    address_uid = Col(Int, FK('address.uid'), primary_key=True)
 
     # Relations
-    proposal = db.relationship('Proposal', back_populates='job')
-"""
+    company = Rel(Company, backref=BR('address_assoc'))
+    address = Rel(Address, backref=BR('company_assoc'))
