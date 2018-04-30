@@ -11,7 +11,7 @@ sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 
 from mapi import db
-from mapi.models import (Address, Worker)
+from mapi.models import (Address, Worker, WorkerAddressAssoc)
 
 
 class TestModels(unittest.TestCase):
@@ -72,6 +72,27 @@ class TestModels(unittest.TestCase):
         """
         home_address = Address.query.get(1)
         self.assertEqual(home_address.postcode, '07801040')
+
+    def test_worker_has_addresses(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        worker = Worker.query.get(1)
+        home_address = Address.query.get(1)
+        work_address = Address.query.get(2)
+
+        worker_has_home_address = WorkerAddressAssoc(worker=worker,
+                                                     address=home_address)
+
+        worker_has_work_address = WorkerAddressAssoc(worker=worker,
+                                                     address=work_address)
+
+        db.session.add(worker_has_home_address)
+        db.session.add(worker_has_work_address)
+        db.session.commit()
+
+        worker_addresses = db.session.query(WorkerAddressAssoc).join(Worker).filter(Worker.cpf == '45354686806').all()
+        self.assertEqual(len(worker_addresses), 2)
 
 
 if __name__ == '__main__':
