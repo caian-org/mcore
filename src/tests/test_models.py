@@ -94,6 +94,10 @@ class TestModels(unittest.TestCase):
         worker_addresses = db.session.query(WorkerAddressAssoc).join(Worker).filter(Worker.cpf == '45354686806').all()
         self.assertEqual(len(worker_addresses), 2)
 
+    def test_worker_repr(self):
+        worker = Worker.query.get(1)
+        self.assertEqual(str(worker), "<Worker 'Caian R. Ertl', '45354686806'>")
+
 
 if __name__ == '__main__':
     unittest.main()
