@@ -96,24 +96,67 @@ class Address(Entity):
     """
     __tablename__ = 'address'
 
-    number     = Col(Int)
+    number     = Col(Str(8))
     complement = Col(Str(16), nullable=True)
     postcode   = Col(Str(8), index=True)
 
     # Relations
     workers = Rel(Worker, secondary='worker_addr_assoc')
+    companies = Rel(Company, secondary='company_addr_assoc')
 
     def __repr__(self):
         return self.R([self.postcode, self.number])
 
 
+class Proposal(Entity):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+    __tablename__ = 'proposal'
+
+    # Fields
+    deadline = Col(Dat, nullable=False)
+
+    # Foreign keys
+    origin_addr_uid = Col(Int, FK('address.uid'))
+    destin_addr_uid = Col(Int, FK('address.uid'))
+    company_uid = Col(Int, FK('company.uid'))
+
+    # Relations
+    orig_address = Rel(Address, foreign_keys='Proposal.origin_addr_uid',
+                       backref=BR('orig_assoc', uselist=False))
+
+    dest_address = Rel(Address, foreign_keys='Proposal.destin_addr_uid',
+                       backref=BR('dest_assoc', uselist=False))
+
+    company = Rel(Company, backref=BR('company_assoc', uselist=False))
+
+
 class Item(Entity):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
     __tablename__ = 'item'
 
     fragile = Col(Bol, nullable=False)
     weight  = Col(Flo, nullable=False)
     width   = Col(Flo, nullable=False)
     height  = Col(Flo, nullable=False)
+
+    # Relations
+    Proposals = Rel(Proposal, secondary='proposal_item_assoc')
+
+
+class Offer(Entity):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+    __tablename__ = 'offer'
+
+    price = Col(Flo, nullable=False)
+
+    # Foreign keys
+    worker_uid = Col(Int, FK('worker.uid'), primary_key=True)
 
 
 class Vehicle(Entity):
@@ -129,6 +172,21 @@ class Vehicle(Entity):
 
     def __repr__(self):
         return self.R([self.brand, self.year])
+
+
+class ProposalItemAssoc(Relation):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+    __tablename__ = 'proposal_item_assoc'
+
+    # Foreign keys
+    proposal_uid = Col(Int, FK('proposal.uid'), primary_key=True)
+    item_uid     = Col(Int, FK('item.uid'), primary_key=True)
+
+    # Relations
+    proposal = Rel(Proposal, backref=BR('item_assoc'))
+    item     = Rel(Item, backref=BR('proposal_assoc'))
 
 
 class WorkerAddressAssoc(Relation):
