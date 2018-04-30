@@ -11,6 +11,7 @@ sphinx = "*"
 flask-testing = "*"
 gunicorn = "*"
 sphinxcontrib-napoleon = "*"
+faker = "*"
 
 
 [packages]

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ec536cb69053233c46acbdb61657e70c8575f36c278c8e383e2cc66127404e6c"
+            "sha256": "1568c32ec72e67442486687836180a5d44c37f7a7af09da2c8a0999147b149c4"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -58,10 +58,10 @@
         },
         "flask": {
             "hashes": [
-                "sha256:0749df235e3ff61ac108f69ac178c9770caeaccad2509cb762ce1f65570a8856",
-                "sha256:49f44461237b69ecd901cc7ce66feea0319b9158743dd27a2899962ab214dac1"
+                "sha256:dbe2a9f539f4d0fe26fa44c08d6e556e2a4a4dd3a3fb0550f39954cf57571363",
+                "sha256:cfc15b45622f9cfee6b5803723070fd0f489b3bd662179195e702cb95fd924c8"
             ],
-            "version": "==0.12.2"
+            "version": "==1.0.1"
         },
         "flask-migrate": {
             "hashes": [
@@ -208,12 +208,19 @@
             ],
             "version": "==0.14"
         },
+        "faker": {
+            "hashes": [
+                "sha256:226d8fa67a8cf8b4007aab721f67639f130e9cfdc53a7095a2290ebb07a65c71",
+                "sha256:48fed4b4a191e2b42ad20c14115f1c6d36d338b80192075d7573f0f42d7fb321"
+            ],
+            "version": "==0.8.13"
+        },
         "flask": {
             "hashes": [
-                "sha256:0749df235e3ff61ac108f69ac178c9770caeaccad2509cb762ce1f65570a8856",
-                "sha256:49f44461237b69ecd901cc7ce66feea0319b9158743dd27a2899962ab214dac1"
+                "sha256:dbe2a9f539f4d0fe26fa44c08d6e556e2a4a4dd3a3fb0550f39954cf57571363",
+                "sha256:cfc15b45622f9cfee6b5803723070fd0f489b3bd662179195e702cb95fd924c8"
             ],
-            "version": "==0.12.2"
+            "version": "==1.0.1"
         },
         "flask-testing": {
             "hashes": [
@@ -223,10 +230,10 @@
         },
         "gunicorn": {
             "hashes": [
-                "sha256:75af03c99389535f218cc596c7de74df4763803f7b63eb09d77e92b3956b36c6",
-                "sha256:eee1169f0ca667be05db3351a0960765620dad53f53434262ff8901b68a1b622"
+                "sha256:7ef2b828b335ed58e3b64ffa84caceb0a7dd7c5ca12f217241350dec36a1d5dc",
+                "sha256:bc59005979efb6d2dd7d5ba72d99f8a8422862ad17ff3a16e900684630dd2a10"
             ],
-            "version": "==19.7.1"
+            "version": "==19.8.1"
         },
         "idna": {
             "hashes": [
@@ -241,6 +248,14 @@
                 "sha256:5b326e4678b6925158ccc66a9fa3122b6106d7c876ee32d7de6ce59385b96315"
             ],
             "version": "==1.0.0"
+        },
+        "ipaddress": {
+            "hashes": [
+                "sha256:64b28eec5e78e7510698f6d4da08800a5c575caa4a286c93d651c5d3ff7b6794",
+                "sha256:b146c751ea45cad6188dd6cf2d9b757f6f4f8d6ffb96a023e6f2e26eea02a72c"
+            ],
+            "markers": "python_version == '2.7'",
+            "version": "==1.0.22"
         },
         "itsdangerous": {
             "hashes": [
@@ -294,6 +309,13 @@
             ],
             "version": "==2.2.0"
         },
+        "python-dateutil": {
+            "hashes": [
+                "sha256:3220490fb9741e2342e1cf29a503394fdac874bc39568288717ee67047ff29df",
+                "sha256:9d8074be4c993fbe4947878ce593052f71dac82932a677d49194d8ce9778002e"
+            ],
+            "version": "==2.7.2"
+        },
         "pytz": {
             "hashes": [
                 "sha256:65ae0c8101309c45772196b21b74c46b2e5d11b6275c45d251b150d5da334555",
@@ -324,10 +346,10 @@
         },
         "sphinx": {
             "hashes": [
-                "sha256:3aded1a355f662547b8a948131f3faecbc3dea8951847fe0ee4c59689f8220b2",
-                "sha256:9495a1f78c13d0a725ab8104e923e9663519ecc04552aa4a8f684c2da355443d"
+                "sha256:2e7ad92e96eff1b2006cf9f0cdb2743dacbae63755458594e9e8238b0c3dc60b",
+                "sha256:e9b1a75a3eae05dded19c80eb17325be675e0698975baae976df603b6ed1eb10"
             ],
-            "version": "==1.7.3"
+            "version": "==1.7.4"
         },
         "sphinxcontrib-napoleon": {
             "hashes": [
@@ -342,6 +364,13 @@
                 "sha256:7a85961326aa3a400cd4ad3c816d70ed6f7c740acd7ce5d78cd0a67825072eb9"
             ],
             "version": "==1.0.1"
+        },
+        "text-unidecode": {
+            "hashes": [
+                "sha256:801e38bd550b943563660a91de8d4b6fa5df60a542be9093f7abf819f86050cc",
+                "sha256:5a1375bb2ba7968740508ae38d92e1f889a0832913cb1c447d5e2046061a396d"
+            ],
+            "version": "==1.2"
         },
         "typing": {
             "hashes": [
