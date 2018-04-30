@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+--- TODO: DOCUMENTATION ---
+"""
+
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 

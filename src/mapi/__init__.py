@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+--- TODO: DOCUMENTATION ---
+"""
+
 # Standard library
 import os
 

@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+--- TODO: DOCUMENTATION ---
+"""
+
 # Primitive types
 from mapi.db import (Bol, Flo, Dat, Int, Str)
 
