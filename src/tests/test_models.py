@@ -66,6 +66,13 @@ class TestModels(unittest.TestCase):
         worker_entries = Worker.query.all()
         self.assertEqual(len(worker_entries), 2)
 
+    def test_single_address(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        home_address = Address.query.get(1)
+        self.assertEqual(home_address.postcode, '07801040')
+
 
 if __name__ == '__main__':
     unittest.main()
