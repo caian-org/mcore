@@ -8,7 +8,9 @@ name = "pypi"
 [dev-packages]
 
 sphinx = "*"
-pytest = "*"
+flask-testing = "*"
+gunicorn = "*"
+sphinxcontrib-napoleon = "*"
 
 
 [packages]
