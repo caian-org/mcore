@@ -128,8 +128,8 @@ class TestModels(unittest.TestCase):
         """
         --- TODO: DOCUMENTATION ---
         """
-        caian = Worker.query.get(1)
-        diogo = Worker.query.get(2)
+        caian = Worker.query.get(19)
+        diogo = Worker.query.get(20)
 
         for i in range(0, 10):
             owner = diogo
@@ -154,8 +154,8 @@ class TestModels(unittest.TestCase):
         """
         --- TODO: DOCUMENTATION ---
         """
-        caian = Worker.query.get(1)
-        diogo = Worker.query.get(2)
+        caian = Worker.query.get(19)
+        diogo = Worker.query.get(20)
 
         self.assertEqual(len(caian.vehicles), len(diogo.vehicles))
 
@@ -184,7 +184,7 @@ class TestModels(unittest.TestCase):
         """
         --- TODO: DOCUMENTATION ---
         """
-        for i in range(0, 10):
+        for i in range(0, 18):
             company = Company(name=us_fake.company(),
                               telephone=us_fake.numerify(text='#' * 10),
                               email=us_fake.company_email(),
