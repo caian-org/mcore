@@ -37,19 +37,27 @@ class TestModels(unittest.TestCase):
         """
         --- TODO: DOCUMENTATION ---
         """
-        home_address = Address(postcode='07801040',
-                               number='255')
+        worker_home_address = Address(postcode='07801040',
+                                      number='255')
 
-        work_address = Address(postcode='01414003',
-                               number='846',
-                               complement='Sala 1301')
+        worker_work_address = Address(postcode='01414003',
+                                      number='846',
+                                      complement='Sala 1301')
 
-        db.session.add(home_address)
-        db.session.add(work_address)
+        db.session.add(worker_home_address)
+        db.session.add(worker_work_address)
+
+        for i in range(0, 18):
+            company_address = Address(postcode=br_fake.postcode().replace('-', ''),
+                                      number=br_fake.building_number(),
+                                      complement='Sala ' + br_fake.random_uppercase_letter())
+
+            db.session.add(company_address)
+
         db.session.commit()
 
         address_entries = Address.query.all()
-        self.assertEqual(len(address_entries), 2)
+        self.assertEqual(len(address_entries), 20)
 
     def test_b_single_address(self):
         """
