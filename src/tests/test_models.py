@@ -16,6 +16,10 @@ from mapi.models import (Address,
                          WorkerAddressAssoc,
                          Vehicle)
 
+from faker import Faker
+br_fake = Faker('pt_BR')
+us_fake = Faker('en_US')
+
 
 class TestModels(unittest.TestCase):
 
@@ -37,20 +41,12 @@ class TestModels(unittest.TestCase):
         address_entries = Address.query.all()
         self.assertEqual(len(address_entries), 2)
 
-    def test_vehicle(self):
+    def test_single_address(self):
         """
         --- TODO: DOCUMENTATION ---
         """
-        truck = Vehicle(license='MY-LICENSE-OMG',
-                        model='dunno bro',
-                        brand='Mercedez-Bens',
-                        year=2012)
-
-        db.session.add(truck)
-        db.session.commit()
-
-        worker_vehicle = Vehicle.query.get(1)
-        self.assertEqual(worker_vehicle.year, 2012)
+        home_address = Address.query.get(1)
+        self.assertEqual(home_address.postcode, '07801040')
 
     def test_worker(self):
         """
@@ -84,12 +80,31 @@ class TestModels(unittest.TestCase):
         worker_entries = Worker.query.all()
         self.assertEqual(len(worker_entries), 2)
 
-    def test_single_address(self):
+    def test_vehicle(self):
         """
         --- TODO: DOCUMENTATION ---
         """
-        home_address = Address.query.get(1)
-        self.assertEqual(home_address.postcode, '07801040')
+        caian = Worker.query.get(1)
+        diogo = Worker.query.get(2)
+
+        for i in range(0, 10):
+            owner = caian
+            if i % 2 == 1:
+                owner = diogo
+
+            vehicle = Vehicle(license=us_fake.numerify(text="###########"),
+                              model='Modelo ' + us_fake.city_prefix(),
+                              brand=us_fake.company(),
+                              plate=br_fake.license_plate(),
+                              year=br_fake.year(),
+                              owner=owner)
+
+            db.session.add(vehicle)
+
+        db.session.commit()
+
+        vehicles = Vehicle.query.all()
+        self.assertEqual(len(vehicles), 10)
 
     def test_worker_has_addresses(self):
         """
