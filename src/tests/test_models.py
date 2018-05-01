@@ -23,7 +23,7 @@ us_fake = Faker('en_US')
 
 class TestModels(unittest.TestCase):
 
-    def test_address(self):
+    def test_a_address(self):
         """
         --- TODO: DOCUMENTATION ---
         """
@@ -41,14 +41,14 @@ class TestModels(unittest.TestCase):
         address_entries = Address.query.all()
         self.assertEqual(len(address_entries), 2)
 
-    def test_single_address(self):
+    def test_b_single_address(self):
         """
         --- TODO: DOCUMENTATION ---
         """
         home_address = Address.query.get(1)
         self.assertEqual(home_address.postcode, '07801040')
 
-    def test_worker(self):
+    def test_c_worker(self):
         """
         --- TODO: DOCUMENTATION ---
         """
@@ -80,7 +80,14 @@ class TestModels(unittest.TestCase):
         worker_entries = Worker.query.all()
         self.assertEqual(len(worker_entries), 2)
 
-    def test_vehicle(self):
+    def test_d_worker_repr(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        worker = Worker.query.get(1)
+        self.assertEqual(str(worker), "<Worker 'Caian R. Ertl', '45354686806'>")
+
+    def test_e_vehicle(self):
         """
         --- TODO: DOCUMENTATION ---
         """
@@ -88,9 +95,9 @@ class TestModels(unittest.TestCase):
         diogo = Worker.query.get(2)
 
         for i in range(0, 10):
-            owner = caian
-            if i % 2 == 1:
-                owner = diogo
+            owner = diogo
+            if i % 2 == 0:
+                owner = caian
 
             vehicle = Vehicle(license=us_fake.numerify(text="###########"),
                               model='Modelo ' + us_fake.city_prefix(),
@@ -106,7 +113,16 @@ class TestModels(unittest.TestCase):
         vehicles = Vehicle.query.all()
         self.assertEqual(len(vehicles), 10)
 
-    def test_worker_has_addresses(self):
+    def test_f_worker_has_vehicles(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        caian = Worker.query.get(1)
+        diogo = Worker.query.get(2)
+
+        self.assertEqual(len(caian.vehicles), 5) and self.assertEqual(len(diogo.vehicles), 5)
+
+    def test_g_worker_has_addresses(self):
         """
         --- TODO: DOCUMENTATION ---
         """
@@ -126,13 +142,6 @@ class TestModels(unittest.TestCase):
 
         worker_addresses = db.session.query(WorkerAddressAssoc).join(Worker).filter(Worker.cpf == '45354686806').all()
         self.assertEqual(len(worker_addresses), 2)
-
-    def test_worker_repr(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        worker = Worker.query.get(1)
-        self.assertEqual(str(worker), "<Worker 'Caian R. Ertl', '45354686806'>")
 
 
 if __name__ == '__main__':
