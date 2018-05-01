@@ -4,7 +4,7 @@ if [ -e app.db ]; then
     rm app.db
 fi
 
-if [ -d migrations2 ]; then
+if [ -d migrations ]; then
     rm -rf migrations
 fi
 
