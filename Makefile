@@ -11,4 +11,4 @@ dev: init
 	pipenv install --dev
 
 test:
-	cd ./src && bash rebuild.sh && python3 tests/test_models.py
+	cd ./src && bash rebuild.sh && python3 tests/test_models.py -v
