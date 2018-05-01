@@ -17,9 +17,10 @@ sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 # Modules
 from mapi import db
 from mapi.models import (Address,
+                         Company,
+                         Vehicle,
                          Worker,
-                         WorkerAddressAssoc,
-                         Vehicle)
+                         WorkerAddressAssoc)
 
 # 3rd-party libraries
 from faker import Faker
@@ -152,7 +153,28 @@ class TestModels(unittest.TestCase):
         worker_addresses = db.session.query(WorkerAddressAssoc).join(Worker).filter(Worker.cpf == '45354686806').all()
         self.assertEqual(len(worker_addresses), 2)
 
-    def test_h_company_has_addresses(self):
+    def test_h_company(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        for i in range(0, 10):
+            company = Company(name=us_fake.company(),
+                              telephone=us_fake.numerify(text='##########'),
+                              email=us_fake.company_email(),
+                              cnpj=us_fake.numerify(text='##############'),
+                              opening=us_fake.date_this_century(before_today=True))
+
+            db.session.add(company)
+
+        db.session.commit()
+
+        companies = Company.query.all()
+        self.assertEqual(len(companies), 10)
+
+    def test_i_company_has_addresses(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
         pass
 
 
