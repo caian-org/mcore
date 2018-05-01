@@ -184,6 +184,18 @@ class TestModels(unittest.TestCase):
         """
         --- TODO: DOCUMENTATION ---
         """
+        evil_corp = Company(name='E Corp',
+                            telephone='2128046003',
+                            email='contact@ecorp.com',
+                            cnpj='12345678909876',
+                            opening=datetime(1985, 7, 1))
+
+        acme_corp = Company(name='Acme Corporation',
+                            telephone='6662018666',
+                            email='sales@acme.com',
+                            cnpj='98765432123456',
+                            opening=datetime(1870, 1, 1))
+
         for i in range(0, 18):
             company = Company(name=us_fake.company(),
                               telephone=us_fake.numerify(text='#' * 10),
@@ -193,10 +205,13 @@ class TestModels(unittest.TestCase):
 
             db.session.add(company)
 
+        db.session.add(evil_corp)
+        db.session.add(acme_corp)
+
         db.session.commit()
 
         companies = Company.query.all()
-        self.assertEqual(len(companies), 10)
+        self.assertEqual(len(companies), 20)
 
     def test_i_company_has_addresses(self):
         """
