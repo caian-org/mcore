@@ -60,6 +60,26 @@ class Person(Entity):
         return self.R([self.name, self.email])
 
 
+class Vehicle(Entity):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+    __tablename__ = 'vehicle'
+
+    # Fields
+    license = Col(Str(11), nullable=False, index=True, unique=True)
+    model   = Col(Str(32), nullable=False)
+    brand   = Col(Str(24), nullable=False)
+    plate   = Col(Str(8), nullable=False)
+    year    = Col(Int, nullable=False)
+
+    # Foreign keys
+    worker_uid = Col(Int, FK('worker.uid'))
+
+    def __repr__(self):
+        return self.R([self.brand, self.year])
+
+
 class Company(Person):
     """
     --- TODO: DOCUMENTATION ---
@@ -85,6 +105,9 @@ class Worker(Person):
     birthday     = Col(Dat, nullable=False)
     license_id   = Col(Str, nullable=False, index=True, unique=True)
     license_type = Col(Str, nullable=False)
+
+    # Relations
+    vehicles = Rel(Vehicle, backref='owner', lazy='dynamic')
 
     def __repr__(self):
         return self.R([self.name, self.cpf])
@@ -157,21 +180,6 @@ class Offer(Entity):
 
     # Foreign keys
     worker_uid = Col(Int, FK('worker.uid'), primary_key=True)
-
-
-class Vehicle(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
-    __tablename__ = 'vehicle'
-
-    license = Col(Str(64), nullable=False, index=True, unique=True)
-    model   = Col(Str(24), nullable=False)
-    brand   = Col(Str(16), nullable=False)
-    year    = Col(Int, nullable=False)
-
-    def __repr__(self):
-        return self.R([self.brand, self.year])
 
 
 class ProposalItemAssoc(Relation):
