@@ -136,7 +136,7 @@ class TestModels(unittest.TestCase):
             if i % 2 == 0:
                 owner = caian
 
-            vehicle = Vehicle(license=us_fake.numerify(text="###########"),
+            vehicle = Vehicle(license=us_fake.numerify(text='#' * 11),
                               model='Modelo ' + us_fake.city_prefix(),
                               brand=us_fake.company(),
                               plate=br_fake.license_plate(),
@@ -186,7 +186,7 @@ class TestModels(unittest.TestCase):
         """
         for i in range(0, 10):
             company = Company(name=us_fake.company(),
-                              telephone=us_fake.numerify(text='##########'),
+                              telephone=us_fake.numerify(text='#' * 10),
                               email=us_fake.company_email(),
                               cnpj=us_fake.numerify(text='#' * 14),
                               opening=us_fake.date_this_century(before_today=True))
