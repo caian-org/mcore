@@ -18,6 +18,7 @@ sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from mapi import db
 from mapi.models import (Address,
                          Company,
+                         CompanyAddressAssoc,
                          Vehicle,
                          Worker,
                          WorkerAddressAssoc)
@@ -217,7 +218,40 @@ class TestModels(unittest.TestCase):
         """
         --- TODO: DOCUMENTATION ---
         """
-        pass
+        evil_corp = Company.query.get(19)
+        acme_corp = Company.query.get(20)
+
+        assoc_entries = []
+        for i in range(0, 18):
+            addr = Address.query.get((i + 1))
+
+            company_address = None
+            if i % 2 == 0:
+                company_address = CompanyAddressAssoc(company=acme_corp, address=addr)
+            else:
+                company_address = CompanyAddressAssoc(company=evil_corp, address=addr)
+
+            assoc_entries.append(company_address)
+
+        for company_address_assoc in assoc_entries:
+            db.session.add(company_address_assoc)
+
+        db.session.commit()
+
+        evil_corp_addresses = db.session.query(CompanyAddressAssoc)\
+            .join(Company)\
+            .filter(Company.cnpj == '12345678909876')\
+            .all()
+
+        acme_corp_addresses = db.session.query(CompanyAddressAssoc)\
+            .join(Company)\
+            .filter(Company.cnpj == '98765432123456')\
+            .all()
+
+        def assertion(a=evil_corp_addresses, b=acme_corp_addresses):
+            return len(a) == 9 and len(b) == 9
+
+        self.assertEqual(assertion(), True)
 
 
 if __name__ == '__main__':
