@@ -63,7 +63,7 @@ class TestModels(unittest.TestCase):
         """
         --- TODO: DOCUMENTATION ---
         """
-        home_address = Address.query.get(1)
+        home_address = Address.query.get(19)
         self.assertEqual(home_address.postcode, '07801040')
 
     def test_c_worker(self):
@@ -115,13 +115,13 @@ class TestModels(unittest.TestCase):
         db.session.commit()
 
         worker_entries = Worker.query.all()
-        self.assertEqual(len(worker_entries), 2)
+        self.assertEqual(len(worker_entries), 20)
 
     def test_d_worker_repr(self):
         """
         --- TODO: DOCUMENTATION ---
         """
-        worker = Worker.query.get(1)
+        worker = Worker.query.get(19)
         self.assertEqual(str(worker), "<Worker 'Caian R. Ertl', '45354686806'>")
 
     def test_e_vehicle(self):
@@ -163,9 +163,9 @@ class TestModels(unittest.TestCase):
         """
         --- TODO: DOCUMENTATION ---
         """
-        worker = Worker.query.get(1)
-        home_address = Address.query.get(1)
-        work_address = Address.query.get(2)
+        worker = Worker.query.get(19)
+        home_address = Address.query.get(19)
+        work_address = Address.query.get(20)
 
         worker_has_home_address = WorkerAddressAssoc(worker=worker,
                                                      address=home_address)
