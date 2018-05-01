@@ -83,7 +83,7 @@ class Worker(Person):
     rg           = Col(Str(9), nullable=False, index=True, unique=True)
     cpf          = Col(Str(11), nullable=False, index=True, unique=True)
     birthday     = Col(Dat, nullable=False)
-    license_id   = Col(Str, nullable=False, index=True, unique=True)
+    license_id   = Col(Str(11), nullable=False, index=True, unique=True)
     license_type = Col(Str, nullable=False)
 
     # Relations
