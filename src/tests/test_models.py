@@ -181,7 +181,11 @@ class TestModels(unittest.TestCase):
         db.session.add(worker_has_work_address)
         db.session.commit()
 
-        worker_addresses = db.session.query(WorkerAddressAssoc).join(Worker).filter(Worker.cpf == '45354686806').all()
+        worker_addresses = db.session.query(WorkerAddressAssoc)\
+            .join(Worker)\
+            .filter(Worker.cpf == '45354686806')\
+            .all()
+
         self.assertEqual(len(worker_addresses), 2)
 
     def test_h_company(self):
