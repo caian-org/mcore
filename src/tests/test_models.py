@@ -44,15 +44,15 @@ class TestModels(unittest.TestCase):
                                       number='846',
                                       complement='Sala 1301')
 
-        db.session.add(worker_home_address)
-        db.session.add(worker_work_address)
-
         for i in range(0, 18):
             company_address = Address(postcode=br_fake.postcode().replace('-', ''),
                                       number=br_fake.building_number(),
                                       complement='Sala ' + br_fake.random_uppercase_letter())
 
             db.session.add(company_address)
+
+        db.session.add(worker_home_address)
+        db.session.add(worker_work_address)
 
         db.session.commit()
 
@@ -90,6 +90,25 @@ class TestModels(unittest.TestCase):
                        birthday=dio_bday,
                        license_id='0987654321',
                        license_type='B')
+
+        for i in range(0, 18):
+            tel = br_fake.phone_number()\
+                .replace('(', '')\
+                .replace(')', '')\
+                .replace(' ', '')\
+                .replace('-', '')\
+                .replace('+55', '')
+
+            worker = Worker(name=br_fake.name(),
+                            telephone=tel,
+                            email=br_fake.email(),
+                            rg=br_fake.numerify(text='#' * 9),
+                            cpf=br_fake.numerify(text='#' * 11),
+                            birthday=br_fake.date_this_century(before_today=True),
+                            license_id=br_fake.numerify(text='#' * 11),
+                            license_type=br_fake.random_uppercase_letter())
+
+            db.session.add(worker)
 
         db.session.add(caian)
         db.session.add(diogo)
@@ -169,7 +188,7 @@ class TestModels(unittest.TestCase):
             company = Company(name=us_fake.company(),
                               telephone=us_fake.numerify(text='##########'),
                               email=us_fake.company_email(),
-                              cnpj=us_fake.numerify(text='##############'),
+                              cnpj=us_fake.numerify(text='#' * 14),
                               opening=us_fake.date_this_century(before_today=True))
 
             db.session.add(company)
