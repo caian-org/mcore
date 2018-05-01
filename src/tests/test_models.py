@@ -158,7 +158,10 @@ class TestModels(unittest.TestCase):
         caian = Worker.query.get(19)
         diogo = Worker.query.get(20)
 
-        self.assertEqual(len(caian.vehicles), len(diogo.vehicles))
+        def assertion(a=caian.vehicles, b=diogo.vehicles):
+            return len(a) == 5 and len(b) == 5
+
+        self.assertEqual(assertion(), True)
 
     def test_g_worker_has_addresses(self):
         """
