@@ -4,6 +4,10 @@
 --- TODO: DOCUMENTATION ---
 """
 
+__parent_resource__ = 'api'
+__version__ = 'v1.0'
+
+
 # Standard library
 import os
 
@@ -12,7 +16,15 @@ from mapi.utils import Exit
 
 # 3rd-party libraries
 try:
+    # Flask itself
     from flask import Flask
+    from flask import request
+
+    # REST API abstraction layer
+    from flask_restful import Resource
+    from flask_restful import Api
+
+    # ORM-related
     from flask_migrate import Migrate
     from flask_sqlalchemy import SQLAlchemy
 
@@ -31,8 +43,7 @@ else:
 app = Flask(__name__)
 app.config.from_object(Config)
 
+rapi = Api(app)
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
-from mapi import routes
-from mapi import models
