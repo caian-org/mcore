@@ -192,7 +192,7 @@ class Offer(Entity):
     price = Col(Flo, nullable=False)
 
     # Foreign keys
-    bidder_uid = Col(Int, FK('worker.uid'), primary_key=True)
+    bidder_uid = Col(Int, FK('worker.uid'))
     proposal_uid = Col(Int, FK('proposal.uid'))
 
     # Relations
