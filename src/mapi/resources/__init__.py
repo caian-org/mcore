@@ -19,3 +19,6 @@ sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 # Models module
 from mapi.models import *
+
+# Resources utilitaries
+from mapi.resources.responder import Response
