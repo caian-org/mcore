@@ -123,7 +123,8 @@ class TestModels(unittest.TestCase):
         --- TODO: DOCUMENTATION ---
         """
         worker = Worker.query.get(19)
-        self.assertEqual(str(worker), "<Worker 'Caian R. Ertl', '45354686806'>")
+        repr_ = "<Worker 'Caian R. Ertl', '45354686806'>"
+        self.assertEqual(str(worker), repr_)
 
     def test_e_vehicle(self):
         """
