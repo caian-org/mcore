@@ -5,7 +5,7 @@
 """
 
 __parent_resource__ = 'api'
-__version__ = 'v1.0'
+__version__ = 'v1'
 
 
 # Standard library
