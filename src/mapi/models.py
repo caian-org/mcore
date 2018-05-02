@@ -60,17 +60,22 @@ class Person(Entity):
         return self.R([self.name, self.email])
 
 
-class Company(Person):
+class Address(Entity):
     """
     --- TODO: DOCUMENTATION ---
     """
-    __tablename__ = 'company'
+    __tablename__ = 'address'
 
-    cnpj    = Col(Str(14), nullable=False, index=True, unique=True)
-    opening = Col(Dat, nullable=False)
+    number     = Col(Str(8))
+    complement = Col(Str(16), nullable=True)
+    postcode   = Col(Str(8), index=True)
+
+    # Relations
+    workers = Rel('Worker', secondary='worker_addr_assoc')
+    companies = Rel('Company', secondary='company_addr_assoc')
 
     def __repr__(self):
-        return self.R([self.name, self.cnpj])
+        return self.R([self.postcode, self.number])
 
 
 class Worker(Person):
@@ -88,27 +93,10 @@ class Worker(Person):
 
     # Relations
     vehicles = Rel('Vehicle', back_populates='owner')
+    offers = Rel('Offer', back_populates='bidder')
 
     def __repr__(self):
         return self.R([self.name, self.cpf])
-
-
-class Address(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
-    __tablename__ = 'address'
-
-    number     = Col(Str(8))
-    complement = Col(Str(16), nullable=True)
-    postcode   = Col(Str(8), index=True)
-
-    # Relations
-    workers = Rel(Worker, secondary='worker_addr_assoc')
-    companies = Rel(Company, secondary='company_addr_assoc')
-
-    def __repr__(self):
-        return self.R([self.postcode, self.number])
 
 
 class Vehicle(Entity):
@@ -134,6 +122,23 @@ class Vehicle(Entity):
         return self.R([self.brand, self.year])
 
 
+class Company(Person):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+    __tablename__ = 'company'
+
+    # Fields
+    cnpj    = Col(Str(14), nullable=False, index=True, unique=True)
+    opening = Col(Dat, nullable=False)
+
+    # Relations
+    proposals = Rel('Proposal', back_populates='company')
+
+    def __repr__(self):
+        return self.R([self.name, self.cnpj])
+
+
 class Proposal(Entity):
     """
     --- TODO: DOCUMENTATION ---
@@ -149,13 +154,15 @@ class Proposal(Entity):
     company_uid = Col(Int, FK('company.uid'))
 
     # Relations
-    orig_address = Rel(Address, foreign_keys='Proposal.origin_addr_uid',
-                       backref=BR('orig_assoc', uselist=False))
+    origin = Rel(Address, foreign_keys='Proposal.origin_addr_uid',
+                 backref=BR('orig_assoc', uselist=False))
 
-    dest_address = Rel(Address, foreign_keys='Proposal.destin_addr_uid',
-                       backref=BR('dest_assoc', uselist=False))
+    destination = Rel(Address, foreign_keys='Proposal.destin_addr_uid',
+                      backref=BR('dest_assoc', uselist=False))
 
-    company = Rel(Company, backref=BR('company_assoc', uselist=False))
+    company = Rel('Company', back_populates='proposals')
+    items   = Rel('Item', back_populates='proposal')
+    offers  = Rel('Offer', back_populates='proposal')
 
 
 class Item(Entity):
@@ -169,8 +176,11 @@ class Item(Entity):
     width   = Col(Flo, nullable=False)
     height  = Col(Flo, nullable=False)
 
+    # Foreign keys
+    proposal_uid = Col(Int, FK('proposal.uid'))
+
     # Relations
-    Proposals = Rel(Proposal, secondary='proposal_item_assoc')
+    proposal = Rel('Proposal', back_populates='items')
 
 
 class Offer(Entity):
@@ -182,7 +192,12 @@ class Offer(Entity):
     price = Col(Flo, nullable=False)
 
     # Foreign keys
-    worker_uid = Col(Int, FK('worker.uid'), primary_key=True)
+    bidder_uid = Col(Int, FK('worker.uid'), primary_key=True)
+    proposal_uid = Col(Int, FK('proposal.uid'))
+
+    # Relations
+    bidder = Rel(Worker, back_populates='offers')
+    proposal = Rel(Proposal, back_populates='offers')
 
 
 class ProposalItemAssoc(Relation):
