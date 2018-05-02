@@ -4,7 +4,8 @@
 --- TODO: DOCUMENTATION ---
 """
 
-from resources import Resource
+from . import Worker
+from . import (Resource, request)
 
 
 class WorkerAuthentication(Resource):
@@ -19,4 +20,10 @@ class WorkerAuthentication(Resource):
         """
         --- TODO: DOCUMENTATION ---
         """
-        pass
+        email = request.form['email']
+        worker = Worker.query.filter_by(email=email).all()
+
+        if not worker:
+            return {'response': 'nope'}
+
+        return {'name': worker[0].name}
