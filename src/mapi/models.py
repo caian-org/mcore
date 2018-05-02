@@ -4,6 +4,10 @@
 --- TODO: DOCUMENTATION ---
 """
 
+# Security modules (login-related)
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
+
 # Primitive types
 from mapi.db import (Bol, Flo, Dat, Int, Str)
 
@@ -55,6 +59,12 @@ class Person(Entity):
     telephone = Col(Str(11), nullable=False)
     email     = Col(Str(64), nullable=False, index=True, unique=True)
     passhash  = Col(Str(128))
+
+    def set_password(self, password):
+        self.passhash = generate_password_hash(password, salt_length=32)
+
+    def verify(self, password):
+        return check_password_hash(self.passhash, password)
 
     def __attr__(self):
         return self.R([self.name, self.email])
