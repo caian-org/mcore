@@ -18,7 +18,7 @@ sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from mapi import db
 from mapi.models import (Address, Company, Item, Vehicle, Worker,
                          CompanyAddressAssoc, WorkerAddressAssoc,
-                         Proposal)
+                         Proposal, Offer)
 
 # 3rd-party libraries
 from faker import Faker
@@ -295,6 +295,20 @@ class TestModels(unittest.TestCase):
 
         items = Item.query.all()
         self.assertEqual(len(items), 1)
+
+    def test_l_offer(self):
+        caian = Worker.query.get(19)
+        proposal = Proposal.query.get(1)
+
+        offer = Offer(price=1000,
+                      bidder=caian,
+                      proposal=proposal)
+
+        db.session.add(offer)
+        db.session.commit()
+
+        offers = Offer.query.all()
+        self.assertEqual(len(offers), 1)
 
 
 if __name__ == '__main__':
