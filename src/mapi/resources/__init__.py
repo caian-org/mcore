@@ -8,9 +8,14 @@
 import sys
 from os import path
 
+# 3rd-party libraries
+from flask import request
+from flask_restful import Resource
+
 
 # Parent directory "injection"
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 
-from mapi import Resource
+# Models module
+from mapi.models import *
