@@ -19,6 +19,7 @@ from mapi import db
 from mapi.models import (Address,
                          Company,
                          CompanyAddressAssoc,
+                         Proposal,
                          Vehicle,
                          Worker,
                          WorkerAddressAssoc)
@@ -260,6 +261,24 @@ class TestModels(unittest.TestCase):
             return len(a) == 9 and len(b) == 9
 
         self.assertEqual(assertion(), True)
+
+    def test_j_proposal(self):
+        origin_address = Address.query.get(10)
+        destination_address = Address.query.get(11)
+
+        evil_corp = Company.query.get(1)
+
+        proposal = Proposal(deadline=datetime(2018, 12, 25),
+                            origin=origin_address,
+                            destination=destination_address,
+                            company=evil_corp)
+
+        db.session.add(proposal)
+        db.session.commit()
+
+        proposals = Proposal.query.all()
+
+        self.assertEqual(len(proposals), 1)
 
 
 if __name__ == '__main__':
