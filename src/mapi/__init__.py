@@ -18,10 +18,8 @@ from mapi.utils import Exit
 try:
     # Flask itself
     from flask import Flask
-    from flask import request
 
     # REST API abstraction layer
-    from flask_restful import Resource
     from flask_restful import Api
 
     # ORM-related
