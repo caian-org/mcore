@@ -5,16 +5,13 @@
 """
 
 from . import Worker
-from . import (Resource, request)
+from . import (Response, Resource, request)
 
 
 class WorkerAuthentication(Resource):
     """
     --- TODO: DOCUMENTATION ---
     """
-
-    def get(self):
-        return { 'hello': 'world' }
 
     def post(self):
         """
@@ -24,6 +21,13 @@ class WorkerAuthentication(Resource):
         worker = Worker.query.filter_by(email=email).all()
 
         if not worker:
-            return {'response': 'nope'}
+            error = { 'description': 'User not found' }
+            return Response.FAIL(404, error)
 
-        return {'name': worker[0].name}
+        data = {}
+        data['worker'] = { 'name': worker[0].name }
+        return Response.SUCCESS(200, data)
+
+
+class WorkerRegistry(Resource):
+    pass
