@@ -4,23 +4,12 @@
 --- TODO: DOCUMENTATION ---
 """
 
-from mapi import (rapi, Resource)
+from mapi import rapi
 from mapi import __version__
 from mapi import __parent_resource__
 
-from mapi.models import Worker
+from mapi.resources.worker import WorkerAuthentication
 
-
-class WorkerAuthentication(Resource):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
-
-    def post(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        pass
 
 class Router:
     """
