@@ -62,7 +62,7 @@ class Response:
         """
         data = {}
         data['id'] = uid
-        data['uri'] = Formatter.gen_route('addresses/' + uid)
+        data['uri'] = Formatter.gen_route('addresses/' + str(uid))
 
         return Response.SUCCESS(201, data)
 
