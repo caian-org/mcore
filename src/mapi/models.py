@@ -4,10 +4,6 @@
 --- TODO: DOCUMENTATION ---
 """
 
-# Security modules (login-related)
-from werkzeug.security import generate_password_hash
-from werkzeug.security import check_password_hash
-
 # Primitive types
 from mapi.db import (Bol, Flo, Dat, Int, Str)
 
@@ -16,6 +12,15 @@ from mapi.db import (Col, Mod)
 
 # Relations
 from mapi.db import (BR, FK, Rel)
+
+# Password hashing
+from mapi import (gen_phash, check_phash)
+
+# Expirable token generation
+from mapi import (Serializer, BadSignature, SignatureExpired)
+
+# The program's secret keu
+from mapi import SECRET_KEY
 
 
 class Entity(Mod):
@@ -60,14 +65,45 @@ class Person(Entity):
     email     = Col(Str(64), nullable=False, index=True, unique=True)
     passhash  = Col(Str(128))
 
-    def set_password(self, password):
-        self.passhash = generate_password_hash(password, salt_length=32)
-
-    def verify(self, password):
-        return check_password_hash(self.passhash, password)
-
     def __attr__(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
         return self.R([self.name, self.email])
+
+    def set_password(self, password):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        self.passhash = gen_phash(password, salt_length=32)
+
+    def verify_password(self, password):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        return check_phash(self.passhash, password)
+
+    def generate_token(self, expiration=60):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        s = Serializer(SECRET_KEY, expires_in=expiration)
+        return s.dumps({ 'id': self.uid, 'email': self.email })
+
+    @staticmethod
+    def verify_token(token):
+        s = Serializer(SECRET_KEY)
+
+        try:
+            data = s.loads(token)
+
+        except SignatureExpired:
+            return False
+
+        except BadSignature:
+            return False
+
+        return True
 
 
 class Address(Entity):
