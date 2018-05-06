@@ -5,13 +5,13 @@
 """
 
 # Primitive types
-from mapi.db import (Bol, Flo, Dat, Int, Str)
+from mapi.orm import (Bol, Flo, Dat, Int, Str)
 
 # Database objects
-from mapi.db import (Col, Mod)
+from mapi.orm import (Col, Mod)
 
 # Relations
-from mapi.db import (BR, FK, Rel)
+from mapi.orm import (BR, FK, Rel)
 
 # Password hashing
 from mapi import (gen_phash, check_phash)
