@@ -21,6 +21,8 @@ flask-sqlalchemy = "*"
 flask-migrate = "*"
 pycep-correios = "*"
 flask-restful = "*"
+flask-marshmallow = "*"
+marshmallow-sqlalchemy = "*"
 
 
 [requires]

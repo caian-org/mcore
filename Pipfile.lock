@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6f199d994ac22ac3d48729cc774860325004a403bb8369ea614e5894d568ae43"
+            "sha256": "b42da200d1aaa5cd5ac834769c5d499e337fd7bff23dd5a2fdf2fa0b0686b717"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -11,7 +11,7 @@
             "platform_python_implementation": "CPython",
             "platform_release": "4.9.0-6-amd64",
             "platform_system": "Linux",
-            "platform_version": "#1 SMP Debian 4.9.82-1+deb9u3 (2018-03-02)",
+            "platform_version": "#1 SMP Debian 4.9.88-1 (2018-04-29)",
             "python_full_version": "3.5.3",
             "python_version": "3.5",
             "sys_platform": "linux"
@@ -65,10 +65,17 @@
         },
         "flask": {
             "hashes": [
-                "sha256:dbe2a9f539f4d0fe26fa44c08d6e556e2a4a4dd3a3fb0550f39954cf57571363",
-                "sha256:cfc15b45622f9cfee6b5803723070fd0f489b3bd662179195e702cb95fd924c8"
+                "sha256:a080b744b7e345ccfcbc77954861cb05b3c63786e93f2b3875e0913d44b43f05",
+                "sha256:2271c0070dbcb5275fad4a82e29f23ab92682dc45f9dfbc22c02ba9b9322ce48"
             ],
-            "version": "==1.0.1"
+            "version": "==1.0.2"
+        },
+        "flask-marshmallow": {
+            "hashes": [
+                "sha256:75c9d80f22af982b1e8ccec109d3b75c14bb5570602ae3705a4ff775badd2816",
+                "sha256:db7aff4130eb99fd05ab78fd2e2c58843ba0f208899aeb1c14aff9cd98ae8c80"
+            ],
+            "version": "==0.9.0"
         },
         "flask-migrate": {
             "hashes": [
@@ -123,12 +130,26 @@
             ],
             "version": "==1.0"
         },
+        "marshmallow": {
+            "hashes": [
+                "sha256:a3fe4bc61c4f6902b5cc95bd34cd0803e2a09ae0ea6bf09eb8f491acebe6934c",
+                "sha256:b73361eab812af97eaf8e8691333a1096787968450051d132c8b9fb90aa1db5a"
+            ],
+            "version": "==2.15.1"
+        },
+        "marshmallow-sqlalchemy": {
+            "hashes": [
+                "sha256:3e034964d09d1af15f6868a36cc26ec22d41a703e576928ba086996ae4287e59",
+                "sha256:9804ef2829f781f469a06528d107c2a763f109c687266ab8b1f000f9684184ae"
+            ],
+            "version": "==0.13.2"
+        },
         "pycep-correios": {
             "hashes": [
-                "sha256:f4d4ff3d75a667f23029676b88839c7c1160e16bd653e277f886e159c8fb018a",
-                "sha256:337b84936d1d5a652e8647cb59cdc4d831165a4c28d4021d9d44dc647716191e"
+                "sha256:42b6afa9e505ebcc83b4409506423317f9e31a6379ca0a767cba5334c4234c6c",
+                "sha256:b7a926df836d128417a00e023e6c694080fa44e6b2a938f7258bb41d4480302c"
             ],
-            "version": "==2.2.0"
+            "version": "==2.3.1"
         },
         "python-dateutil": {
             "hashes": [
@@ -238,10 +259,10 @@
         },
         "flask": {
             "hashes": [
-                "sha256:dbe2a9f539f4d0fe26fa44c08d6e556e2a4a4dd3a3fb0550f39954cf57571363",
-                "sha256:cfc15b45622f9cfee6b5803723070fd0f489b3bd662179195e702cb95fd924c8"
+                "sha256:a080b744b7e345ccfcbc77954861cb05b3c63786e93f2b3875e0913d44b43f05",
+                "sha256:2271c0070dbcb5275fad4a82e29f23ab92682dc45f9dfbc22c02ba9b9322ce48"
             ],
-            "version": "==1.0.1"
+            "version": "==1.0.2"
         },
         "flask-testing": {
             "hashes": [
