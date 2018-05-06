@@ -11,7 +11,6 @@ class Authenticator:
     @staticmethod
     def check_struct(payload):
         elements = [ payload.get('auth'), payload.get('data') ]
-        print(repr(elements))
 
         for element in elements:
             if not isinstance(element, dict):
