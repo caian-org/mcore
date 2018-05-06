@@ -13,7 +13,7 @@ from mapi.routes import Router
 
 def main():
     Router.act()
-    app.run(debug=Config.DEBUG)
+    app.run(debug=Config.DEBUG, port=Config.PORT)
 
 
 if __name__ == '__main__':
