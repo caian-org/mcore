@@ -32,3 +32,10 @@ class Response:
         response['status'] = 'Error'
 
         return response, code
+
+    @property
+    def incorrect_email_or_password(self):
+        return Response.FAIL(404, 'Incorrect email or password')
+
+
+response = Response()
