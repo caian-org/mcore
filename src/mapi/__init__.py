@@ -33,8 +33,6 @@ try:
     from werkzeug.security import (generate_password_hash as gen_phash,
                                    check_password_hash as check_phash)
 
-    from werkzeug.exceptions import BadRequest
-
     # Security modules (token-related)
     from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer,
                               BadSignature, SignatureExpired)
