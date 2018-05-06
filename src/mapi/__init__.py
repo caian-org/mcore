@@ -66,6 +66,6 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 db   = SQLAlchemy(app)
-rapi = Restful(app)
 mars = Marshmallow(app)
 migr = Migrate(app, db)
+rapi = Restful(app)
