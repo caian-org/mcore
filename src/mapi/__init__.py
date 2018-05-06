@@ -27,6 +27,7 @@ try:
     # ORM-related
     from flask_migrate import Migrate
     from flask_sqlalchemy import SQLAlchemy
+    from flask_marshmallow import Marshmallow
 
     # Security modules (login-related)
     from werkzeug.security import (generate_password_hash as gen_phash,
@@ -64,7 +65,7 @@ Config.SECRET_KEY = SECRET_KEY
 app = Flask(__name__)
 app.config.from_object(Config)
 
+db   = SQLAlchemy(app)
 rapi = Restful(app)
-
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+mars = Marshmallow(app)
+migr = Migrate(app, db)
