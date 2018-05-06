@@ -7,8 +7,6 @@
 from . import Worker
 from . import (Resource, request, response)
 
-from . import BadRequest
-
 
 class WorkerAuthentication(Resource):
     """
@@ -19,11 +17,11 @@ class WorkerAuthentication(Resource):
         """
         --- TODO: DOCUMENTATION ---
         """
-        try:
-            email = request.form['email']
-            passw = request.form['password']
-        except BadRequest as error:
-            return response.FAIL(400, error.description)
+        email = request.form.get('email')
+        passw = request.form.get('password')
+
+        if not email or not passw:
+            return response.bad_request
 
         worker = Worker.query.filter_by(email=email).all()
         if not worker:
