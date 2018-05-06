@@ -8,7 +8,7 @@ from . import Worker
 from . import (Resource, request, response)
 
 
-class Worker(Resource):
+class WorkerRecord(Resource):
     """
     --- TODO: DOCUMENTATION ---
     """
@@ -38,7 +38,7 @@ class Worker(Resource):
         pass
 
 
-class WorkerAuthentication(Resource):
+class WorkerAuth(Resource):
     """
     --- TODO: DOCUMENTATION ---
     """
