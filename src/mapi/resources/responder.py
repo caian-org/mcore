@@ -56,6 +56,13 @@ class Response:
         """
         return Response.FAIL(500, 'Erro interno do servidor.')
 
+    @property
+    def forbidden(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        return Response.FAIL(403, 'Acesso negado.')
+
     def address_created(self, uid):
         """
         --- TODO: DOCUMENTATION ---
