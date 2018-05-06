@@ -5,10 +5,10 @@
 """
 
 # Primitive types
-from mapi.orm import (Bol, Flo, Dat, Int, Str)
+from mapi.orm import (Bool, Float, Dat, Int, Str)
 
 # Database objects
-from mapi.orm import (Col, Mod)
+from mapi.orm import (Col, Model)
 
 # Relations
 from mapi.orm import (BR, FK, Rel)
@@ -23,7 +23,7 @@ from mapi import (Serializer, BadSignature, SignatureExpired)
 from mapi import SECRET_KEY
 
 
-class Entity(Mod):
+class Entity(Model):
     """
     --- TODO: DOCUMENTATION ---
     """
@@ -47,7 +47,7 @@ class Entity(Mod):
         pass
 
 
-class Relation(Mod):
+class Relation(Model):
     """
     --- TODO: DOCUMENTATION ---
     """
@@ -217,10 +217,10 @@ class Item(Entity):
     """
     __tablename__ = 'item'
 
-    fragile = Col(Bol, nullable=False)
-    weight  = Col(Flo, nullable=False)
-    width   = Col(Flo, nullable=False)
-    height  = Col(Flo, nullable=False)
+    fragile = Col(Bool, nullable=False)
+    weight  = Col(Float, nullable=False)
+    width   = Col(Float, nullable=False)
+    height  = Col(Float, nullable=False)
 
     # Foreign keys
     proposal_uid = Col(Int, FK('proposal.uid'))
@@ -235,7 +235,7 @@ class Offer(Entity):
     """
     __tablename__ = 'offer'
 
-    price = Col(Flo, nullable=False)
+    price = Col(Float, nullable=False)
 
     # Foreign keys
     bidder_uid = Col(Int, FK('worker.uid'))
