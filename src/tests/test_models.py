@@ -20,8 +20,8 @@ from mapi.models import (Address, Company, Item, Vehicle, Worker,
                          CompanyAddressAssoc, WorkerAddressAssoc,
                          Proposal, Offer)
 
-# 3rd-party libraries
-from faker import Faker
+from mapi import Faker
+
 br_fake = Faker('pt_BR')
 us_fake = Faker('en_US')
 
