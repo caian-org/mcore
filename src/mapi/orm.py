@@ -4,7 +4,7 @@
 --- TODO: DOCUMENTATION ---
 """
 
-from mapi import db
+from mapi import db, mars
 
 # Primitive types
 Bool  = db.Boolean
@@ -24,3 +24,7 @@ Rel = db.relationship
 
 # Session
 session = db.session
+
+
+# Model schema
+Schema = mars.ModelSchema
