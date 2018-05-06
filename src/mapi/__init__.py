@@ -12,7 +12,7 @@ __version__ = 'v1'
 import os
 
 # Modules
-from mapi.utils import Exit
+from mapi.utils import (Exit, Formatter)
 
 # 3rd-party libraries
 try:
