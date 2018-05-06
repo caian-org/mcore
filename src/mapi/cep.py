@@ -5,19 +5,10 @@
 """
 
 import urllib3
+from mapi import cep_api
+from mapi import (Timeout, FalhaNaConexao, MultiploRedirecionamento)
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-from mapi.utils import Exit
-
-try:
-    import pycep_correios as cep_api
-    from pycep_correios.excecoes import (Timeout,
-                                         FalhaNaConexao,
-                                         MultiploRedirecionamento)
-
-except ImportError as error:
-    Exit.with_fail('Impossible to import 3rd-party libraries\n'
-                   'Latest traceback: {0}' . format(error.args[0]))
 
 
 class CEP:
