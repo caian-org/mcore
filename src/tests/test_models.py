@@ -80,6 +80,8 @@ class TestModels(unittest.TestCase):
                        license_id='1234567890',
                        license_type='A')
 
+        caian.set_password('rechtsschutzversicherungsgesellschaften')
+
         diogo = Worker(name='Diogo Casagrande',
                        telephone='11948211232',
                        email='casagrande.diogo92@gmail.com',
@@ -88,6 +90,8 @@ class TestModels(unittest.TestCase):
                        birthday=dio_bday,
                        license_id='0987654321',
                        license_type='B')
+
+        diogo.set_password('supercalifragilisticexpialidocious')
 
         for i in range(0, 18):
             tel = br_fake.phone_number()\
@@ -105,6 +109,10 @@ class TestModels(unittest.TestCase):
                             birthday=br_fake.date_this_century(before_today=True),
                             license_id=br_fake.numerify(text='#' * 11),
                             license_type=br_fake.random_uppercase_letter())
+
+            worker.set_password(us_fake.password(length=32, special_chars=True,
+                                                 digits=True, upper_case=True,
+                                                 lower_case=True))
 
             db.session.add(worker)
 
