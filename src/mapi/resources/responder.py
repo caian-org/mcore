@@ -35,7 +35,17 @@ class Response:
 
     @property
     def incorrect_email_or_password(self):
-        return Response.FAIL(404, 'Incorrect email or password')
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        return Response.FAIL(404, 'E-mail ou senha incorretos.')
+
+    @property
+    def bad_request(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        return Response.FAIL(400, 'Requisição inválida.')
 
 
 response = Response()
