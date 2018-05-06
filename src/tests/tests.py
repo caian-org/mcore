@@ -11,16 +11,23 @@ import unittest
 from os import path
 from datetime import datetime
 
+# 3rd-party libraries
+import requests
+
 # Parent directory "injection"
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 # Modules
-from mapi import db
+from mapi import db, app
 from mapi.models import (Address, Company, Item, Vehicle, Worker,
                          CompanyAddressAssoc, WorkerAddressAssoc,
                          Proposal, Offer)
 
-from mapi import Faker
+# Utilitaries
+from mapi import Faker, Formatter
+
+# Flask configurations
+from mapi import Config
 
 br_fake = Faker('pt_BR')
 us_fake = Faker('en_US')
@@ -305,6 +312,9 @@ class TestModels(unittest.TestCase):
         self.assertEqual(len(items), 1)
 
     def test_l_offer(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
         caian = Worker.query.get(19)
         proposal = Proposal.query.get(1)
 
@@ -317,6 +327,41 @@ class TestModels(unittest.TestCase):
 
         offers = Offer.query.all()
         self.assertEqual(len(offers), 1)
+
+
+class TestRoutes(unittest.TestCase):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+
+    def gen_url(self, resource):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        return '{0}:{1}{2}'.format(
+            'http://localhost', Config.PORT,
+            Formatter.gen_route(resource)
+        )
+
+    def test_a_worker_authentication(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        result = requests.post(self.gen_url('workers/auth'), data={
+            'email': 'caianrais@gmail.com',
+            'password': 'rechtsschutzversicherungsgesellschaften'
+        })
+
+        if not result.status_code == 200:
+            self.fail('Request failed. Code: ' + result.status_code)
+
+        response = result.json()
+        self.worker_token = response['data']['token']
+
+        self.assertIsNotNone(self.worker_token)
+
+    def test_b_address_creation_by_worker(self):
+        pass
 
 
 if __name__ == '__main__':
