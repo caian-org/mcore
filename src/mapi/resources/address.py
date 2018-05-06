@@ -8,8 +8,10 @@ from . import db
 from . import Address
 from . import (Resource, request, response)
 
+from .auth import Authenticator
 
-class Address(Resource):
+
+class AddressRecord(Resource):
     """
     --- TODO: DOCUMENTATION ---
     """
@@ -39,7 +41,7 @@ class Address(Resource):
         pass
 
 
-class AddressInclusion(Resource):
+class AddressNew(Resource):
     """
     --- TODO: DOCUMENTATION ---
     """
@@ -48,18 +50,31 @@ class AddressInclusion(Resource):
         """
         --- TODO: DOCUMENTATION ---
         """
-        postcode   = request.form.get('postcode')
-        number     = request.form.get('number')
-        complement = request.form.get('complement')
+        payload = request.get_json()
 
-        if not postcode or not number:
+        if not Authenticator.check_struct(payload):
             return response.bad_request
 
-        # complement = complement if complement is not None else ''
+        auth = payload['auth']
+        data = payload['data']
+
+        requester  = auth.get('requester')
+        token      = auth.get('token')
+        postcode   = data.get('postcode')
+        number     = data.get('number')
+        complement = data.get('complement')
+
+        params = [requester, token, postcode, number]
+        if not Authenticator.check_payload(params):
+            return response.bad_request
+
+        if not Authenticator.verify_token(requester, token):
+            return response.forbidden
+
+        complement = complement if complement is not None else ''
 
         address = Address(postcode=postcode,
-                          number=number,
-                          complement=complement)
+                          number=number)
 
         try:
             db.session.add(address)
