@@ -8,6 +8,36 @@ from . import Worker
 from . import (Resource, request, response)
 
 
+class Worker(Resource):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+
+    def delete(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
+
+    def get(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
+
+    def post(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
+
+    def put(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
+
+
 class WorkerAuthentication(Resource):
     """
     --- TODO: DOCUMENTATION ---
