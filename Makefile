@@ -11,4 +11,4 @@ docs:
 	cd ./docs && make html
 
 test:
-	cd ./src && bash build.sh && python3 tests/test_models.py -v
+	cd ./src && bash build.sh && python3 tests/tests.py -v
