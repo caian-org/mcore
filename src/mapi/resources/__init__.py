@@ -12,9 +12,6 @@ from os import path
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 
-from mapi import (db, request, Resource)
-
-from mapi.utils import Exit
+from mapi import (db, request, Resource, Formatter)
 from mapi.models import *
-
 from mapi.resources.responder import response
