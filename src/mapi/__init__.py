@@ -19,10 +19,10 @@ try:
     from faker import Faker
 
     # Flask itself
-    from flask import Flask
+    from flask import Flask, request
 
     # REST API abstraction layer
-    from flask_restful import Api as Restful
+    from flask_restful import (Api as Restful, Resource)
 
     # ORM-related
     from flask_migrate import Migrate
@@ -31,6 +31,8 @@ try:
     # Security modules (login-related)
     from werkzeug.security import (generate_password_hash as gen_phash,
                                    check_password_hash as check_phash)
+
+    from werkzeug.exceptions import BadRequest
 
     # Security modules (token-related)
     from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer,
