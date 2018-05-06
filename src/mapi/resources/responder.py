@@ -56,5 +56,15 @@ class Response:
         """
         return Response.FAIL(500, 'Erro interno do servidor.')
 
+    def address_created(self, uid):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        data = {}
+        data['id'] = uid
+        data['uri'] = Formatter.gen_route('addresses/' + uid)
+
+        return Response.SUCCESS(201, data)
+
 
 response = Response()
