@@ -9,6 +9,36 @@ from . import Address
 from . import (Resource, request, response)
 
 
+class Address(Resource):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+
+    def delete(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
+
+    def get(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
+
+    def post(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
+
+    def put(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
+
+
 class AddressInclusion(Resource):
     """
     --- TODO: DOCUMENTATION ---
