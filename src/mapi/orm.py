@@ -7,19 +7,19 @@
 from mapi import db
 
 # Primitive types
-Bol = db.Boolean
-Dat = db.DateTime
-Flo = db.Float
-Int = db.Integer
-Str = db.String
+Bool  = db.Boolean
+Dat   = db.DateTime
+Float = db.Float
+Int   = db.Integer
+Str   = db.String
 
 # Objects
-Col = db.Column
-Mod = db.Model
+Col   = db.Column
+Model = db.Model
 
 # Relations
-BR = db.backref
-FK = db.ForeignKey
+BR  = db.backref
+FK  = db.ForeignKey
 Rel = db.relationship
 
 # Session
