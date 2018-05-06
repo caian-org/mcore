@@ -4,6 +4,8 @@
 --- TODO: DOCUMENTATION ---
 """
 
+from . import Formatter
+
 
 class Response:
     """
@@ -46,6 +48,13 @@ class Response:
         --- TODO: DOCUMENTATION ---
         """
         return Response.FAIL(400, 'Requisição inválida.')
+
+    @property
+    def internal_server_error(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        return Response.FAIL(500, 'Erro interno do servidor.')
 
 
 response = Response()
