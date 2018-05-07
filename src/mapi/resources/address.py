@@ -54,20 +54,19 @@ class AddressNew(Resource):
         if not Authenticator.check_struct(payload):
             return response.bad_request
 
-        auth      = payload['auth']
-        requester = auth.get('requester')
-        token     = auth.get('token')
+        auth  = payload['auth']
+        token = auth.get('token')
 
         data       = payload['data']
         postcode   = data.get('postcode')
         number     = data.get('number')
         complement = data.get('complement')
 
-        params = [requester, token, postcode, number]
+        params = [token, postcode, number]
         if not Authenticator.check_payload(params):
             return response.bad_request
 
-        if not Authenticator.verify_token(requester, token):
+        if not Authenticator.verify_token(token):
             return response.forbidden
 
         complement = complement if complement is not None else ''
