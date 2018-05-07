@@ -8,8 +8,15 @@ from . import Person
 
 
 class Authenticator:
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+
     @staticmethod
     def check_struct(payload):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
         elements = [ payload.get('auth'), payload.get('data') ]
 
         for element in elements:
@@ -20,6 +27,9 @@ class Authenticator:
 
     @staticmethod
     def check_payload(params):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
         for param in params:
             if not param:
                 return False
@@ -27,8 +37,8 @@ class Authenticator:
         return True
 
     @staticmethod
-    def verify_token(entity, token):
-        if entity not in ['worker', 'company']:
-            return False
-
+    def verify_token(token):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
         return Person.verify_token(token)
