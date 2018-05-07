@@ -349,7 +349,7 @@ class TestRoutes(unittest.TestCase):
         """
         --- TODO: DOCUMENTATION ---
         """
-        result = requests.post(self.gen_url('workers/auth'), data={
+        result = requests.post(self.gen_url('workers/auth'), json={
             'email': 'caianrais@gmail.com',
             'password': 'rechtsschutzversicherungsgesellschaften'
         })
