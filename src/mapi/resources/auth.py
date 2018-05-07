@@ -13,14 +13,13 @@ class Authenticator:
     """
 
     @staticmethod
-    def check_struct(payload):
+    def check_struct(payload, elements):
         """
         --- TODO: DOCUMENTATION ---
         """
-        elements = [ payload.get('auth'), payload.get('data') ]
 
         for element in elements:
-            if not isinstance(element, dict):
+            if not isinstance(payload.get(element), dict):
                 return False
 
         return True
