@@ -7,6 +7,7 @@
 
 # Standard libraries
 import sys
+import json
 import unittest
 from os import path
 from datetime import datetime
@@ -333,6 +334,7 @@ class TestRoutes(unittest.TestCase):
     """
     --- TODO: DOCUMENTATION ---
     """
+    worker_token = None
 
     def gen_url(self, resource):
         """
@@ -356,12 +358,28 @@ class TestRoutes(unittest.TestCase):
             self.fail('Request failed. Code: ' + result.status_code)
 
         response = result.json()
-        self.worker_token = response['data']['token']
+        self.__class__.worker_token = response['data']['token']
 
         self.assertIsNotNone(self.worker_token)
 
     def test_b_address_creation_by_worker(self):
-        pass
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        result = requests.post(self.gen_url('addresses'), json={
+            'auth': {
+                'requester': 'worker',
+                'token': self.__class__.worker_token
+            },
+
+            'data': {
+                'postcode': '07801040',
+                'number': '255',
+                'complement': 'home'
+            }
+        })
+
+        self.assertEqual(result.status_code, 201)
 
 
 if __name__ == '__main__':
