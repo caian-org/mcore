@@ -19,6 +19,9 @@ from . import (Resource, request, response)
 # Form/JSON data authenticator
 from .auth import Authenticator
 
+# Authentication logic
+from .person import PersonAuth
+
 
 class WorkerNew(Resource):
     """
@@ -75,33 +78,9 @@ class WorkerRecord(Resource):
         pass
 
 
-class WorkerAuth(Resource):
+class WorkerAuth(PersonAuth):
     """
     --- TODO: DOCUMENTATION ---
     """
 
-    def post(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        payload = request.get_json()
-        email = payload.get('email')
-        passw = payload.get('password')
-
-        if not email or not passw:
-            return response.bad_request
-
-        worker = Worker.query.filter_by(email=email).all()
-        if not worker:
-            return response.incorrect_email_or_password
-
-        worker = worker[0]
-        valid_passw = worker.verify_password(passw)
-        if not valid_passw:
-            return response.incorrect_email_or_password
-
-        token = worker.generate_token()
-
-        data = {}
-        data['token'] = token.decode('ascii')
-        return response.SUCCESS(200, data)
+    entity = Worker
