@@ -34,12 +34,6 @@ class AddressRecord(Resource):
         """
         pass
 
-    def post(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        pass
-
     def put(self):
         """
         --- TODO: DOCUMENTATION ---
@@ -78,7 +72,8 @@ class AddressNew(Resource):
         complement = complement if complement is not None else ''
 
         address = Address(postcode=postcode,
-                          number=number)
+                          number=number,
+                          complement=complement)
 
         try:
             db.session.add(address)
