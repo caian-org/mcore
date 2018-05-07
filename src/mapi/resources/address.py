@@ -51,15 +51,14 @@ class AddressNew(Resource):
         --- TODO: DOCUMENTATION ---
         """
         payload = request.get_json()
-
         if not Authenticator.check_struct(payload):
             return response.bad_request
 
-        auth = payload['auth']
-        data = payload['data']
+        auth      = payload['auth']
+        requester = auth.get('requester')
+        token     = auth.get('token')
 
-        requester  = auth.get('requester')
-        token      = auth.get('token')
+        data       = payload['data']
         postcode   = data.get('postcode')
         number     = data.get('number')
         complement = data.get('complement')
