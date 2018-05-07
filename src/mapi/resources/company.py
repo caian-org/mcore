@@ -10,11 +10,17 @@ from . import db
 # Worker model
 from . import Company
 
+# Worker datatype schema
+from . import CompanySchema
+
 # HTTP-related
 from . import (Resource, request, response)
 
 # Form/JSON data authenticator
 from .auth import Authenticator
+
+# Authentication logic
+from .person import PersonAuth
 
 
 class CompanyNew(Resource):
@@ -51,3 +57,11 @@ class CompanyRecord(Resource):
         --- TODO: DOCUMENTATION ---
         """
         pass
+
+
+class CompanyAuth(PersonAuth):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+
+    entity = Company
