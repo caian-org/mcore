@@ -5,8 +5,8 @@
 """
 
 from mapi.orm import Schema
-from mapi.models import (Address, Company, Entity, Item,
-                         Offer, Proposal, Vehicle, Worker)
+from mapi.models import (Address, Company, Item, Offer,
+                         Proposal, Vehicle, Worker)
 
 
 class AddressSchema(Schema):
