@@ -13,4 +13,7 @@ class WorkerSchema(Schema):
     --- TODO: DOCUMENTATION ---
     """
     class Meta:
+        fields = ('name', 'email', 'telephone', 'rg', 'cpf', 'license_type',
+                  'address_assoc')
+
         model = Worker
