@@ -17,6 +17,18 @@ from . import (Resource, request, response)
 from .auth import Authenticator
 
 
+class OfferNew(Resource):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+
+    def post(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
+
+
 class OfferRecord(Resource):
     """
     --- TODO: DOCUMENTATION ---
