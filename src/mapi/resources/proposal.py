@@ -34,12 +34,6 @@ class ProposalRecord(Resource):
         """
         pass
 
-    def post(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        pass
-
     def put(self):
         """
         --- TODO: DOCUMENTATION ---

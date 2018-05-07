@@ -56,12 +56,6 @@ class WorkerRecord(Resource):
         data = schema.dump(worker).data
         return response.SUCCESS(200, data)
 
-    def post(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        pass
-
     def put(self):
         """
         --- TODO: DOCUMENTATION ---
