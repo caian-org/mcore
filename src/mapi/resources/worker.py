@@ -47,8 +47,9 @@ class WorkerAuth(Resource):
         """
         --- TODO: DOCUMENTATION ---
         """
-        email = request.form.get('email')
-        passw = request.form.get('password')
+        payload = request.get_json()
+        email = payload.get('email')
+        passw = payload.get('password')
 
         if not email or not passw:
             return response.bad_request
