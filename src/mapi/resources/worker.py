@@ -4,8 +4,20 @@
 --- TODO: DOCUMENTATION ---
 """
 
+# Database connection
+from . import db
+
+# Worker model
 from . import Worker
+
+# Worker datatype schema
+from . import WorkerSchema
+
+# HTTP-related
 from . import (Resource, request, response)
+
+# Form/JSON data authenticator
+from .auth import Authenticator
 
 
 class WorkerRecord(Resource):
@@ -19,11 +31,30 @@ class WorkerRecord(Resource):
         """
         pass
 
-    def get(self):
+    def get(self, worker_id):
         """
         --- TODO: DOCUMENTATION ---
         """
-        pass
+
+        payload = request.get_json()
+
+        if not Authenticator.check_struct(payload, ['auth']):
+            return response.bad_request
+
+        auth  = payload['auth']
+        token = auth.get('token')
+
+        if not token:
+            return response.bad_request
+
+        if not Authenticator.verify_token(token):
+            return response.forbidden
+
+        schema = WorkerSchema()
+        worker = Worker.query.get(worker_id)
+
+        data = schema.dump(worker).data
+        return response.SUCCESS(200, data)
 
     def post(self):
         """
