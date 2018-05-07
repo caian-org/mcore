@@ -368,7 +368,6 @@ class TestRoutes(unittest.TestCase):
         """
         result = requests.post(self.gen_url('addresses'), json={
             'auth': {
-                'requester': 'worker',
                 'token': self.__class__.worker_token
             },
 
@@ -380,6 +379,17 @@ class TestRoutes(unittest.TestCase):
         })
 
         self.assertEqual(result.status_code, 201)
+
+    def test_c_get_worker_information(self):
+        result = requests.get(self.gen_url('workers/19'), json={
+            'auth': {
+                'token': self.__class__.worker_token
+            }
+        })
+
+        print(repr(result.json()))
+
+        self.assertEqual(result.status_code, 200)
 
 
 if __name__ == '__main__':
