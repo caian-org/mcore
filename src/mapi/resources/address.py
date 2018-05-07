@@ -51,7 +51,7 @@ class AddressNew(Resource):
         --- TODO: DOCUMENTATION ---
         """
         payload = request.get_json()
-        if not Authenticator.check_struct(payload):
+        if not Authenticator.check_struct(payload, ['auth', 'data']):
             return response.bad_request
 
         auth  = payload['auth']
