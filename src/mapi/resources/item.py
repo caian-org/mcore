@@ -17,6 +17,18 @@ from . import (Resource, request, response)
 from .auth import Authenticator
 
 
+class ItemNew(Resource):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+
+    def post(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
+
+
 class ItemRecord(Resource):
     """
     --- TODO: DOCUMENTATION ---
