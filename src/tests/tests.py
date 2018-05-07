@@ -7,7 +7,6 @@
 
 # Standard libraries
 import sys
-import json
 import unittest
 from os import path
 from datetime import datetime
