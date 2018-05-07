@@ -17,30 +17,6 @@ from . import (Resource, request, response)
 from .auth import Authenticator
 
 
-class AddressRecord(Resource):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
-
-    def delete(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        pass
-
-    def get(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        pass
-
-    def put(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        pass
-
-
 class AddressNew(Resource):
     """
     --- TODO: DOCUMENTATION ---
@@ -84,3 +60,27 @@ class AddressNew(Resource):
 
         addr_uid = address.uid
         return response.address_created(addr_uid)
+
+
+class AddressRecord(Resource):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+
+    def delete(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
+
+    def get(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
+
+    def put(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        pass
