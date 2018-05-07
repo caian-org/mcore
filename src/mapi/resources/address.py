@@ -4,10 +4,16 @@
 --- TODO: DOCUMENTATION ---
 """
 
+# Database connection
 from . import db
+
+# Worker model
 from . import Address
+
+# HTTP-related
 from . import (Resource, request, response)
 
+# Form/JSON data authenticator
 from .auth import Authenticator
 
 
