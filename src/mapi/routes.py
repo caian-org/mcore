@@ -14,7 +14,7 @@ from mapi.resources.company import (CompanyRecord)
 from mapi.resources.item import (ItemRecord)
 from mapi.resources.offer import (OfferRecord)
 from mapi.resources.proposal import (ProposalRecord)
-from mapi.resources.vehicle import (VehicleProposal)
+from mapi.resources.vehicle import (VehicleRecord)
 
 
 class Router:
@@ -43,4 +43,4 @@ class Router:
         Router.include(ItemRecord, 'items/<int:item_id>')
         Router.include(OfferRecord, 'offers/<int:offers_id>')
         Router.include(ProposalRecord, 'proposals/<int:proposal_id>')
-        Router.include(VehicleProposal, 'vehicles/<int:vehicle_id>')
+        Router.include(VehicleRecord, 'vehicles/<int:vehicle_id>')
