@@ -63,7 +63,7 @@ class Person(Entity):
     name      = Col(Str(64), nullable=False)
     telephone = Col(Str(11), nullable=False)
     email     = Col(Str(64), nullable=False, index=True, unique=True)
-    passhash  = Col(Str(128))
+    passhash  = Col(Str(128), nullable=False)
 
     def __attr__(self):
         """
