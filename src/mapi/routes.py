@@ -38,29 +38,29 @@ class Router:
         # Workers
         Router.include(WorkerNew, 'workers')
         Router.include(WorkerAuth, 'workers/auth')
-        Router.include(WorkerRecord, 'workers/<int:worker_id>')
+        Router.include(WorkerRecord, 'workers/<int:uid>')
 
         # Addresses
         Router.include(AddressNew, 'addresses')
-        Router.include(AddressRecord, 'addresses/<int:address_id>')
+        Router.include(AddressRecord, 'addresses/<int:uid>')
 
         # Companies
         Router.include(CompanyNew, 'companies')
         Router.include(CompanyAuth, 'companies/auth')
-        Router.include(CompanyRecord, 'companies/<int:company_id>')
+        Router.include(CompanyRecord, 'companies/<int:uid>')
 
         # Items
         Router.include(ItemNew, 'items')
-        Router.include(ItemRecord, 'items/<int:item_id>')
+        Router.include(ItemRecord, 'items/<int:uid>')
 
         # Offers
         Router.include(OfferNew, 'offers')
-        Router.include(OfferRecord, 'offers/<int:offers_id>')
+        Router.include(OfferRecord, 'offers/<int:uid>')
 
         # Proposals
         Router.include(ProposalNew, 'proposals')
-        Router.include(ProposalRecord, 'proposals/<int:proposal_id>')
+        Router.include(ProposalRecord, 'proposals/<int:uid>')
 
         # Vehicles
         Router.include(VehicleNew, 'vehicles')
-        Router.include(VehicleRecord, 'vehicles/<int:vehicle_id>')
+        Router.include(VehicleRecord, 'vehicles/<int:uid>')
