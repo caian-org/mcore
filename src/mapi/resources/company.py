@@ -20,7 +20,7 @@ from . import (Resource, request, response)
 from .auth import Authenticator
 
 # Authentication logic
-from .person import PersonAuth
+from .person import (PersonAuth, PersonRecord)
 
 
 class CompanyNew(Resource):
@@ -35,18 +35,14 @@ class CompanyNew(Resource):
         pass
 
 
-class CompanyRecord(Resource):
+class CompanyRecord(PersonRecord):
     """
     --- TODO: DOCUMENTATION ---
     """
+    entity = Company
+    schema = CompanySchema
 
     def delete(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        pass
-
-    def get(self):
         """
         --- TODO: DOCUMENTATION ---
         """
