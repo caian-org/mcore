@@ -6,7 +6,7 @@
 
 from mapi.orm import Schema
 from mapi.models import (Address, Company, Item, Offer,
-                         Proposal, Vehicle, Worker)
+                         GenericPerson, Proposal, Vehicle, Worker)
 
 
 class AddressSchema(Schema):
@@ -31,6 +31,12 @@ class OfferSchema(Schema):
     """Schema de representação de dados da entidade Offer."""
     class Meta:
         model = Offer
+
+
+class PersonSchema(Schema):
+    """Schema de representação de dados da entidade Person."""
+    class Meta:
+        model = GenericPerson
 
 
 class ProposalSchema(Schema):
