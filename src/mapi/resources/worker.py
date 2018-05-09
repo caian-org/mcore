@@ -20,7 +20,7 @@ from . import (Resource, request, response)
 from .auth import Authenticator
 
 # Authentication logic
-from .person import PersonAuth
+from .person import (PersonAuth, PersonRecord)
 
 
 class WorkerNew(Resource):
@@ -35,41 +35,18 @@ class WorkerNew(Resource):
         pass
 
 
-class WorkerRecord(Resource):
+class WorkerRecord(PersonRecord):
     """
     --- TODO: DOCUMENTATION ---
     """
+    entity = Worker
+    schema = WorkerSchema
 
     def delete(self):
         """
         --- TODO: DOCUMENTATION ---
         """
         pass
-
-    def get(self, worker_id):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-
-        payload = request.get_json()
-
-        if not Authenticator.check_struct(payload, ['auth']):
-            return response.bad_request
-
-        auth  = payload['auth']
-        token = auth.get('token')
-
-        if not token:
-            return response.bad_request
-
-        if not Authenticator.verify_token(token):
-            return response.forbidden
-
-        schema = WorkerSchema()
-        worker = Worker.query.get(worker_id)
-
-        data = schema.dump(worker).data
-        return response.SUCCESS(200, data)
 
     def put(self):
         """
