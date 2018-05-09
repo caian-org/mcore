@@ -124,6 +124,11 @@ class Address(Entity):
         return self.R([self.postcode, self.number])
 
 
+class GenericPerson(Person):
+
+    __tablename__ = 'generic_person'
+
+
 class Worker(Person):
     """
     --- TODO: DOCUMENTATION ---
