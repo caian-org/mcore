@@ -396,7 +396,7 @@ class TestRoutes(unittest.TestCase):
 
         self.assertEqual(result.status_code, 200)
 
-    def test_a_company_authentication(self):
+    def test_d_company_authentication(self):
         """
         --- TODO: DOCUMENTATION ---
         """
@@ -412,6 +412,15 @@ class TestRoutes(unittest.TestCase):
         self.__class__.company_token = response['data']['token']
 
         self.assertIsNotNone(self.company_token)
+
+    def test_e_get_company_information(self):
+        result = requests.get(self.gen_url('companies/19'), json={
+            'auth': {
+                'token': self.__class__.company_token
+            }
+        })
+
+        self.assertEqual(result.status_code, 200)
 
 
 if __name__ == '__main__':
