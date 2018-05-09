@@ -211,11 +211,15 @@ class TestModels(unittest.TestCase):
                             cnpj='12345678909876',
                             opening=datetime(1985, 7, 1))
 
+        evil_corp.set_password('Phillip_Price1995')
+
         acme_corp = Company(name='Acme Corporation',
                             telephone='6662018666',
                             email='sales@acme.com',
                             cnpj='98765432123456',
                             opening=datetime(1870, 1, 1))
+
+        acme_corp.set_password('Wile.E.Coyote')
 
         for i in range(0, 18):
             company = Company(name=us_fake.company(),
@@ -223,6 +227,10 @@ class TestModels(unittest.TestCase):
                               email=us_fake.company_email(),
                               cnpj=us_fake.numerify(text='#' * 14),
                               opening=us_fake.date_this_century(before_today=True))
+
+            company.set_password(us_fake.password(length=32, special_chars=True,
+                                                  digits=True, upper_case=True,
+                                                  lower_case=True))
 
             db.session.add(company)
 
@@ -386,9 +394,24 @@ class TestRoutes(unittest.TestCase):
             }
         })
 
-        print(repr(result.json()))
-
         self.assertEqual(result.status_code, 200)
+
+    def test_a_company_authentication(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        result = requests.post(self.gen_url('companies/auth'), json={
+            'email': 'contact@ecorp.com',
+            'password': 'Phillip_Price1995'
+        })
+
+        if not result.status_code == 200:
+            self.fail('Request failed. Code: ' + result.status_code)
+
+        response = result.json()
+        self.__class__.company_token = response['data']['token']
+
+        self.assertIsNotNone(self.company_token)
 
 
 if __name__ == '__main__':
