@@ -8,7 +8,7 @@
 from mapi import (rapi, Formatter)
 
 from mapi.resources.worker   import (WorkerRecord, WorkerNew, WorkerAuth)
-from mapi.resources.company  import (CompanyRecord, CompanyNew)
+from mapi.resources.company  import (CompanyRecord, CompanyNew, CompanyAuth)
 
 from mapi.resources.address  import (AddressRecord, AddressNew)
 from mapi.resources.item     import (ItemRecord, ItemNew)
@@ -46,6 +46,7 @@ class Router:
 
         # Companies
         Router.include(CompanyNew, 'companies')
+        Router.include(CompanyAuth, 'companies/auth')
         Router.include(CompanyRecord, 'companies/<int:company_id>')
 
         # Items
