@@ -58,6 +58,25 @@ class PersonRecord(Resource):
     entity = Person
     schema = PersonSchema
 
+    @staticmethod
+    def authenticate(payload):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        if not Authenticator.check_struct(payload, ['auth']):
+            return False, response.bad_request
+
+        auth = payload['auth']
+        token = auth.get('token')
+
+        if not token:
+            return False, response.bad_request
+
+        if not Authenticator.verify_token(token):
+            return False, response.forbidden
+
+        return True, None
+
     def delete(self):
         """
         --- TODO: DOCUMENTATION ---
@@ -69,18 +88,10 @@ class PersonRecord(Resource):
         --- TODO: DOCUMENTATION ---
         """
         payload = request.get_json()
+        success, result = PersonRecord.authenticate(payload)
 
-        if not Authenticator.check_struct(payload, ['auth']):
-            return response.bad_request
-
-        auth  = payload['auth']
-        token = auth.get('token')
-
-        if not token:
-            return response.bad_request
-
-        if not Authenticator.verify_token(token):
-            return response.forbidden
+        if not success:
+            return result
 
         person = self.entity.query.get(uid)
 
