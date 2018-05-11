@@ -7,14 +7,14 @@
 
 from mapi import (rapi, Formatter)
 
-from mapi.resources.worker   import (WorkerRecord, WorkerNew, WorkerAuth)
-from mapi.resources.company  import (CompanyRecord, CompanyNew, CompanyAuth)
+from mapi.resources.worker   import *
+from mapi.resources.company  import *
 
-from mapi.resources.address  import (AddressRecord, AddressNew)
-from mapi.resources.item     import (ItemRecord, ItemNew)
-from mapi.resources.offer    import (OfferRecord, OfferNew)
-from mapi.resources.proposal import (ProposalRecord, ProposalNew)
-from mapi.resources.vehicle  import (VehicleRecord, VehicleNew)
+from mapi.resources.address  import *
+from mapi.resources.item     import *
+from mapi.resources.offer    import *
+from mapi.resources.proposal import *
+from mapi.resources.vehicle  import *
 
 
 class Router:
@@ -39,15 +39,18 @@ class Router:
         Router.include(WorkerNew, 'workers')
         Router.include(WorkerAuth, 'workers/auth')
         Router.include(WorkerRecord, 'workers/<int:uid>')
-
-        # Addresses
-        Router.include(AddressNew, 'addresses')
-        Router.include(AddressRecord, 'addresses/<int:uid>')
+        Router.include(WorkerAddresses, 'workers/<int:uid>/addresses')
+        Router.include(WorkerVehicles, 'workers/<int:uid>/vehicles')
 
         # Companies
         Router.include(CompanyNew, 'companies')
         Router.include(CompanyAuth, 'companies/auth')
         Router.include(CompanyRecord, 'companies/<int:uid>')
+        Router.include(CompanyProposals, 'companies/<int:uid>/proposals')
+
+        # Addresses
+        Router.include(AddressNew, 'addresses')
+        Router.include(AddressRecord, 'addresses/<int:uid>')
 
         # Items
         Router.include(ItemNew, 'items')
@@ -60,6 +63,7 @@ class Router:
         # Proposals
         Router.include(ProposalNew, 'proposals')
         Router.include(ProposalRecord, 'proposals/<int:uid>')
+        Router.include(ProposalRecord, 'proposals/<int:uid>/offers')
 
         # Vehicles
         Router.include(VehicleNew, 'vehicles')
