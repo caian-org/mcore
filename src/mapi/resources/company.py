@@ -23,6 +23,14 @@ from .auth import Authenticator
 from .person import (PersonAuth, PersonRecord)
 
 
+class CompanyAuth(PersonAuth):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+
+    entity = Company
+
+
 class CompanyNew(Resource):
     """
     --- TODO: DOCUMENTATION ---
@@ -55,9 +63,8 @@ class CompanyRecord(PersonRecord):
         pass
 
 
-class CompanyAuth(PersonAuth):
+class CompanyProposals(Resource):
     """
     --- TODO: DOCUMENTATION ---
     """
-
-    entity = Company
+    pass
