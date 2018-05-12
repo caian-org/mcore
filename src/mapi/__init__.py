@@ -8,10 +8,15 @@ __parent_resource__ = 'api'
 __version__ = 'v1'
 
 
-# Modules
+# Utils
 from mapi.utils import (Exit, Formatter)
 
-# 3rd-party libraries
+
+#   ____       _                    _
+#  |__ /_ _ __| |___ _ __  __ _ _ _| |_ _  _
+#   |_ \ '_/ _` |___| '_ \/ _` | '_|  _| || |
+#  |___/_| \__,_|   | .__/\__,_|_|  \__|\_, |
+#                   |_|                 |__/
 try:
     from faker import Faker
 
@@ -43,9 +48,16 @@ except ImportError as error:
     Exit.with_fail('Impossible to import 3rd-party libraries\n'
                    'Latest traceback: {0}' . format(error.args[0]))
 
+# Configurations & definitions
 from config import config
 
 
+#       _     _        _
+#   ___| |__ (_)___ __| |_ ___
+#  / _ \ '_ \| / -_) _|  _(_-<
+#  \___/_.__// \___\__|\__/__/
+#          |__/
+#
 app = Flask(__name__)
 app.config.from_object(config)
 
