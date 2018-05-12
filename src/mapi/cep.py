@@ -4,10 +4,14 @@
 --- TODO: DOCUMENTATION ---
 """
 
+# Standard
 import urllib3
+
+# 3rd-party
 from mapi import cep_api
 from mapi import (Timeout, FalhaNaConexao, MultiploRedirecionamento)
 
+# Disables the "InsecureRequestWarning" warning in urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
