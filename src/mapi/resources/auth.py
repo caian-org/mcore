@@ -4,7 +4,7 @@
 --- TODO: DOCUMENTATION ---
 """
 
-from . import Config
+from . import config
 from . import Person
 
 
@@ -43,7 +43,7 @@ class Authenticator:
         --- TODO: DOCUMENTATION ---
         """
 
-        if Config.DEBUG:
+        if config.DEBUG:
             if token == 'master_token':
                 return True
 
