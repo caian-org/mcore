@@ -18,12 +18,13 @@ from mapi.utils import (Exit, Formatter)
 #  |___/_| \__,_|   | .__/\__,_|_|  \__|\_, |
 #                   |_|                 |__/
 try:
+    # Fake data generator
     from faker import Faker
 
-    # Flask itself
+    # Flask-related
     from flask import Flask, request
 
-    # REST API abstraction layer
+    # REST API abstraction layer for Flask
     from flask_restful import (Api as Restful, Resource)
 
     # ORM-related
@@ -39,7 +40,7 @@ try:
     from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer,
                               BadSignature, SignatureExpired)
 
-    # Mail service API
+    # Correios API
     import pycep_correios as cep_api
     from pycep_correios.excecoes import (Timeout, FalhaNaConexao,
                                          MultiploRedirecionamento)
