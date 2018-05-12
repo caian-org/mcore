@@ -20,7 +20,7 @@ from mapi import (gen_phash, check_phash)
 from mapi import (Serializer, BadSignature, SignatureExpired)
 
 # The program's secret keu
-from mapi import SECRET_KEY
+from mapi import config
 
 
 class Entity(Model):
@@ -87,12 +87,12 @@ class Person(Entity):
         """
         --- TODO: DOCUMENTATION ---
         """
-        s = Serializer(SECRET_KEY, expires_in=expiration)
+        s = Serializer(config.SECRET_KEY, expires_in=expiration)
         return s.dumps({ 'id': self.uid, 'email': self.email })
 
     @staticmethod
     def verify_token(token):
-        s = Serializer(SECRET_KEY)
+        s = Serializer(config.SECRET_KEY)
 
         try:
             data = s.loads(token)
