@@ -8,9 +8,6 @@ __parent_resource__ = 'api'
 __version__ = 'v1'
 
 
-# Standard library
-import os
-
 # Modules
 from mapi.utils import (Exit, Formatter)
 
@@ -46,22 +43,11 @@ except ImportError as error:
     Exit.with_fail('Impossible to import 3rd-party libraries\n'
                    'Latest traceback: {0}' . format(error.args[0]))
 
-# Very long (and secret) key
-from mapi.secret import SECRET_KEY
+from config import config
 
-
-# What kind of configuration should be used?
-if os.environ.get('TEST_ENVIRON'):
-    from config import Development as Config
-
-else:
-    from config import Production as Config
-
-
-Config.SECRET_KEY = SECRET_KEY
 
 app = Flask(__name__)
-app.config.from_object(Config)
+app.config.from_object(config)
 
 db   = SQLAlchemy(app)
 mars = Marshmallow(app)
