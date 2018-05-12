@@ -4,14 +4,6 @@
 --- TODO: DOCUMENTATION ---
 """
 
-# Primitive types
-from mapi.orm import (Bool, Float, Dat, Int, Str)
-
-# Database objects
-from mapi.orm import (Col, Model)
-
-# Relations
-from mapi.orm import (BR, FK, Rel)
 
 # Password hashing
 from mapi import (gen_phash, check_phash)
@@ -19,9 +11,24 @@ from mapi import (gen_phash, check_phash)
 # Expirable token generation
 from mapi import (Serializer, BadSignature, SignatureExpired)
 
-# The program's secret keu
+# Application's configurations
 from mapi import config
 
+# Primitive types
+from mapi.orm import (Bool, Float, Dat, Int, Str)
+
+# Database objects
+from mapi.orm import (Col, Model)
+
+# Relationship objects
+from mapi.orm import (BR, FK, Rel)
+
+
+#        _       _               _   _
+#   __ _| |__ __| |_ _ _ __ _ __| |_(_)___ _ _  ___
+#  / _` | '_ (_-<  _| '_/ _` / _|  _| / _ \ ' \(_-<
+#  \__,_|_.__/__/\__|_| \__,_\__|\__|_\___/_||_/__/
+#
 
 class Entity(Model):
     """
@@ -105,6 +112,12 @@ class Person(Entity):
 
         return True
 
+
+#           _   _ _   _
+#   ___ _ _| |_(_) |_(_)___ ___
+#  / -_) ' \  _| |  _| / -_|_-<
+#  \___|_||_\__|_|\__|_\___/__/
+#
 
 class Address(Entity):
     """
@@ -250,6 +263,12 @@ class Offer(Entity):
     bidder = Rel(Worker, back_populates='offers')
     proposal = Rel(Proposal, back_populates='offers')
 
+
+#           _      _   _             _    _
+#   _ _ ___| |__ _| |_(_)___ _ _  __| |_ (_)_ __ ___
+#  | '_/ -_) / _` |  _| / _ \ ' \(_-< ' \| | '_ (_-<
+#  |_| \___|_\__,_|\__|_\___/_||_/__/_||_|_| .__/__/
+#                                          |_|
 
 class ProposalItemAssoc(Relation):
     """
