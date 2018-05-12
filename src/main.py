@@ -6,14 +6,14 @@
 """
 
 from mapi import app
-from mapi import Config
+from mapi import config
 
 from mapi.routes import Router
 
 
 def main():
     Router.act()
-    app.run(debug=Config.DEBUG, port=Config.PORT)
+    app.run(debug=config.DEBUG, port=config.PORT)
 
 
 if __name__ == '__main__':
