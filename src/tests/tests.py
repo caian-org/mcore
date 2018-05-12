@@ -27,7 +27,7 @@ from mapi.models import (Address, Company, Item, Vehicle, Worker,
 from mapi import Faker, Formatter
 
 # Flask configurations
-from mapi import Config
+from mapi import config
 
 br_fake = Faker('pt_BR')
 us_fake = Faker('en_US')
@@ -348,7 +348,7 @@ class TestRoutes(unittest.TestCase):
         --- TODO: DOCUMENTATION ---
         """
         return '{0}:{1}{2}'.format(
-            'http://localhost', Config.PORT,
+            'http://localhost', config.PORT,
             Formatter.gen_route(resource)
         )
 
