@@ -113,6 +113,18 @@ class Person(Entity):
         return True
 
 
+class Human(Person):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+    __abstract__ = True
+
+    rg       = Col(Str(9), nullable=False, index=True, unique=True)
+    cpf      = Col(Str(11), nullable=False, index=True, unique=True)
+    gender   = Col(Str(1), nullable=False, default='M')
+    birthday = Col(Dat, nullable=False)
+
+
 #           _   _ _   _
 #   ___ _ _| |_(_) |_(_)___ ___
 #  / -_) ' \  _| |  _| / -_|_-<
@@ -138,21 +150,28 @@ class Address(Entity):
 
 
 class GenericPerson(Person):
-
+    """
+    --- TODO: DOCUMENTATION ---
+    """
     __tablename__ = 'generic_person'
 
 
-class Worker(Person):
+class Admin(Human):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+    __tablename__ = 'admininistrator'
+
+    authority_level = Col(Int, nullable=False, index=True)
+
+
+class Worker(Human):
     """
     --- TODO: DOCUMENTATION ---
     """
     __tablename__ = 'worker'
 
     # Fields
-    gender       = Col(Str(1), nullable=False, default='M')
-    rg           = Col(Str(9), nullable=False, index=True, unique=True)
-    cpf          = Col(Str(11), nullable=False, index=True, unique=True)
-    birthday     = Col(Dat, nullable=False)
     license_id   = Col(Str(11), nullable=False, index=True, unique=True)
     license_type = Col(Str, nullable=False)
 
