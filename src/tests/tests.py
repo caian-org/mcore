@@ -150,8 +150,7 @@ class TestModels(unittest.TestCase):
             if i % 2 == 0:
                 owner = caian
 
-            vehicle = Vehicle(license=us_fake.numerify(text='#' * 11),
-                              model='Modelo ' + us_fake.city_prefix(),
+            vehicle = Vehicle(model='Modelo ' + us_fake.city_prefix(),
                               brand=us_fake.company(),
                               plate=br_fake.license_plate(),
                               year=br_fake.year(),
