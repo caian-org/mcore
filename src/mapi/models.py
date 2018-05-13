@@ -149,6 +149,7 @@ class Worker(Person):
     __tablename__ = 'worker'
 
     # Fields
+    gender       = Col(Str(1), nullable=False, default='M')
     rg           = Col(Str(9), nullable=False, index=True, unique=True)
     cpf          = Col(Str(11), nullable=False, index=True, unique=True)
     birthday     = Col(Dat, nullable=False)
