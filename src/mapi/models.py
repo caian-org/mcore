@@ -287,6 +287,8 @@ class Job(Entity):
     """
     --- TODO: DOCUMENTATION ---
     """
+    __tablename__ = 'job'
+
     start_date   = Col(Dat, nullable=False)
     end_date     = Col(Dat, nullable=False)
     proposal_uid = Col(Int, FK('proposal.uid'), nullable=False)
@@ -298,6 +300,8 @@ class Invoice(Entity):
     """
     --- TODO: DOCUMENTATION ---
     """
+    __tablename__ = 'invoice'
+
     job_uid = Col(Int, FK('job.uid'), nullable=False, unique=True)
     bill    = Col(Float, nullable=False)
 
