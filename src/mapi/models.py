@@ -287,14 +287,19 @@ class Job(Entity):
     """
     --- TODO: DOCUMENTATION ---
     """
-    pass
+    start_date   = Col(Dat, nullable=False)
+    end_date     = Col(Dat, nullable=False)
+    proposal_uid = Col(Int, FK('proposal.uid'), nullable=False)
+    offer_uid    = Col(Int, FK('offer.uid'), nullable=False)
+    cost         = Col(Float, nullable=False)
 
 
 class Invoice(Entity):
     """
     --- TODO: DOCUMENTATION ---
     """
-    pass
+    job_uid = Col(Int, FK('job.uid'), nullable=False, unique=True)
+    bill    = Col(Float, nullable=False)
 
 
 #           _      _   _             _    _
