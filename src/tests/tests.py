@@ -20,7 +20,7 @@ sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 # Modules
 from mapi import db, app
 from mapi.models import (Address, Company, Item, Vehicle, Worker,
-                         CompanyAddressAssoc, WorkerAddressAssoc,
+                         CompanyHasAddresses, WorkerHasAddresses,
                          Proposal, Offer)
 
 # Utilitaries
@@ -183,17 +183,17 @@ class TestModels(unittest.TestCase):
         home_address = Address.query.get(19)
         work_address = Address.query.get(20)
 
-        worker_has_home_address = WorkerAddressAssoc(worker=worker,
+        worker_has_home_address = WorkerHasAddresses(worker=worker,
                                                      address=home_address)
 
-        worker_has_work_address = WorkerAddressAssoc(worker=worker,
+        worker_has_work_address = WorkerHasAddresses(worker=worker,
                                                      address=work_address)
 
         db.session.add(worker_has_home_address)
         db.session.add(worker_has_work_address)
         db.session.commit()
 
-        worker_addresses = db.session.query(WorkerAddressAssoc)\
+        worker_addresses = db.session.query(WorkerHasAddresses)\
             .join(Worker)\
             .filter(Worker.cpf == '45354686806')\
             .all()
@@ -254,9 +254,9 @@ class TestModels(unittest.TestCase):
 
             company_address = None
             if i % 2 == 0:
-                company_address = CompanyAddressAssoc(company=acme_corp, address=addr)
+                company_address = CompanyHasAddresses(company=acme_corp, address=addr)
             else:
-                company_address = CompanyAddressAssoc(company=evil_corp, address=addr)
+                company_address = CompanyHasAddresses(company=evil_corp, address=addr)
 
             assoc_entries.append(company_address)
 
@@ -265,12 +265,12 @@ class TestModels(unittest.TestCase):
 
         db.session.commit()
 
-        evil_corp_addresses = db.session.query(CompanyAddressAssoc)\
+        evil_corp_addresses = db.session.query(CompanyHasAddresses)\
             .join(Company)\
             .filter(Company.cnpj == '12345678909876')\
             .all()
 
-        acme_corp_addresses = db.session.query(CompanyAddressAssoc)\
+        acme_corp_addresses = db.session.query(CompanyHasAddresses)\
             .join(Company)\
             .filter(Company.cnpj == '98765432123456')\
             .all()
