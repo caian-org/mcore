@@ -190,11 +190,10 @@ class Vehicle(Entity):
     __tablename__ = 'vehicle'
 
     # Fields
-    license = Col(Str(11), nullable=False, index=True, unique=True)
-    model   = Col(Str(32), nullable=False)
-    brand   = Col(Str(24), nullable=False)
-    plate   = Col(Str(8), nullable=False)
-    year    = Col(Int, nullable=False)
+    model = Col(Str(32), nullable=False)
+    brand = Col(Str(24), nullable=False)
+    plate = Col(Str(8), nullable=False)
+    year  = Col(Int, nullable=False)
 
     # Foreign keys
     owner_uid = Col(Int, FK('worker.uid'))
