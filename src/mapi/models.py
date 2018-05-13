@@ -283,6 +283,20 @@ class Offer(Entity):
     proposal = Rel(Proposal, back_populates='offers')
 
 
+class Job(Entity):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+    pass
+
+
+class Invoice(Entity):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+    pass
+
+
 #           _      _   _             _    _
 #   _ _ ___| |__ _| |_(_)___ _ _  __| |_ (_)_ __ ___
 #  | '_/ -_) / _` |  _| / _ \ ' \(_-< ' \| | '_ (_-<
