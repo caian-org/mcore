@@ -142,8 +142,8 @@ class Address(Entity):
     postcode   = Col(Str(8), index=True)
 
     # Relations
-    workers = Rel('Worker', secondary='worker_addr_assoc')
-    companies = Rel('Company', secondary='company_addr_assoc')
+    workers = Rel('Worker', secondary='worker_has_addresses')
+    companies = Rel('Company', secondary='company_has_addresses')
 
     def __repr__(self):
         return self.R([self.postcode, self.number])
@@ -303,11 +303,11 @@ class Invoice(Entity):
 #  |_| \___|_\__,_|\__|_\___/_||_/__/_||_|_| .__/__/
 #                                          |_|
 
-class ProposalItemAssoc(Relation):
+class ProposalHasItems(Relation):
     """
     --- TODO: DOCUMENTATION ---
     """
-    __tablename__ = 'proposal_item_assoc'
+    __tablename__ = 'proposal_has_items'
 
     # Foreign keys
     proposal_uid = Col(Int, FK('proposal.uid'), primary_key=True)
@@ -318,11 +318,11 @@ class ProposalItemAssoc(Relation):
     item     = Rel(Item, backref=BR('proposal_assoc'))
 
 
-class WorkerAddressAssoc(Relation):
+class WorkerHasAddresses(Relation):
     """
     --- TODO: DOCUMENTATION ---
     """
-    __tablename__ = 'worker_addr_assoc'
+    __tablename__ = 'worker_has_addresses'
 
     # Foreign keys
     worker_uid = Col(Int, FK('worker.uid'), primary_key=True)
@@ -333,11 +333,11 @@ class WorkerAddressAssoc(Relation):
     address = Rel(Address, backref=BR('worker_assoc'))
 
 
-class CompanyAddressAssoc(Relation):
+class CompanyHasAddresses(Relation):
     """
     --- TODO: DOCUMENTATION ---
     """
-    __tablename__ = 'company_addr_assoc'
+    __tablename__ = 'company_has_addresses'
 
     # Foreign keys
     company_uid = Col(Int, FK('company.uid'), primary_key=True)
