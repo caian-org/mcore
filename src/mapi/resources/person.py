@@ -51,6 +51,35 @@ class PersonAuth(Resource):
         return response.SUCCESS(200, data)
 
 
+class PersonNew(Resource):
+    """
+    --- TODO: DOCUMENTATION ---
+    """
+    entity = Person
+    schema = PersonSchema
+
+    def new(self, **kwargs):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        return self.entity(**kwargs)
+
+    def post(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        payload = request.get_json()
+        success, result = PersonRecord.authenticate(payload)
+
+        if not success:
+            return result
+
+        entity = self.new()
+
+        db.session.add(entity)
+        db.session.commit()
+
+
 class PersonRecord(Resource):
     """
     --- TODO: DOCUMENTATION ---
