@@ -16,11 +16,8 @@ from . import WorkerSchema
 # HTTP-related
 from . import (Resource, request, response)
 
-# Form/JSON data authenticator
-from .auth import Authenticator
-
 # Authentication logic
-from .person import (PersonAuth, PersonRecord)
+from .person import (PersonAuth, PersonRecord, PersonNew)
 
 
 class WorkerAuth(PersonAuth):
@@ -31,16 +28,13 @@ class WorkerAuth(PersonAuth):
     entity = Worker
 
 
-class WorkerNew(Resource):
+class WorkerNew(PersonNew):
     """
     --- TODO: DOCUMENTATION ---
     """
 
-    def post(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        pass
+    entity = Worker
+    schema = WorkerSchema
 
 
 class WorkerRecord(PersonRecord):
@@ -49,18 +43,6 @@ class WorkerRecord(PersonRecord):
     """
     entity = Worker
     schema = WorkerSchema
-
-    def delete(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        pass
-
-    def put(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        pass
 
 
 class WorkerAddresses(Resource):
