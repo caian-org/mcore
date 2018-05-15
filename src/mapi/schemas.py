@@ -5,8 +5,14 @@
 """
 
 from mapi.orm import Schema
-from mapi.models import (Address, Company, Item, Offer,
+from mapi.models import (Admin, Address, Company, Item, Offer,
                          GenericPerson, Proposal, Vehicle, Worker)
+
+
+class AdminSchema(Schema):
+    """Schema de representação de dados da entidade Admin."""
+    class Meta:
+        model = Admin
 
 
 class AddressSchema(Schema):
