@@ -4,6 +4,9 @@
 --- TODO: DOCUMENTATION ---
 """
 
+# Database connection
+from . import db
+
 # Worker model
 from . import Person
 
@@ -23,6 +26,25 @@ class PersonAuth(Resource):
     """
 
     entity = Person
+
+    @staticmethod
+    def authenticate(payload):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
+        if not Authenticator.check_struct(payload, ['auth']):
+            return False, response.bad_request
+
+        auth = payload['auth']
+        token = auth.get('token')
+
+        if not token:
+            return False, response.bad_request
+
+        if not Authenticator.verify_token(token):
+            return False, response.forbidden
+
+        return True, None
 
     def post(self):
         """
@@ -69,7 +91,7 @@ class PersonNew(Resource):
         --- TODO: DOCUMENTATION ---
         """
         payload = request.get_json()
-        success, result = PersonRecord.authenticate(payload)
+        success, result = PersonAuth.authenticate(payload)
 
         if not success:
             return result
@@ -86,25 +108,6 @@ class PersonRecord(Resource):
     """
     entity = Person
     schema = PersonSchema
-
-    @staticmethod
-    def authenticate(payload):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        if not Authenticator.check_struct(payload, ['auth']):
-            return False, response.bad_request
-
-        auth = payload['auth']
-        token = auth.get('token')
-
-        if not token:
-            return False, response.bad_request
-
-        if not Authenticator.verify_token(token):
-            return False, response.forbidden
-
-        return True, None
 
     def delete(self):
         """
