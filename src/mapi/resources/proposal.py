@@ -51,3 +51,7 @@ class ProposalRecord(Resource):
         --- TODO: DOCUMENTATION ---
         """
         pass
+
+
+class ProposalOffers(Resource):
+    pass
