@@ -4,9 +4,6 @@
 --- TODO: DOCUMENTATION ---
 """
 
-# Database connection
-from . import db
-
 # Worker model
 from . import Person
 
@@ -30,7 +27,7 @@ class PersonAuth(Resource):
     @staticmethod
     def authenticate(payload):
         """
-        --- TODO: DOCUMENTATION ---
+        Método de autenticação de token
         """
         if not Authenticator.check_struct(payload, ['auth']):
             return False, response.bad_request
@@ -48,7 +45,7 @@ class PersonAuth(Resource):
 
     def post(self):
         """
-        --- TODO: DOCUMENTATION ---
+        Método de autenticação do usuário via email e senha (aka login)
         """
         payload = request.get_json()
         email = payload.get('email')
@@ -57,16 +54,16 @@ class PersonAuth(Resource):
         if not email or not passw:
             return response.bad_request
 
-        worker = self.entity.query.filter_by(email=email).all()
-        if not worker:
+        person = self.entity.query.filter_by(email=email).all()
+        if not person:
             return response.incorrect_email_or_password
 
-        worker = worker[0]
-        valid_passw = worker.verify_password(passw)
+        person = person[0]
+        valid_passw = person.verify_password(passw)
         if not valid_passw:
             return response.incorrect_email_or_password
 
-        token = worker.generate_token()
+        token = person.generate_token()
 
         data = {}
         data['token'] = token.decode('ascii')
@@ -85,21 +82,6 @@ class PersonNew(Resource):
         --- TODO: DOCUMENTATION ---
         """
         return self.entity(**kwargs)
-
-    def post(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        payload = request.get_json()
-        success, result = PersonAuth.authenticate(payload)
-
-        if not success:
-            return result
-
-        entity = self.new()
-
-        db.session.add(entity)
-        db.session.commit()
 
 
 class PersonRecord(Resource):
