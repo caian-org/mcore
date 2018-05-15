@@ -9,12 +9,8 @@ from mapi import (rapi, Formatter)
 
 from mapi.resources.worker   import *
 from mapi.resources.company  import *
-
-from mapi.resources.address  import *
-from mapi.resources.item     import *
 from mapi.resources.offer    import *
 from mapi.resources.proposal import *
-from mapi.resources.vehicle  import *
 
 
 class Router:
@@ -48,14 +44,6 @@ class Router:
         Router.include(CompanyRecord, 'companies/<int:uid>')
         Router.include(CompanyProposals, 'companies/<int:uid>/proposals')
 
-        # Addresses
-        Router.include(AddressNew, 'addresses')
-        Router.include(AddressRecord, 'addresses/<int:uid>')
-
-        # Items
-        Router.include(ItemNew, 'items')
-        Router.include(ItemRecord, 'items/<int:uid>')
-
         # Offers
         Router.include(OfferNew, 'offers')
         Router.include(OfferRecord, 'offers/<int:uid>')
@@ -63,8 +51,3 @@ class Router:
         # Proposals
         Router.include(ProposalNew, 'proposals')
         Router.include(ProposalRecord, 'proposals/<int:uid>')
-        Router.include(ProposalRecord, 'proposals/<int:uid>/offers')
-
-        # Vehicles
-        Router.include(VehicleNew, 'vehicles')
-        Router.include(VehicleRecord, 'vehicles/<int:uid>')
