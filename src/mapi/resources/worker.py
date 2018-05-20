@@ -4,6 +4,9 @@
 --- TODO: DOCUMENTATION ---
 """
 
+# ...
+from datetime import datetime
+
 # Database connection
 from . import db
 
@@ -41,10 +44,6 @@ class WorkerNew(PersonNew):
 
     def post(self):
         payload = request.get_json()
-        success, result = WorkerAuth.authenticate(payload)
-
-        if not success:
-            return result
 
         if not Authenticator.check_struct(payload, ['data']):
             return response.bad_request
@@ -66,7 +65,7 @@ class WorkerNew(PersonNew):
             data.get('cpf'),
             data.get('gender'),
             data.get('birthday'),
-            data.get('licenceId'),
+            data.get('licenseId'),
             data.get('licenseType'),
             vehicle.get('model'),
             vehicle.get('brand'),
@@ -79,14 +78,19 @@ class WorkerNew(PersonNew):
         if not Authenticator.check_payload(params):
             return response.bad_request
 
+        data['birthday'] = datetime.strptime(data['birthday'], '%d-%m-%Y')
+
         worker = self.new(name=data['name'],
-                          telephone=data['tel'],
+                          telephone=data['telephone'],
                           email=data['email'],
                           rg=data['rg'],
                           cpf=data['cpf'],
-                          birthday=data['bday'],
-                          license_id=data['lic_id'],
-                          license_type=data['lic_ty'])
+                          gender=data['gender'],
+                          birthday=data['birthday'],
+                          license_id=data['licenseId'],
+                          license_type=data['licenseType'])
+
+        worker.set_password(data['password'])
 
         address = Address(postcode=address['postcode'],
                           number=address['number'],
