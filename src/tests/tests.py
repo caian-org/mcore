@@ -18,76 +18,111 @@ import requests
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 # Modules
-from mapi import db, app
-from mapi.models import (Address, Company, Item, Vehicle, Worker,
-                         CompanyHasAddresses, WorkerHasAddresses,
-                         Proposal, Offer)
+from mapi import db
+from mapi import app
+
+# Models
+from mapi.models import Address
+from mapi.models import Company
+from mapi.models import Item
+from mapi.models import Vehicle
+from mapi.models import Worker
+from mapi.models import Proposal
+from mapi.models import Offer
+
+# Relations
+from mapi.models import CompanyHasAddresses
+from mapi.models import WorkerHasAddresses
 
 # Utilitaries
-from mapi import Faker, Formatter
+from mapi import Faker
+from mapi import Formatter
 
 # Flask configurations
 from mapi import config
 
-br_fake = Faker('pt_BR')
-us_fake = Faker('en_US')
 
+class Fake:
+    def __init__(self):
+        self._brf = Faker('pt_BR')
+        self._usf = Faker('en_US')
 
-class Record:
-    @staticmethod
-    def gen_person_payload():
-        payload = {}
-
-        tel = br_fake.phone_number()\
+    @property
+    def telephone(self):
+        return self._brf.phone_number()\
             .replace('(', '')\
             .replace(')', '')\
             .replace(' ', '')\
             .replace('-', '')\
             .replace('+55', '')
 
-        psw = br_fake.password(length=32,
-                               special_chars=True,
-                               digits=True,
-                               upper_case=True,
-                               lower_case=True)
+    @property
+    def password(self):
+        return self._usf.password(
+            length=32,
+            special_chars=True,
+            digits=True,
+            upper_case=True,
+            lower_case=True
+        )
 
-        birthday = br_fake.date_this_century(before_today=True)
+    @property
+    def vehicle(self):
+        vehicle = {}
+
+        vehicle['year'] = self._brf.year()
+        vehicle['brand'] = self._usf.company()
+        vehicle['plate'] = self._brf.license_plate()
+        vehicle['model'] = 'Modelo {0}'.format(self._usf.city_prefix())
+
+        return vehicle
+
+    @property
+    def address(self):
+        address = {}
+
+        address['number'] = self._brf.building_number()
+        address['postcode'] = self._brf.postcode().replace('-', '')
+        address['complement'] = 'Sala {0}'.format(self._brf.random_uppercase_letter())
+
+        return address
+
+    @property
+    def birthday(self):
+        birthday = self._brf.date_this_century(before_today=True)
         b_year = birthday.year
         c_year = datetime.now().year
 
         if (c_year - b_year) < 21:
             b_year = b_year - (21 - (c_year - b_year))
 
-        birthday = '{0}-{1}-{2}'.format(birthday.day,
-                                        birthday.month,
-                                        b_year)
+        return '{0}-{1}-{2}'.format(birthday.day, birthday.month, b_year)
 
+    @property
+    def person(self):
         data = {}
-        data['name']        = br_fake.name()
-        data['telephone']   = tel
-        data['email']       = br_fake.email()
-        data['password']    = psw
-        data['rg']          = br_fake.numerify(text='#' * 9)
-        data['cpf']         = br_fake.numerify(text='#' * 11)
-        data['gender']      = 'M'
-        data['birthday']    = birthday
-        data['licenseId']   = br_fake.numerify(text='#' * 11)
-        data['licenseType'] = br_fake.random_uppercase_letter()
 
-        vehicle = {}
-        vehicle['model'] = 'Modelo ' + us_fake.city_prefix()
-        vehicle['brand'] = us_fake.company()
-        vehicle['plate'] = br_fake.license_plate()
-        vehicle['year']  = br_fake.year()
+        data['rg'] = self._brf.numerify(text='#' * 9)
+        data['cpf'] = self._brf.numerify(text='#' * 11)
+        data['name'] = self._brf.name()
+        data['email'] = self._brf.email()
+        data['licenseId'] = self._brf.numerify(text='#' * 11)
+        data['licenseType'] = self._brf.random_uppercase_letter()
 
-        address = {}
-        address['number']   = br_fake.building_number()
-        address['postcode'] = br_fake.postcode().replace('-', '')
-        address['complement'] = 'Sala ' + br_fake.random_uppercase_letter()
+        data['gender'] = 'M'
+        data['password'] = self.password
+        data['birthday'] = self.birthday
+        data['telephone'] = self.telephone
 
-        payload['data'] = data
-        payload['data']['vehicle'] = vehicle
-        payload['data']['address'] = address
+        return data
+
+    @property
+    def worker(self):
+        payload = {}
+
+        payload['data'] = self.person
+        payload['data']['vehicle'] = self.vehicle
+        payload['data']['address'] = self.address
 
         return payload
 
@@ -96,6 +131,18 @@ class TestRoutes(unittest.TestCase):
     """
     --- TODO: DOCUMENTATION ---
     """
+    fake = Fake()
+    workers_cred = {}
+    company_cred = {}
+
+    @property
+    def worker_profile(self):
+        return self.__class__.fake.worker
+
+    @property
+    def company_profile(self):
+        return self.__class__.fake.company
+
     def gen_url(self, resource):
         """
         --- TODO: DOCUMENTATION ---
@@ -111,20 +158,23 @@ class TestRoutes(unittest.TestCase):
         """
         def iterator():
             for i in range(0, 20):
-                payload = Record.gen_person_payload()
-                result = requests.post(self.gen_url('workers'), json=payload)
+                result = requests.post(
+                    self.gen_url('workers'),
+                    json=self.worker_profile
+                )
 
                 if not result.status_code == 201:
                     return False
 
             return True
 
-        status = iterator()
-        self.assertEqual(status, True)
+        self.assertEqual(iterator(), True)
 
     def test_b_company_creation(self):
+        """
+        --- TODO: DOCUMENTATION ---
+        """
         pass
-
 
 if __name__ == '__main__':
     unittest.main()
