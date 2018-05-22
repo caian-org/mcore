@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
---- TODO: DOCUMENTATION ---
-"""
-
 # ...
 from datetime import datetime
 
@@ -11,34 +7,33 @@ from datetime import datetime
 from . import db
 
 # Worker model and related ones
-from . import (Worker, Address, WorkerHasAddresses, Vehicle)
+from . import Worker
+from . import Vehicle
+from . import Address
+from . import WorkerHasAddresses
 
 # Worker datatype schema
 from . import WorkerSchema
 
 # HTTP-related
-from . import (Resource, request, response)
+from . import Resource
+from . import request
+from . import response
 
 # Authentication logic
-from .person import (PersonAuth, PersonRecord, PersonNew)
+from .person import PersonNew
+from .person import PersonAuth
+from .person import PersonRecord
 
 # Form/JSON data authenticator
 from .auth import Authenticator
 
 
 class WorkerAuth(PersonAuth):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
-
     entity = Worker
 
 
 class WorkerNew(PersonNew):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
-
     entity = Worker
     schema = WorkerSchema
 
@@ -116,22 +111,13 @@ class WorkerNew(PersonNew):
 
 
 class WorkerRecord(PersonRecord):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     entity = Worker
     schema = WorkerSchema
 
 
 class WorkerAddresses(Resource):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     pass
 
 
 class WorkerVehicles(Resource):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     pass
