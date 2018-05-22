@@ -143,6 +143,12 @@ class TestRoutes(unittest.TestCase):
     def inc_company_cred(self, credential):
         self.__class__.company_cred.append(credential)
 
+    def ins_worker_token(self, index, token):
+        self.__class__.worker_cred[index]['token'] = token
+
+    def ins_company_token(self, index, token):
+        self.__class__.company_cred[index]['token'] = token
+
     def gen_url(self, resource):
         return '{0}:{1}{2}'.format(
             'http://localhost', config.PORT,
@@ -173,6 +179,25 @@ class TestRoutes(unittest.TestCase):
             return True
 
         self.assertEqual(gen_worker_profiles(), True)
+
+    def test_b_worker_authentication(self):
+        def authenticate_workers():
+            for i, worker in enumerate(self.__class__.worker_cred):
+                result = requests.post(self.gen_url('workers/auth'), json={
+                    'email': worker['email'],
+                    'password': worker['password']
+                })
+
+                if not result.status_code == 200:
+                    return False
+
+                response = result.json()
+                self.ins_worker_token(i, response['data']['token'])
+
+            return True
+
+        self.assertEqual(authenticate_workers(), True)
+
 
 if __name__ == '__main__':
     unittest.main()
