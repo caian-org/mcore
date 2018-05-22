@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
---- TODO: DOCUMENTATION ---
-"""
-
 # Standard libraries
 import sys
 import unittest
@@ -128,12 +124,10 @@ class Fake:
 
 
 class TestRoutes(unittest.TestCase):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     fake = Fake()
-    workers_cred = {}
-    company_cred = {}
+
+    worker_cred = []
+    company_cred = []
 
     @property
     def worker_profile(self):
@@ -143,24 +137,34 @@ class TestRoutes(unittest.TestCase):
     def company_profile(self):
         return self.__class__.fake.company
 
+    def inc_worker_cred(self, credential):
+        self.__class__.worker_cred.append(credential)
+
+    def inc_company_cred(self, credential):
+        self.__class__.company_cred.append(credential)
+
     def gen_url(self, resource):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         return '{0}:{1}{2}'.format(
             'http://localhost', config.PORT,
             Formatter.gen_route(resource)
         )
 
     def test_a_worker_creation(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        def iterator():
+        def gen_worker_profiles():
             for i in range(0, 20):
+                profile = self.worker_profile
+
+                def get_cred():
+                    cred = {}
+                    cred['email'] = profile['data']['email']
+                    cred['password'] = profile['data']['password']
+                    return cred
+
+                self.inc_worker_cred(get_cred())
+
                 result = requests.post(
                     self.gen_url('workers'),
-                    json=self.worker_profile
+                    json=profile
                 )
 
                 if not result.status_code == 201:
@@ -168,13 +172,7 @@ class TestRoutes(unittest.TestCase):
 
             return True
 
-        self.assertEqual(iterator(), True)
-
-    def test_b_company_creation(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-        pass
+        self.assertEqual(gen_worker_profiles(), True)
 
 if __name__ == '__main__':
     unittest.main()
