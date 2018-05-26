@@ -32,7 +32,10 @@ class CompanyAuth(PersonAuth):
     entity = Company
 
 
-class CompanyNew(Resource):
+class CompanyNew(PersonNew):
+    entity = Company
+    schema = CompanySchema
+
     def post(self):
         payload = request.get_json()
 
@@ -83,7 +86,7 @@ class CompanyNew(Resource):
         db.session.add(company_address)
         db.session.commit()
 
-        return response.SUCCESS(201, 'ok')
+        return response.created('companies', company.uid)
 
 
 class CompanyRecord(PersonRecord):
