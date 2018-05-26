@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
---- TODO: DOCUMENTATION ---
-"""
-
 # Database connection
 from . import db
 
@@ -18,14 +14,7 @@ from .auth import Authenticator
 
 
 class AddressNew(Resource):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
-
     def post(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         payload = request.get_json()
         if not Authenticator.check_struct(payload, ['auth', 'data']):
             return response.bad_request
@@ -63,24 +52,12 @@ class AddressNew(Resource):
 
 
 class AddressRecord(Resource):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
 
     def delete(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         pass
 
     def get(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         pass
 
     def put(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         pass
