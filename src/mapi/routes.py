@@ -33,14 +33,14 @@ class Router:
 
         # Workers
         Router.include(WorkerNew, 'workers')
-        Router.include(WorkerAuth, 'workers/auth')
+        Router.include(WorkerAuth, 'worker/auth')
         Router.include(WorkerRecord, 'workers/<int:uid>')
         Router.include(WorkerAddresses, 'workers/<int:uid>/addresses')
         Router.include(WorkerVehicles, 'workers/<int:uid>/vehicles')
 
         # Companies
         Router.include(CompanyNew, 'companies')
-        Router.include(CompanyAuth, 'companies/auth')
+        Router.include(CompanyAuth, 'company/auth')
         Router.include(CompanyRecord, 'companies/<int:uid>')
         Router.include(CompanyProposals, 'companies/<int:uid>/proposals')
 
