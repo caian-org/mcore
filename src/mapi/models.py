@@ -104,6 +104,7 @@ class Address(Entity):
     postcode   = Col(Str(8), index=True)
 
     # Relations
+    admins = Rel('Admin', secondary='admin_has_addresses')
     workers = Rel('Worker', secondary='worker_has_addresses')
     companies = Rel('Company', secondary='company_has_addresses')
 
@@ -116,8 +117,9 @@ class GenericPerson(Person):
 
 
 class Admin(Human):
-    __tablename__ = 'admininistrator'
+    __tablename__ = 'administrator'
 
+    # Fields
     authority_level = Col(Int, nullable=False, index=True)
 
 
@@ -278,3 +280,15 @@ class CompanyHasAddresses(Relation):
     # Relations
     company = Rel(Company, backref=BR('address_assoc'))
     address = Rel(Address, backref=BR('company_assoc'))
+
+
+class AdminHasAddresses(Relation):
+    __tablename__ = 'admin_has_addresses'
+
+    # Foreign keys
+    admin_uid = Col(Int, FK('administrator.uid'), primary_key=True)
+    address_uid = Col(Int, FK('address.uid'), primary_key=True)
+
+    # Relations
+    admin   = Rel(Admin, backref=BR('address_assoc'))
+    address = Rel(Address, backref=BR('admin_assoc'))
