@@ -43,6 +43,20 @@ class Fake:
         self._brf = Faker('pt_BR')
         self._usf = Faker('en_US')
 
+    def birthday(self, legal_age=True):
+        birthday = self._brf.date_this_century(before_today=True)
+        b_year = birthday.year
+        c_year = datetime.now().year
+
+        min_age = 21
+        if not legal_age:
+            min_age = 3
+
+        if (c_year - b_year) < min_age:
+            b_year = b_year - (min_age - (c_year - b_year))
+
+        return '{0}-{1}-{2}'.format(birthday.day, birthday.month, b_year)
+
     @property
     def telephone(self):
         return self._brf.phone_number()\
@@ -65,7 +79,6 @@ class Fake:
     @property
     def vehicle(self):
         vehicle = {}
-
         vehicle['year'] = self._brf.year()
         vehicle['brand'] = self._usf.company()
         vehicle['plate'] = self._brf.license_plate()
@@ -76,7 +89,6 @@ class Fake:
     @property
     def address(self):
         address = {}
-
         address['number'] = self._brf.building_number()
         address['postcode'] = self._brf.postcode().replace('-', '')
         address['complement'] = 'Sala {0}'.format(self._brf.random_uppercase_letter())
@@ -84,40 +96,54 @@ class Fake:
         return address
 
     @property
-    def birthday(self):
-        birthday = self._brf.date_this_century(before_today=True)
-        b_year = birthday.year
-        c_year = datetime.now().year
-
-        if (c_year - b_year) < 21:
-            b_year = b_year - (21 - (c_year - b_year))
-
-        return '{0}-{1}-{2}'.format(birthday.day, birthday.month, b_year)
-
-    @property
-    def person(self):
+    def human(self):
         data = {}
+
+        gender = self._brf.boolean(chance_of_getting_true=50)
+        if gender:
+            data['name'] = '{0} {1}'\
+                .format(self._brf.first_name_male(), self._brf.last_name())
+            data['gender'] = 'M'
+
+        else:
+            data['name'] = '{0} {1}'\
+                .format(self._brf.first_name_female(), self._brf.last_name())
+            data['gender'] = 'F'
 
         data['rg'] = self._brf.numerify(text='#' * 9)
         data['cpf'] = self._brf.numerify(text='#' * 11)
-        data['name'] = self._brf.name()
         data['email'] = self._brf.email()
-        data['licenseId'] = self._brf.numerify(text='#' * 11)
-        data['licenseType'] = self._brf.random_uppercase_letter()
-
-        data['gender'] = 'M'
+        data['birthday'] = self.birthday()
         data['password'] = self.password
-        data['birthday'] = self.birthday
         data['telephone'] = self.telephone
 
         return data
 
     @property
     def worker(self):
-        payload = {}
+        worker = self.human
+        worker['licenseId'] = self._brf.numerify(text='#' * 11)
+        worker['licenseType'] = self._brf.random_uppercase_letter()
 
-        payload['data'] = self.person
+        payload = {}
+        payload['data'] = worker
         payload['data']['vehicle'] = self.vehicle
+        payload['data']['address'] = self.address
+
+        return payload
+
+    @property
+    def company(self):
+        company = {}
+        company['name'] = self._usf.company()
+        company['cnpj'] = self._usf.numerify(text='#' * 14)
+        company['email'] = self._usf.company_email()
+        company['opening'] = self.birthday(legal_age=False)
+        company['password'] = self.password
+        company['telephone'] = self.telephone
+
+        payload = {}
+        payload['data'] = company
         payload['data']['address'] = self.address
 
         return payload
@@ -197,6 +223,31 @@ class TestRoutes(unittest.TestCase):
             return True
 
         self.assertEqual(authenticate_workers(), True)
+
+    def test_c_company_creation(self):
+        def gen_company_profiles():
+            for i in range(0, 20):
+                profile = self.company_profile
+
+                def get_cred():
+                    cred = {}
+                    cred['email'] = profile['data']['email']
+                    cred['password'] = profile['data']['password']
+                    return cred
+
+                self.inc_company_cred(get_cred())
+
+                result = requests.post(
+                    self.gen_url('companies'),
+                    json=profile
+                )
+
+                if not result.status_code == 201:
+                    return False
+
+            return True
+
+        self.assertEqual(gen_company_profiles(), True)
 
 
 if __name__ == '__main__':
