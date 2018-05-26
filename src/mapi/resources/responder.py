@@ -38,10 +38,10 @@ class Response:
     def forbidden(self):
         return Response.FAIL(403, 'Acesso negado.')
 
-    def address_created(self, uid):
+    def created(self, resource, uid):
         data = {}
         data['id'] = uid
-        data['uri'] = Formatter.gen_route('addresses/' + str(uid))
+        data['uri'] = Formatter.gen_route('{0}/{1}'.format(resource, uid))
 
         return Response.SUCCESS(201, data)
 
