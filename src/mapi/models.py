@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
---- TODO: DOCUMENTATION ---
-"""
-
-
 # Password hashing
 from mapi import (gen_phash, check_phash)
 
@@ -31,40 +26,25 @@ from mapi.orm import (BR, FK, Rel)
 #
 
 class Entity(Model):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __abstract__ = True
 
     uid = Col(Int, primary_key=True, autoincrement=True)
 
     def R(self, attrs):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         class_name = type(self).__name__
         attributes = ', '.join("'{0}'".format(attr) for attr in attrs)
 
         return '<{0} {1}>'.format(class_name, attributes)
 
     def __attr__(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         pass
 
 
 class Relation(Model):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __abstract__ = True
 
 
 class Person(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __abstract__ = True
 
     name      = Col(Str(64), nullable=False)
@@ -73,27 +53,15 @@ class Person(Entity):
     passhash  = Col(Str(128), nullable=False)
 
     def __attr__(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         return self.R([self.name, self.email])
 
     def set_password(self, password):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         self.passhash = gen_phash(password, salt_length=32)
 
     def verify_password(self, password):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         return check_phash(self.passhash, password)
 
     def generate_token(self, expiration=60):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         s = Serializer(config.SECRET_KEY, expires_in=expiration)
         return s.dumps({ 'id': self.uid, 'email': self.email })
 
@@ -114,9 +82,6 @@ class Person(Entity):
 
 
 class Human(Person):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __abstract__ = True
 
     rg       = Col(Str(9), nullable=False, index=True, unique=True)
@@ -132,9 +97,6 @@ class Human(Person):
 #
 
 class Address(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'address'
 
     number     = Col(Str(8))
@@ -150,25 +112,16 @@ class Address(Entity):
 
 
 class GenericPerson(Person):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'generic_person'
 
 
 class Admin(Human):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'admininistrator'
 
     authority_level = Col(Int, nullable=False, index=True)
 
 
 class Worker(Human):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'worker'
 
     # Fields
@@ -184,9 +137,6 @@ class Worker(Human):
 
 
 class Vehicle(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'vehicle'
 
     # Fields
@@ -206,9 +156,6 @@ class Vehicle(Entity):
 
 
 class Company(Person):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'company'
 
     # Fields
@@ -223,9 +170,6 @@ class Company(Person):
 
 
 class Proposal(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'proposal'
 
     # Fields
@@ -249,9 +193,6 @@ class Proposal(Entity):
 
 
 class Item(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'item'
 
     fragile = Col(Bool, nullable=False)
@@ -267,9 +208,6 @@ class Item(Entity):
 
 
 class Offer(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'offer'
 
     price = Col(Float, nullable=False)
@@ -284,9 +222,6 @@ class Offer(Entity):
 
 
 class Job(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'job'
 
     start_date   = Col(Dat, nullable=False)
@@ -297,9 +232,6 @@ class Job(Entity):
 
 
 class Invoice(Entity):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'invoice'
 
     job_uid = Col(Int, FK('job.uid'), nullable=False, unique=True)
@@ -313,9 +245,6 @@ class Invoice(Entity):
 #                                          |_|
 
 class ProposalHasItems(Relation):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'proposal_has_items'
 
     # Foreign keys
@@ -328,9 +257,6 @@ class ProposalHasItems(Relation):
 
 
 class WorkerHasAddresses(Relation):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'worker_has_addresses'
 
     # Foreign keys
@@ -343,9 +269,6 @@ class WorkerHasAddresses(Relation):
 
 
 class CompanyHasAddresses(Relation):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     __tablename__ = 'company_has_addresses'
 
     # Foreign keys
