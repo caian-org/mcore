@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 
-"""
---- TODO: DOCUMENTATION ---
-"""
-
 from mapi.orm import Schema
-from mapi.models import (Admin, Address, Company, Item, Offer,
-                         GenericPerson, Proposal, Vehicle, Worker)
 
+from mapi.models import Admin
+from mapi.models import Address
+from mapi.models import Company
+from mapi.models import Item
+from mapi.models import Offer
+from mapi.models import GenericPerson
+from mapi.models import Proposal
+from mapi.models import Vehicle
+from mapi.models import Worker
 
 class AdminSchema(Schema):
     """Schema de representação de dados da entidade Admin."""
