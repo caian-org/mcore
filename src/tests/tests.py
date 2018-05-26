@@ -133,6 +133,17 @@ class Fake:
         return payload
 
     @property
+    def admin(self):
+        admin = self.human
+        admin['authorityLevel'] = '1'
+
+        payload = {}
+        payload['data'] = admin
+        payload['data']['address'] = self.address
+
+        return payload
+
+    @property
     def company(self):
         company = {}
         company['name'] = self._usf.company()
@@ -152,8 +163,15 @@ class Fake:
 class TestRoutes(unittest.TestCase):
     fake = Fake()
 
+    single_entry_qty = 10
+
+    admin_cred = []
     worker_cred = []
     company_cred = []
+
+    @property
+    def admin_profile(self):
+        return self.__class__.fake.admin
 
     @property
     def worker_profile(self):
@@ -163,17 +181,25 @@ class TestRoutes(unittest.TestCase):
     def company_profile(self):
         return self.__class__.fake.company
 
-    def inc_worker_cred(self, credential):
-        self.__class__.worker_cred.append(credential)
+    def inc_cred(self, kind, credential):
+        if kind == 'admin':
+            self.__class__.admin_cred.append(credential)
 
-    def inc_company_cred(self, credential):
-        self.__class__.company_cred.append(credential)
+        elif kind == 'worker':
+            self.__class__.worker_cred.append(credential)
 
-    def ins_worker_token(self, index, token):
-        self.__class__.worker_cred[index]['token'] = token
+        elif kind == 'company':
+            self.__class__.company_cred.append(credential)
 
-    def ins_company_token(self, index, token):
-        self.__class__.company_cred[index]['token'] = token
+    def ins_token(self, kind, index, token):
+        if kind == 'admin':
+            self.__class__.admin_cred[index]['token'] = token
+
+        elif kind == 'worker':
+            self.__class__.worker_cred[index]['token'] = token
+
+        elif kind == 'company':
+            self.__class__.company_cred[index]['token'] = token
 
     def gen_url(self, resource):
         return '{0}:{1}{2}'.format(
@@ -181,9 +207,34 @@ class TestRoutes(unittest.TestCase):
             Formatter.gen_route(resource)
         )
 
-    def test_a_worker_creation(self):
+    def test_a_admin_creation(self):
+        def gen_admin_profiles():
+            for i in range(0, self.single_entry_qty):
+                profile = self.admin_profile
+
+                def get_cred():
+                    cred = {}
+                    cred['email'] = profile['data']['email']
+                    cred['password'] = profile['data']['password']
+                    return cred
+
+                self.inc_cred('admin', get_cred())
+
+                result = requests.post(
+                    self.gen_url('admins'),
+                    json=profile
+                )
+
+                if not result.status_code == 201:
+                    return False
+
+            return True
+
+        self.assertEqual(gen_admin_profiles(), True)
+
+    def test_b_worker_creation(self):
         def gen_worker_profiles():
-            for i in range(0, 20):
+            for i in range(0, self.single_entry_qty):
                 profile = self.worker_profile
 
                 def get_cred():
@@ -192,7 +243,7 @@ class TestRoutes(unittest.TestCase):
                     cred['password'] = profile['data']['password']
                     return cred
 
-                self.inc_worker_cred(get_cred())
+                self.inc_cred('worker', get_cred())
 
                 result = requests.post(
                     self.gen_url('workers'),
@@ -206,27 +257,9 @@ class TestRoutes(unittest.TestCase):
 
         self.assertEqual(gen_worker_profiles(), True)
 
-    def test_b_worker_authentication(self):
-        def authenticate_workers():
-            for i, worker in enumerate(self.__class__.worker_cred):
-                result = requests.post(self.gen_url('worker/auth'), json={
-                    'email': worker['email'],
-                    'password': worker['password']
-                })
-
-                if not result.status_code == 200:
-                    return False
-
-                response = result.json()
-                self.ins_worker_token(i, response['data']['token'])
-
-            return True
-
-        self.assertEqual(authenticate_workers(), True)
-
     def test_c_company_creation(self):
         def gen_company_profiles():
-            for i in range(0, 20):
+            for i in range(0, self.single_entry_qty):
                 profile = self.company_profile
 
                 def get_cred():
@@ -235,7 +268,7 @@ class TestRoutes(unittest.TestCase):
                     cred['password'] = profile['data']['password']
                     return cred
 
-                self.inc_company_cred(get_cred())
+                self.inc_cred('company', get_cred())
 
                 result = requests.post(
                     self.gen_url('companies'),
@@ -249,10 +282,46 @@ class TestRoutes(unittest.TestCase):
 
         self.assertEqual(gen_company_profiles(), True)
 
-    def test_d_company_authentication(self):
+    def test_d_admin_authentication(self):
+        def authenticate_admins():
+            for i, admin in enumerate(self.__class__.admin_cred):
+                result = requests.post(self.gen_url('admins/auth'), json={
+                    'email': admin['email'],
+                    'password': admin['password']
+                })
+
+                if not result.status_code == 200:
+                    return False
+
+                response = result.json()
+                self.ins_token('admin', i, response['data']['token'])
+
+            return True
+
+        self.assertEqual(authenticate_admins(), True)
+
+    def test_e_worker_authentication(self):
+        def authenticate_workers():
+            for i, worker in enumerate(self.__class__.worker_cred):
+                result = requests.post(self.gen_url('workers/auth'), json={
+                    'email': worker['email'],
+                    'password': worker['password']
+                })
+
+                if not result.status_code == 200:
+                    return False
+
+                response = result.json()
+                self.ins_token('worker', i, response['data']['token'])
+
+            return True
+
+        self.assertEqual(authenticate_workers(), True)
+
+    def test_f_company_authentication(self):
         def authenticate_companies():
             for i, company in enumerate(self.__class__.company_cred):
-                result = requests.post(self.gen_url('company/auth'), json={
+                result = requests.post(self.gen_url('companies/auth'), json={
                     'email': company['email'],
                     'password': company['password']
                 })
@@ -261,7 +330,7 @@ class TestRoutes(unittest.TestCase):
                     return False
 
                 response = result.json()
-                self.ins_company_token(i, response['data']['token'])
+                self.ins_token('company', i, response['data']['token'])
 
             return True
 
