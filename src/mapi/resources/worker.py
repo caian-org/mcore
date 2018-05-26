@@ -107,7 +107,7 @@ class WorkerNew(PersonNew):
         db.session.add(worker_address)
         db.session.commit()
 
-        return response.SUCCESS(201, 'ok')
+        return response.created('workers', worker.uid)
 
 
 class WorkerRecord(PersonRecord):
