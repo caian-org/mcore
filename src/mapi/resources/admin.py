@@ -6,7 +6,7 @@ from datetime import datetime
 # Database connection
 from . import db
 
-# Worker model and related ones
+# Admin model and related ones
 from . import Admin
 from . import Address
 from . import AdminHasAddresses
