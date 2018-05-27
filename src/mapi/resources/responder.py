@@ -23,20 +23,24 @@ class Response:
         return response, code
 
     @property
-    def incorrect_email_or_password(self):
-        return Response.FAIL(404, 'E-mail ou senha incorretos.')
-
-    @property
     def bad_request(self):
         return Response.FAIL(400, 'Requisição inválida.')
 
     @property
-    def internal_server_error(self):
-        return Response.FAIL(500, 'Erro interno do servidor.')
+    def incorrect_email_or_password(self):
+        return Response.FAIL(403, 'E-mail ou senha incorretos.')
 
     @property
     def forbidden(self):
         return Response.FAIL(403, 'Acesso negado.')
+
+    @property
+    def not_found(self):
+        return Response.FAIL(404, 'Recurso não encontrado.')
+
+    @property
+    def internal_server_error(self):
+        return Response.FAIL(500, 'Erro interno do servidor.')
 
     def created(self, resource, uid):
         data = {}
