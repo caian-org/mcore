@@ -176,6 +176,7 @@ class Proposal(Entity):
 
     # Fields
     deadline = Col(Dat, nullable=False)
+    status = Col(Bool, nullable=False)
 
     # Foreign keys
     origin_addr_uid = Col(Int, FK('address.uid'))
