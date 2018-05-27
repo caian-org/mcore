@@ -246,18 +246,6 @@ class Invoice(Entity):
 #  |_| \___|_\__,_|\__|_\___/_||_/__/_||_|_| .__/__/
 #                                          |_|
 
-class ProposalHasItems(Relation):
-    __tablename__ = 'proposal_has_items'
-
-    # Foreign keys
-    proposal_uid = Col(Int, FK('proposal.uid'), primary_key=True)
-    item_uid     = Col(Int, FK('item.uid'), primary_key=True)
-
-    # Relations
-    proposal = Rel(Proposal, backref=BR('item_assoc'))
-    item     = Rel(Item, backref=BR('proposal_assoc'))
-
-
 class WorkerHasAddresses(Relation):
     __tablename__ = 'worker_has_addresses'
 
