@@ -32,7 +32,7 @@ class Authenticator:
         """
 
         for param in params:
-            if not param:
+            if param is None:
                 return False
 
         return True
