@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
---- TODO: DOCUMENTATION ---
-"""
-
 import sys
 from os import path
 

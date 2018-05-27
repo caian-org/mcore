@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
---- TODO: DOCUMENTATION ---
-"""
-
 __parent_resource__ = 'api'
 __version__ = 'v1'
 

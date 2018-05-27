@@ -1,24 +1,12 @@
 # -*- coding: utf-8 -*-
 
-"""
---- TODO: DOCUMENTATION ---
-"""
-
 from . import config
 from . import Person
 
 
 class Authenticator:
-    """
-    --- TODO: DOCUMENTATION ---
-    """
-
     @staticmethod
     def check_struct(payload, elements):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-
         for element in elements:
             if not isinstance(payload.get(element), dict):
                 return False
@@ -27,10 +15,6 @@ class Authenticator:
 
     @staticmethod
     def check_payload(params):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-
         for param in params:
             if param is None:
                 return False
@@ -39,10 +23,6 @@ class Authenticator:
 
     @staticmethod
     def verify_token(token):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
-
         if config.DEBUG:
             if token == 'master_token':
                 return True
