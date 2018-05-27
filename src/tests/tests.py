@@ -175,8 +175,9 @@ class Fake:
 
         return '{0}-{1}-{2}'.format(birthday.day, birthday.month, b_year)
 
-    def proposal(self, company_uid, company_token):
+    def proposal(self, company_uid, company_token, status):
         proposal = {}
+        proposal['status'] = status
         proposal['deadline'] = self.deadline
         proposal['companyUid'] = company_uid
 
@@ -200,7 +201,7 @@ class Fake:
 class TestRoutes(unittest.TestCase):
     fake = Fake()
 
-    single_entry_qty = 100
+    single_entry_qty = 10
 
     admin_cred = []
     worker_cred = []
@@ -388,7 +389,11 @@ class TestRoutes(unittest.TestCase):
             for i in range(0, len(self.__class__.company_cred)):
                 company_token = self.get_token('company', i)
                 company_uid = i + 1
-                proposal = self.__class__.fake.proposal(company_uid, company_token)
+                proposal = self.__class__.fake.proposal(
+                    company_uid,
+                    company_token,
+                    (i % 2 == 0)
+                )
 
                 result = requests.post(
                     self.gen_url('proposals'),
@@ -402,6 +407,8 @@ class TestRoutes(unittest.TestCase):
 
         self.assertEqual(create_proposals(), True)
 
+    def test_h_opened_proposals_listing(self):
+        pass
 
 if __name__ == '__main__':
     unittest.main()
