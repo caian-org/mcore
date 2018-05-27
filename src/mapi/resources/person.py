@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
---- TODO: DOCUMENTATION ---
-"""
-
 # Worker model
 from . import Person
 
@@ -18,10 +14,6 @@ from .auth import Authenticator
 
 
 class PersonAuth(Resource):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
-
     entity = Person
 
     @staticmethod
@@ -71,36 +63,21 @@ class PersonAuth(Resource):
 
 
 class PersonNew(Resource):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     entity = Person
     schema = PersonSchema
 
     def new(self, **kwargs):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         return self.entity(**kwargs)
 
 
 class PersonRecord(Resource):
-    """
-    --- TODO: DOCUMENTATION ---
-    """
     entity = Person
     schema = PersonSchema
 
     def delete(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         pass
 
     def get(self, uid):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         payload = request.get_json()
         success, result = PersonRecord.authenticate(payload)
 
@@ -113,7 +90,4 @@ class PersonRecord(Resource):
         return response.SUCCESS(200, data)
 
     def put(self):
-        """
-        --- TODO: DOCUMENTATION ---
-        """
         pass
