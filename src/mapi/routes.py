@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 
-"""
---- TODO: DOCUMENTATION ---
-"""
-
-
-from mapi import (rapi, Formatter)
+from mapi import rapi
+from mapi import Formatter
 
 from mapi.resources.admin    import *
 from mapi.resources.worker   import *
