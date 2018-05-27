@@ -5,6 +5,7 @@
 import sys
 import unittest
 from os import path
+from random import uniform
 from datetime import datetime
 
 # 3rd-party libraries
@@ -43,19 +44,10 @@ class Fake:
         self._brf = Faker('pt_BR')
         self._usf = Faker('en_US')
 
-    def birthday(self, legal_age=True):
-        birthday = self._brf.date_this_century(before_today=True)
-        b_year = birthday.year
-        c_year = datetime.now().year
-
-        min_age = 21
-        if not legal_age:
-            min_age = 3
-
-        if (c_year - b_year) < min_age:
-            b_year = b_year - (min_age - (c_year - b_year))
-
-        return '{0}-{1}-{2}'.format(birthday.day, birthday.month, b_year)
+    @property
+    def deadline(self):
+        deadline = self._brf.future_date(end_date='+45d')
+        return '{0}-{1}-{2}'.format(deadline.day, deadline.month, deadline.year)
 
     @property
     def telephone(self):
@@ -159,11 +151,56 @@ class Fake:
 
         return payload
 
+    @property
+    def item(self):
+        item = {}
+        item['fragile'] = self._brf.boolean(chance_of_getting_true=50)
+        item['height'] = '{:.2f}'.format(uniform(0.1, 10.0))
+        item['weight'] = '{:.2f}'.format(uniform(0.1, 10.0))
+        item['width'] = '{:.2f}'.format(uniform(0.1, 10.0))
+
+        return item
+
+    def birthday(self, legal_age=True):
+        birthday = self._brf.date_this_century(before_today=True)
+        b_year = birthday.year
+        c_year = datetime.now().year
+
+        min_age = 21
+        if not legal_age:
+            min_age = 3
+
+        if (c_year - b_year) < min_age:
+            b_year = b_year - (min_age - (c_year - b_year))
+
+        return '{0}-{1}-{2}'.format(birthday.day, birthday.month, b_year)
+
+    def proposal(self, company_uid, company_token):
+        proposal = {}
+        proposal['deadline'] = self.deadline
+        proposal['companyUid'] = company_uid
+
+        items = []
+        for _ in range(0, 10):
+            items.append(self.item)
+
+        auth = {}
+        auth['token'] = company_token
+
+        payload = {}
+        payload['auth'] = auth
+        payload['data'] = proposal
+        payload['data']['items'] = items
+        payload['data']['originAddress'] = self.address
+        payload['data']['destinationAddress'] = self.address
+
+        return payload
+
 
 class TestRoutes(unittest.TestCase):
     fake = Fake()
 
-    single_entry_qty = 10
+    single_entry_qty = 100
 
     admin_cred = []
     worker_cred = []
@@ -201,6 +238,16 @@ class TestRoutes(unittest.TestCase):
         elif kind == 'company':
             self.__class__.company_cred[index]['token'] = token
 
+    def get_token(self, kind, index):
+        if kind == 'admin':
+            return self.__class__.admin_cred[index]['token']
+
+        elif kind == 'worker':
+            return self.__class__.worker_cred[index]['token']
+
+        elif kind == 'company':
+            return self.__class__.company_cred[index]['token']
+
     def gen_url(self, resource):
         return '{0}:{1}{2}'.format(
             'http://localhost', config.PORT,
@@ -209,7 +256,7 @@ class TestRoutes(unittest.TestCase):
 
     def test_a_admin_creation(self):
         def gen_admin_profiles():
-            for i in range(0, self.single_entry_qty):
+            for _ in range(0, self.single_entry_qty):
                 profile = self.admin_profile
 
                 def get_cred():
@@ -234,7 +281,7 @@ class TestRoutes(unittest.TestCase):
 
     def test_b_worker_creation(self):
         def gen_worker_profiles():
-            for i in range(0, self.single_entry_qty):
+            for _ in range(0, self.single_entry_qty):
                 profile = self.worker_profile
 
                 def get_cred():
@@ -259,7 +306,7 @@ class TestRoutes(unittest.TestCase):
 
     def test_c_company_creation(self):
         def gen_company_profiles():
-            for i in range(0, self.single_entry_qty):
+            for _ in range(0, self.single_entry_qty):
                 profile = self.company_profile
 
                 def get_cred():
@@ -335,6 +382,25 @@ class TestRoutes(unittest.TestCase):
             return True
 
         self.assertEqual(authenticate_companies(), True)
+
+    def test_g_proposal_creation(self):
+        def create_proposals():
+            for i in range(0, len(self.__class__.company_cred)):
+                company_token = self.get_token('company', i)
+                company_uid = i + 1
+                proposal = self.__class__.fake.proposal(company_uid, company_token)
+
+                result = requests.post(
+                    self.gen_url('proposals'),
+                    json=proposal
+                )
+
+                if not result.status_code == 201:
+                    return False
+
+            return True
+
+        self.assertEqual(create_proposals(), True)
 
 
 if __name__ == '__main__':
