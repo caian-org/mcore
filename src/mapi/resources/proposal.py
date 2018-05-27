@@ -48,6 +48,7 @@ class ProposalNew(Resource):
         origin_addr = data['originAddress']
         destin_addr = data['destinationAddress']
         params = [
+            data.get('status'),
             data.get('deadline'),
             data.get('companyUid'),
             origin_addr.get('number'),
@@ -94,7 +95,8 @@ class ProposalNew(Resource):
         db.session.commit()
 
         # Insere no banco a proposta
-        proposal = Proposal(deadline=data['deadline'],
+        proposal = Proposal(status=data['status'],
+                            deadline=data['deadline'],
                             origin=origin,
                             destination=destin,
                             company=company)
