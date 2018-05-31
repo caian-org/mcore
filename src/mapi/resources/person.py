@@ -35,7 +35,7 @@ class PersonAuth(Resource):
 
         return True, None
 
-    def post(self):
+    def get(self):
         """
         Método de autenticação do usuário via email e senha (aka login)
         """
