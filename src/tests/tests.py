@@ -182,7 +182,7 @@ class Fake:
         proposal['companyUid'] = company_uid
 
         items = []
-        for _ in range(0, 10):
+        for _ in range(0, 5):
             items.append(self.item)
 
         auth = {}
@@ -333,7 +333,7 @@ class TestRoutes(unittest.TestCase):
     def test_d_admin_authentication(self):
         def authenticate_admins():
             for i, admin in enumerate(self.__class__.admin_cred):
-                result = requests.post(self.gen_url('admins/auth'), json={
+                result = requests.get(self.gen_url('admins/auth'), json={
                     'email': admin['email'],
                     'password': admin['password']
                 })
@@ -351,7 +351,7 @@ class TestRoutes(unittest.TestCase):
     def test_e_worker_authentication(self):
         def authenticate_workers():
             for i, worker in enumerate(self.__class__.worker_cred):
-                result = requests.post(self.gen_url('workers/auth'), json={
+                result = requests.get(self.gen_url('workers/auth'), json={
                     'email': worker['email'],
                     'password': worker['password']
                 })
@@ -369,7 +369,7 @@ class TestRoutes(unittest.TestCase):
     def test_f_company_authentication(self):
         def authenticate_companies():
             for i, company in enumerate(self.__class__.company_cred):
-                result = requests.post(self.gen_url('companies/auth'), json={
+                result = requests.get(self.gen_url('companies/auth'), json={
                     'email': company['email'],
                     'password': company['password']
                 })
@@ -409,6 +409,7 @@ class TestRoutes(unittest.TestCase):
 
     def test_h_opened_proposals_listing(self):
         pass
+
 
 if __name__ == '__main__':
     unittest.main()
