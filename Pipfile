@@ -7,20 +7,19 @@ name = "pypi"
 
 [dev-packages]
 
-sphinx = "*"
-flask-testing = "*"
+Sphinx = "*"
+Flask-Testing = "*"
 gunicorn = "*"
 sphinxcontrib-napoleon = "*"
-faker = "*"
+Faker = "*"
 
 
 [packages]
 
-flask = "*"
-flask-sqlalchemy = "*"
-flask-migrate = "*"
-pycep-correios = "*"
-flask-restful = "*"
+Flask = "*"
+Flask-SQLAlchemy = "*"
+Flask-Migrate = "*"
+Flask-RESTful = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 
