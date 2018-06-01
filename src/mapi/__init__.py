@@ -15,6 +15,9 @@ from mapi.utils import Formatter
 #  |___/_| \__,_|   | .__/\__,_|_|  \__|\_, |
 #                   |_|                 |__/
 try:
+    # ...
+    import requests
+
     # Fake data generator
     from faker import Faker
 
@@ -39,12 +42,6 @@ try:
     from itsdangerous import BadSignature
     from itsdangerous import SignatureExpired
     from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-
-    # Correios API
-    import pycep_correios as cep_api
-    from pycep_correios.excecoes import Timeout
-    from pycep_correios.excecoes import FalhaNaConexao
-    from pycep_correios.excecoes import MultiploRedirecionamento
 
 except ImportError as error:
     Exit.with_fail('Impossible to import 3rd-party libraries\n'
