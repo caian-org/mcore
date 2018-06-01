@@ -18,4 +18,5 @@ from mapi import joinedload # Clausula de combinação entre modelos (JOIN)
 from mapi.models import *
 from mapi.schemas import *
 
+# Objeto de geração de respostas JSON
 from mapi.resources.responder import response
