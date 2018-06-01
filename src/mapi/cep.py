@@ -1,37 +1,41 @@
 # -*- coding: utf-8 -*-
 
 # Standard
-import urllib3
+import json
 
 # 3rd-party
-from mapi import cep_api
-from mapi import (Timeout, FalhaNaConexao, MultiploRedirecionamento)
+from mapi import requests
 
-# Disables the "InsecureRequestWarning" warning in urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+__endpoint__ = 'http://www.viacep.com.br/ws'
+__datatype__ = 'json'
 
 
 class CEP:
     @staticmethod
     def format(response):
         return {
-            'street': response['end'],
+            'street': response['logradouro'],
             'district': response['bairro'],
-            'city': response['cidade'],
+            'city': response['localidade'],
             'state': response['uf']
         }
 
     @staticmethod
     def validate(cep):
-        return cep_api.validar_cep(cep)
+        return cep.isdigit() and len(cep) is 8
 
     @staticmethod
     def query(cep):
         if not CEP.validate(cep):
-            return False
+            return None
 
-        try:
-            return CEP.format(cep_api.consultar_cep(cep))
+        req_url = '{0}/{1}/{2}'.format(
+            __endpoint__, cep, __datatype__
+        )
 
-        except (Timeout, FalhaNaConexao, MultiploRedirecionamento):
-            return False
+        res = requests.get(req_url)
+        if res.status_code is not 200:
+            return None
+
+        return CEP.format(json.loads(res.text))
