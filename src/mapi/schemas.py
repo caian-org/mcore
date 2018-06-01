@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from mapi.orm import Schema
+from mapi.orm import Nested
 
 from mapi.models import Admin
 from mapi.models import Address
@@ -46,6 +47,21 @@ class PersonSchema(Schema):
     """Schema de representação de dados da entidade Person."""
     class Meta:
         model = GenericPerson
+
+
+class ProposalAddressSchema(Schema):
+    class Meta:
+        fields = ('complement', 'number', 'postcode')
+        model = Address
+
+
+class ProposalsListSchema(Schema):
+    origin = Nested(ProposalAddressSchema)
+    destination = Nested(ProposalAddressSchema)
+
+    class Meta:
+        fields = ('uid', 'deadline', 'origin', 'destination')
+        model = Proposal
 
 
 class ProposalSchema(Schema):
