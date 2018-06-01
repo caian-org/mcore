@@ -42,6 +42,9 @@ class Response:
     def internal_server_error(self):
         return Response.FAIL(500, 'Erro interno do servidor.')
 
+    def ok(self, data):
+        return Response.SUCCESS(200, data)
+
     def created(self, resource, uid):
         data = {}
         data['id'] = uid
