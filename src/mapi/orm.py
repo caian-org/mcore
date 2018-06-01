@@ -1,26 +1,29 @@
 # -*- coding: utf-8 -*-
 
-from mapi import db, mars
+from mapi import db
+from mapi import mars
 
-# Primitive types
+
+# Tipos primitivos
 Bool  = db.Boolean
 Dat   = db.DateTime
 Float = db.Float
 Int   = db.Integer
 Str   = db.String
 
-# Objects
+# Entidades & Objetos
 Col   = db.Column
 Model = db.Model
 
-# Relations
+# Relacionamentos
 BR  = db.backref
 FK  = db.ForeignKey
 Rel = db.relationship
 
-# Session
+# Sessão do ORM
 session = db.session
 
 
-# Model schema
+# Classes do Marshmallow
 Schema = mars.ModelSchema
+Nested = mars.Nested
