@@ -3,13 +3,10 @@
 
 # Standard libraries
 import sys
+import random
 import unittest
 from os import path
-from random import uniform
 from datetime import datetime
-
-# 3rd-party libraries
-import requests
 
 # Parent directory "injection"
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
@@ -37,6 +34,12 @@ from mapi import Formatter
 
 # Flask configurations
 from mapi import config
+
+# 3rd-party libraries
+from mapi import requests
+
+# CEPs válidos de São Paulo
+from postcodes import __valid_postcodes__
 
 
 class Fake:
@@ -82,7 +85,7 @@ class Fake:
     def address(self):
         address = {}
         address['number'] = self._brf.building_number()
-        address['postcode'] = self._brf.postcode().replace('-', '')
+        address['postcode'] = random.choice(__valid_postcodes__)
         address['complement'] = 'Sala {0}'.format(self._brf.random_uppercase_letter())
 
         return address
@@ -155,9 +158,9 @@ class Fake:
     def item(self):
         item = {}
         item['fragile'] = self._brf.boolean(chance_of_getting_true=50)
-        item['height'] = '{:.2f}'.format(uniform(0.1, 10.0))
-        item['weight'] = '{:.2f}'.format(uniform(0.1, 10.0))
-        item['width'] = '{:.2f}'.format(uniform(0.1, 10.0))
+        item['height'] = '{:.2f}'.format(random.uniform(0.1, 10.0))
+        item['weight'] = '{:.2f}'.format(random.uniform(0.1, 10.0))
+        item['width'] = '{:.2f}'.format(random.uniform(0.1, 10.0))
 
         return item
 
