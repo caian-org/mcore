@@ -8,8 +8,12 @@ from os import path
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 
-from mapi import config
-from mapi import (db, request, Resource, Formatter)
+from mapi import db         # ORM & Objeto de conexão do banco
+from mapi import config     # Objeto de configurações do servidor & banco
+from mapi import request    # Objeto de requisição HTTP do Flask
+from mapi import Resource   # Classe de recurso REST
+from mapi import Formatter  # Classe utilitária para formatação de rotas REST
+from mapi import joinedload # Clausula de combinação entre modelos (JOIN)
 
 from mapi.models import *
 from mapi.schemas import *
