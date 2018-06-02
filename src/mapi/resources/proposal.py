@@ -25,8 +25,8 @@ from . import Resource
 from . import request
 from . import response
 
-# Form/JSON data authenticator
-from .auth import Authenticator
+# Form/JSON data validator
+from .auth import Validator
 
 
 class ProposalResource(Resource):
@@ -38,6 +38,10 @@ class ProposalResource(Resource):
         "em aberto". Requer autenticação e só pode ser consumido através de uma
         conta corporativa (companu account).
         '''
+        payload = request.get_json()
+        if not Validator.check_struct(payload, ['auth']):
+            return response.bad_request
+
         opened_proposals = Proposal.query.filter_by(status=True).all()
         proposal_schema = ProposalsListSchema(many=True)
 
@@ -55,19 +59,19 @@ class ProposalResource(Resource):
         payload = request.get_json()
 
         # Verifica a estrutura da payload recebida
-        if not Authenticator.check_struct(payload, ['auth', 'data']):
+        if not Validator.check_struct(payload, ['auth', 'data']):
             return response.bad_request
 
         # Verifica se o token é valido
         auth = payload['auth']
         token = auth.get('token')
-        if not Authenticator.verify_token(token):
+        if not Validator.verify_token(token):
             return response.forbidden
 
         # Verifica pelas estruturas de endereço de origem e destino
         data = payload['data']
         required_data = ['originAddress', 'destinationAddress']
-        if not Authenticator.check_struct(data, required_data):
+        if not Validator.check_struct(data, required_data):
             return response.bad_request
 
         # Verifica pelos campos necessários em cada estrutura
@@ -82,7 +86,7 @@ class ProposalResource(Resource):
             origin_addr.get('postcode'),
             destin_addr.get('number'),
             destin_addr.get('postcode')]
-        if not Authenticator.check_payload(params):
+        if not Validator.check_payload(params):
             return response.bad_request
 
         # Verifica se o id recebido é de uma empresa existente
@@ -103,7 +107,7 @@ class ProposalResource(Resource):
                 i.get('height'),
                 i.get('weight'),
                 i.get('fragile')]
-            if not Authenticator.check_payload(required_attrs):
+            if not Validator.check_payload(required_attrs):
                 return response.bad_request
 
         # Converte o formato de data 'dd-mm-aaaa' em uma datetime

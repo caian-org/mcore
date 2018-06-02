@@ -9,8 +9,8 @@ from . import PersonSchema
 # HTTP-related
 from . import (Resource, request, response)
 
-# Form/JSON data authenticator
-from .auth import Authenticator
+# Form/JSON data validator
+from .auth import Validator
 
 
 class PersonAuth(Resource):
@@ -21,7 +21,7 @@ class PersonAuth(Resource):
         """
         Método de autenticação de token
         """
-        if not Authenticator.check_struct(payload, ['auth']):
+        if not Validator.check_struct(payload, ['auth']):
             return False, response.bad_request
 
         auth = payload['auth']
@@ -30,7 +30,7 @@ class PersonAuth(Resource):
         if not token:
             return False, response.bad_request
 
-        if not Authenticator.verify_token(token):
+        if not Validator.verify_token(token):
             return False, response.forbidden
 
         return True, None

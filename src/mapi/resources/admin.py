@@ -24,8 +24,8 @@ from .person import PersonNew
 from .person import PersonAuth
 from .person import PersonRecord
 
-# Form/JSON data authenticator
-from .auth import Authenticator
+# Form/JSON data validator
+from .auth import Validator
 
 
 class AdminAuth(PersonAuth):
@@ -39,12 +39,12 @@ class AdminNew(PersonNew):
     def post(self):
         payload = request.get_json()
 
-        if not Authenticator.check_struct(payload, ['data']):
+        if not Validator.check_struct(payload, ['data']):
             return response.bad_request
 
         data = payload['data']
         required = ['address']
-        if not Authenticator.check_struct(data, required):
+        if not Validator.check_struct(data, required):
             return response.bad_request
 
         address = data['address']
@@ -63,7 +63,7 @@ class AdminNew(PersonNew):
             address.get('postcode')
         ]
 
-        if not Authenticator.check_payload(params):
+        if not Validator.check_payload(params):
             return response.bad_request
 
         data['birthday'] = datetime.strptime(data['birthday'], '%d-%m-%Y')

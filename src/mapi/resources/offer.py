@@ -9,8 +9,8 @@ from . import Offer
 # HTTP-related
 from . import (Resource, request, response)
 
-# Form/JSON data authenticator
-from .auth import Authenticator
+# Form/JSON data validator
+from .auth import Validator
 
 
 class OfferNew(Resource):
