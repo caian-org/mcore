@@ -258,6 +258,21 @@ class TestRoutes(unittest.TestCase):
             Formatter.gen_route(resource)
         )
 
+    def write(self, kind):
+        cred = None
+        if kind == 'admin':
+            cred = self.__class__.admin_cred
+
+        elif kind == 'worker':
+            cred = self.__class__.worker_cred
+
+        elif kind == 'company':
+            cred = self.__class__.company_cred
+
+        with open(kind + '-credentials.txt', 'w') as f:
+            for c in cred:
+                f.write('{email},{password}\n'.format(**c))
+
     def test_a_admin_creation(self):
         def gen_admin_profiles():
             for _ in range(0, self.single_entry_qty):
@@ -279,6 +294,7 @@ class TestRoutes(unittest.TestCase):
                 if not result.status_code == 201:
                     return False
 
+            self.write('admin')
             return True
 
         self.assertEqual(gen_admin_profiles(), True)
@@ -304,6 +320,7 @@ class TestRoutes(unittest.TestCase):
                 if not result.status_code == 201:
                     return False
 
+            self.write('worker')
             return True
 
         self.assertEqual(gen_worker_profiles(), True)
@@ -329,6 +346,7 @@ class TestRoutes(unittest.TestCase):
                 if not result.status_code == 201:
                     return False
 
+            self.write('company')
             return True
 
         self.assertEqual(gen_company_profiles(), True)
