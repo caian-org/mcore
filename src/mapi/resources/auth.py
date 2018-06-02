@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from . import config
 from . import Person
+from . import config
+from . import response
 
 
 class Validator:
@@ -29,7 +30,24 @@ class Validator:
 
         return Person.verify_token(token)
 
+
 class Authorizer:
     @staticmethod
-    def validate(payload, elements):
-        pass
+    def validate(kind, payload, elements):
+        # Verifica a estrutura da payload recebida
+        if not Validator.check_struct(payload, elements):
+            return True, response.bad_request
+
+        # Verifica se o token é valido
+        auth = payload['auth']
+        token = auth.get('token')
+
+        user_token = Validator.verify_token(token)
+        if not user_token:
+            return True, response.forbidden
+
+        # Verifica se o token pertence ao tipo de usuário indicado
+        if user_token['kind'] != kind:
+            return True, response.forbidden
+
+        return False, None
