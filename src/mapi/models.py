@@ -73,7 +73,7 @@ class Person(Entity):
 
     def generate_token(self, expiration=60):
         s = Serializer(config.SECRET_KEY, expires_in=expiration)
-        return s.dumps({ 'id': self.uid, 'email': self.email })
+        return s.dumps({ 'id': self.uid, 'kind': self.__tablename__ })
 
     @staticmethod
     def verify_token(token):
@@ -82,13 +82,11 @@ class Person(Entity):
         try:
             data = s.loads(token)
 
-        except SignatureExpired:
-            return False
+        except (SignatureExpired, BadSignature):
+            data = None
 
-        except BadSignature:
-            return False
-
-        return True
+        finally:
+            return data
 
 
 class Human(Person):
