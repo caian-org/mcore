@@ -1,22 +1,32 @@
 # -*- coding: utf-8 -*-
 
-# Password hashing
-from mapi import (gen_phash, check_phash)
+# Hashing de senhas
+from mapi import gen_phash
+from mapi import check_phash
 
-# Expirable token generation
-from mapi import (Serializer, BadSignature, SignatureExpired)
+# Geração de tokens expiráveis
+from mapi import Serializer
+from mapi import BadSignature
+from mapi import SignatureExpired
 
-# Application's configurations
+# Configurações da aplicação
 from mapi import config
 
-# Primitive types
-from mapi.orm import (Bool, Float, Dat, Int, Str)
+# Tipos primitivos de dados
+from mapi.orm import Dat
+from mapi.orm import Int
+from mapi.orm import Str
+from mapi.orm import Bool
+from mapi.orm import Float
 
-# Database objects
-from mapi.orm import (Col, Model)
+# Objetos do banco de dados (modelos e colunas)
+from mapi.orm import Col
+from mapi.orm import Model
 
-# Relationship objects
-from mapi.orm import (BR, FK, Rel)
+# Relacionamentos do ORM
+from mapi.orm import BR
+from mapi.orm import FK
+from mapi.orm import Rel
 
 
 #        _       _               _   _
