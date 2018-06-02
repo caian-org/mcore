@@ -103,6 +103,7 @@ if __name__ == '__main__':
     # Entrypoint do script.
     try:
         main()
+        print('\n\n\n')
 
     except KeyboardInterrupt:
         Exit.SIGINT()
