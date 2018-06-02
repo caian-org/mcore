@@ -185,8 +185,10 @@ class Proposal(Entity):
     __tablename__ = 'proposal'
 
     # Fields
+    title = Col(Str, nullable=False)
     deadline = Col(Dat, nullable=False)
     status = Col(Bool, nullable=False)
+    description = Col(Str, nullable=True)
 
     # Foreign keys
     origin_addr_uid = Col(Int, FK('address.uid'))
