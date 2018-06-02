@@ -1,7 +1,9 @@
+# byte-compiled & python-related
 __pycache__/
 .mypy_cache/
-
-migrations/
-app.db
-
 *.pyc
+
+# arquivos de migração, banco e temporários
+src/migrations/
+src/app.db
+src/*.txt
