@@ -8,13 +8,13 @@ dev: init
 	pipenv install --dev
 
 env:
-	export TEST_ENVIRON=1 && export FLASK_APP=main.py && pipenv shell
+	export TEST_ENVIRON=1 && pipenv shell
 
 run:
-	cd ./src && python3 main.py
+	cd ./src && ./main.py
 
 docs:
 	cd ./docs && make html
 
 test:
-	cd ./src && bash build.sh && python3 tests/tests.py -v
+	cd ./src && ./build.py && ./tests/tests.py -v
