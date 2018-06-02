@@ -27,6 +27,7 @@ from . import response
 
 # Form/JSON data validator
 from .auth import Validator
+from .auth import Authorizer
 
 
 class ProposalResource(Resource):
@@ -39,8 +40,9 @@ class ProposalResource(Resource):
         conta corporativa (companu account).
         '''
         payload = request.get_json()
-        if not Validator.check_struct(payload, ['auth']):
-            return response.bad_request
+        err, res = Authorizer.validate('company', payload, ['auth'])
+        if err:
+            return res
 
         opened_proposals = Proposal.query.filter_by(status=True).all()
         proposal_schema = ProposalsListSchema(many=True)
@@ -57,16 +59,9 @@ class ProposalResource(Resource):
         de uma conta corporativa (company account).
         '''
         payload = request.get_json()
-
-        # Verifica a estrutura da payload recebida
-        if not Validator.check_struct(payload, ['auth', 'data']):
-            return response.bad_request
-
-        # Verifica se o token é valido
-        auth = payload['auth']
-        token = auth.get('token')
-        if not Validator.verify_token(token):
-            return response.forbidden
+        err, res = Authorizer.validate('company', payload, ['auth', 'data'])
+        if err:
+            return res
 
         # Verifica pelas estruturas de endereço de origem e destino
         data = payload['data']
