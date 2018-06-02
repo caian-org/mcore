@@ -57,10 +57,10 @@ class Relation(Model):
 class Person(Entity):
     __abstract__ = True
 
-    name      = Col(Str(64), nullable=False)
+    name = Col(Str(64), nullable=False)
+    email = Col(Str(64), nullable=False, index=True, unique=True)
+    passhash = Col(Str(128), nullable=False)
     telephone = Col(Str(11), nullable=False)
-    email     = Col(Str(64), nullable=False, index=True, unique=True)
-    passhash  = Col(Str(128), nullable=False)
 
     def __attr__(self):
         return self.R([self.name, self.email])
@@ -94,9 +94,9 @@ class Person(Entity):
 class Human(Person):
     __abstract__ = True
 
-    rg       = Col(Str(9), nullable=False, index=True, unique=True)
-    cpf      = Col(Str(11), nullable=False, index=True, unique=True)
-    gender   = Col(Str(1), nullable=False, default='M')
+    rg = Col(Str(9), nullable=False, index=True, unique=True)
+    cpf = Col(Str(11), nullable=False, index=True, unique=True)
+    gender = Col(Str(1), nullable=False, default='M')
     birthday = Col(Dat, nullable=False)
 
 
@@ -109,9 +109,9 @@ class Human(Person):
 class Address(Entity):
     __tablename__ = 'address'
 
-    number     = Col(Str(8))
+    number = Col(Str(8))
+    postcode = Col(Str(8), index=True)
     complement = Col(Str(16), nullable=True)
-    postcode   = Col(Str(8), index=True)
 
     # Relations
     admins = Rel('Admin', secondary='admin_has_addresses')
@@ -137,7 +137,7 @@ class Worker(Human):
     __tablename__ = 'worker'
 
     # Fields
-    license_id   = Col(Str(11), nullable=False, index=True, unique=True)
+    license_id = Col(Str(11), nullable=False, index=True, unique=True)
     license_type = Col(Str, nullable=False)
 
     # Relations
@@ -152,10 +152,10 @@ class Vehicle(Entity):
     __tablename__ = 'vehicle'
 
     # Fields
+    year = Col(Int, nullable=False)
     model = Col(Str(32), nullable=False)
     brand = Col(Str(24), nullable=False)
     plate = Col(Str(8), nullable=False)
-    year  = Col(Int, nullable=False)
 
     # Foreign keys
     owner_uid = Col(Int, FK('worker.uid'))
@@ -171,7 +171,7 @@ class Company(Person):
     __tablename__ = 'company'
 
     # Fields
-    cnpj    = Col(Str(14), nullable=False, index=True, unique=True)
+    cnpj = Col(Str(14), nullable=False, index=True, unique=True)
     opening = Col(Dat, nullable=False)
 
     # Relations
@@ -186,14 +186,14 @@ class Proposal(Entity):
 
     # Fields
     title = Col(Str, nullable=False)
-    deadline = Col(Dat, nullable=False)
     status = Col(Bool, nullable=False)
+    deadline = Col(Dat, nullable=False)
     description = Col(Str, nullable=True)
 
     # Foreign keys
+    company_uid = Col(Int, FK('company.uid'))
     origin_addr_uid = Col(Int, FK('address.uid'))
     destin_addr_uid = Col(Int, FK('address.uid'))
-    company_uid = Col(Int, FK('company.uid'))
 
     # Relations
     origin = Rel(Address, foreign_keys='Proposal.origin_addr_uid',
@@ -202,18 +202,19 @@ class Proposal(Entity):
     destination = Rel(Address, foreign_keys='Proposal.destin_addr_uid',
                       backref=BR('dest_assoc', uselist=False))
 
+    items = Rel('Item', back_populates='proposal')
+    offers = Rel('Offer', back_populates='proposal')
     company = Rel('Company', back_populates='proposals')
-    items   = Rel('Item', back_populates='proposal')
-    offers  = Rel('Offer', back_populates='proposal')
 
 
 class Item(Entity):
     __tablename__ = 'item'
 
+    title = Col(Str, nullable=False)
+    width = Col(Float, nullable=False)
+    weight = Col(Float, nullable=False)
+    height = Col(Float, nullable=False)
     fragile = Col(Bool, nullable=False)
-    weight  = Col(Float, nullable=False)
-    width   = Col(Float, nullable=False)
-    height  = Col(Float, nullable=False)
 
     # Foreign keys
     proposal_uid = Col(Int, FK('proposal.uid'))
@@ -239,18 +240,18 @@ class Offer(Entity):
 class Job(Entity):
     __tablename__ = 'job'
 
-    start_date   = Col(Dat, nullable=False)
-    end_date     = Col(Dat, nullable=False)
+    cost = Col(Float, nullable=False)
+    end_date = Col(Dat, nullable=False)
+    offer_uid = Col(Int, FK('offer.uid'), nullable=False)
+    start_date = Col(Dat, nullable=False)
     proposal_uid = Col(Int, FK('proposal.uid'), nullable=False)
-    offer_uid    = Col(Int, FK('offer.uid'), nullable=False)
-    cost         = Col(Float, nullable=False)
 
 
 class Invoice(Entity):
     __tablename__ = 'invoice'
 
+    bill = Col(Float, nullable=False)
     job_uid = Col(Int, FK('job.uid'), nullable=False, unique=True)
-    bill    = Col(Float, nullable=False)
 
 
 #           _      _   _             _    _
@@ -267,7 +268,7 @@ class WorkerHasAddresses(Relation):
     address_uid = Col(Int, FK('address.uid'), primary_key=True)
 
     # Relations
-    worker  = Rel(Worker, backref=BR('address_assoc'))
+    worker = Rel(Worker, backref=BR('address_assoc'))
     address = Rel(Address, backref=BR('worker_assoc'))
 
 
@@ -291,5 +292,5 @@ class AdminHasAddresses(Relation):
     address_uid = Col(Int, FK('address.uid'), primary_key=True)
 
     # Relations
-    admin   = Rel(Admin, backref=BR('address_assoc'))
+    admin = Rel(Admin, backref=BR('address_assoc'))
     address = Rel(Address, backref=BR('admin_assoc'))
