@@ -40,5 +40,5 @@ class Router:
         Router.include(OfferRecord, 'offers/<int:uid>')
 
         # Proposals
-        Router.include(ProposalNew, 'proposals')
+        Router.include(ProposalResource, 'proposals')
         Router.include(ProposalRecord, 'proposals/<int:uid>')
