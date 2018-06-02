@@ -4,7 +4,7 @@ from . import config
 from . import Person
 
 
-class Authenticator:
+class Validator:
     @staticmethod
     def check_struct(payload, elements):
         for element in elements:
@@ -28,3 +28,8 @@ class Authenticator:
                 return True
 
         return Person.verify_token(token)
+
+class Authorizer:
+    @staticmethod
+    def validate(payload, elements):
+        pass
