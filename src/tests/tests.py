@@ -157,10 +157,11 @@ class Fake:
     @property
     def item(self):
         item = {}
-        item['fragile'] = self._brf.boolean(chance_of_getting_true=50)
+        item['title'] = self._brf.sentence(nb_words=2).replace('.', '')
+        item['width'] = '{:.2f}'.format(random.uniform(0.1, 10.0))
         item['height'] = '{:.2f}'.format(random.uniform(0.1, 10.0))
         item['weight'] = '{:.2f}'.format(random.uniform(0.1, 10.0))
-        item['width'] = '{:.2f}'.format(random.uniform(0.1, 10.0))
+        item['fragile'] = self._brf.boolean(chance_of_getting_true=50)
 
         return item
 
