@@ -180,9 +180,13 @@ class Fake:
 
     def proposal(self, company_uid, company_token, status):
         proposal = {}
+        proposal['title'] = self._brf.sentence(nb_words=5).replace('.', '')
         proposal['status'] = status
         proposal['deadline'] = self.deadline
         proposal['companyUid'] = company_uid
+        proposal['description'] = ''.join(
+            str(p) for p in self._brf.paragraphs(nb=2)
+        )
 
         items = []
         for _ in range(0, 5):
