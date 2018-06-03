@@ -1,45 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Standard libraries
+# Biblioteca padrão
 import sys
 import random
 import unittest
 from os import path
 from datetime import datetime
 
-# Parent directory "injection"
-sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-
-# Modules
-from mapi import db
-from mapi import app
-
-# Models
-from mapi.models import Address
-from mapi.models import Company
-from mapi.models import Item
-from mapi.models import Vehicle
-from mapi.models import Worker
-from mapi.models import Proposal
-from mapi.models import Offer
-
-# Relations
-from mapi.models import CompanyHasAddresses
-from mapi.models import WorkerHasAddresses
-
-# Utilitaries
-from mapi import Faker
-from mapi import Formatter
-
-# Flask configurations
-from mapi import config
-
-# 3rd-party libraries
-from mapi import requests
-
 # CEPs válidos de São Paulo
 from postcodes import __valid_postcodes__
+
+# Injeta o diretório superior para que "mapi" seja visível
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+
+from mapi import Faker      # Gerador de dados falsos
+from mapi import Formatter  # Formatador de rota de recurso REST
+from mapi import config     # Objeto de configurações do programa
+from mapi import requests   # Faz chamadas POST e GET (3rd-party)
 
 
 class Fake:
