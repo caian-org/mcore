@@ -235,18 +235,9 @@ class TestRoutes(unittest.TestCase):
         )
 
     def write(self, kind):
-        cred = None
-        if kind == 'admin':
-            cred = self.__class__.admin_cred
-
-        elif kind == 'worker':
-            cred = self.__class__.worker_cred
-
-        elif kind == 'company':
-            cred = self.__class__.company_cred
-
+        person_cred = self.get_person_obj(kind)
         with open(kind + '-credentials.txt', 'w') as f:
-            for c in cred:
+            for c in person_cred:
                 f.write('{email},{password}\n'.format(**c))
 
     def test_a_admin_creation(self):
