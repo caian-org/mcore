@@ -193,19 +193,7 @@ class TestRoutes(unittest.TestCase):
     worker_cred = []
     company_cred = []
 
-    @property
-    def admin_profile(self):
-        return self.__class__.fake.admin
-
-    @property
-    def worker_profile(self):
-        return self.__class__.fake.worker
-
-    @property
-    def company_profile(self):
-        return self.__class__.fake.company
-
-    def get_person_obj(self, kind):
+    def get_person_credentials(self, kind):
         if kind == 'admin':
             return self.__class__.admin_cred
 
@@ -215,18 +203,19 @@ class TestRoutes(unittest.TestCase):
         elif kind == 'company':
             return self.__class__.company_cred
 
-
-    def new_cred(self, kind, credential):
-        person_cred = self.get_person_obj(kind)
-        person_cred.append(credential)
-
     def set_token(self, kind, index, token):
-        person_cred = self.get_person_obj(kind)
+        person_cred = self.get_person_credentials(kind)
         person_cred[index]['token'] = token
 
     def get_token(self, kind, index):
-        person_cred = self.get_person_obj(kind)
+        person_cred = self.get_person_credentials(kind)
         return person_cred[index]['token']
+
+    def write(self, kind):
+        person_cred = self.get_person_credentials(kind)
+        with open(kind + '-credentials.txt', 'w') as f:
+            for c in person_cred:
+                f.write('{email},{password}\n'.format(**c))
 
     def gen_url(self, resource):
         return '{0}:{1}{2}'.format(
@@ -234,143 +223,93 @@ class TestRoutes(unittest.TestCase):
             Formatter.gen_route(resource)
         )
 
-    def write(self, kind):
-        person_cred = self.get_person_obj(kind)
+    def gen_profile(self, kind):
+        profile_data = None
+
+        if kind == 'admin':
+            profile_data = self.__class__.fake.admin
+
+        elif kind == 'worker':
+            profile_data = self.__class__.fake.worker
+
+        elif kind == 'company':
+            profile_data = self.__class__.fake.company
+
+        return profile_data
+
+    def create_users(self, route, kind, qty):
+        for _ in range(0, qty):
+            profile = self.gen_profile(kind)
+
+            person_cred = self.get_person_credentials(kind)
+            person_cred.append({
+                'email': profile['data']['email'],
+                'password': profile['data']['password']
+            })
+
+            result = requests.post(
+                self.gen_url(route),
+                json=profile
+            )
+
+            if result.status_code is not 201:
+                return False
+
+        person_cred = self.get_person_credentials(kind)
         with open(kind + '-credentials.txt', 'w') as f:
             for c in person_cred:
                 f.write('{email},{password}\n'.format(**c))
 
+        return True
+
+    def authenticate_users(self, route, kind):
+        person_credentials = self.get_person_credentials(kind)
+
+        for i, person in enumerate(person_credentials):
+            result = requests.get(
+                self.gen_url(route),
+                json={
+                    'email': person['email'],
+                    'password': person['password']
+                })
+
+            if result.status_code is not 200:
+                return False
+
+            response = result.json()
+            self.set_token(kind, i, response['data']['token'])
+
+        return True
+
     def test_a_admin_creation(self):
-        def gen_admin_profiles():
-            for _ in range(0, self.single_entry_qty):
-                profile = self.admin_profile
-
-                def get_cred():
-                    cred = {}
-                    cred['email'] = profile['data']['email']
-                    cred['password'] = profile['data']['password']
-                    return cred
-
-                self.new_cred('admin', get_cred())
-
-                result = requests.post(
-                    self.gen_url('admins'),
-                    json=profile
-                )
-
-                if not result.status_code == 201:
-                    return False
-
-            self.write('admin')
-            return True
-
-        self.assertEqual(gen_admin_profiles(), True)
+        self.assertEqual(
+            self.create_users('admins', 'admin', self.single_entry_qty),
+            True)
 
     def test_b_worker_creation(self):
-        def gen_worker_profiles():
-            for _ in range(0, self.single_entry_qty):
-                profile = self.worker_profile
-
-                def get_cred():
-                    cred = {}
-                    cred['email'] = profile['data']['email']
-                    cred['password'] = profile['data']['password']
-                    return cred
-
-                self.new_cred('worker', get_cred())
-
-                result = requests.post(
-                    self.gen_url('workers'),
-                    json=profile
-                )
-
-                if not result.status_code == 201:
-                    return False
-
-            self.write('worker')
-            return True
-
-        self.assertEqual(gen_worker_profiles(), True)
+        self.assertEqual(
+            self.create_users('workers', 'worker', self.single_entry_qty),
+            True)
 
     def test_c_company_creation(self):
-        def gen_company_profiles():
-            for _ in range(0, self.single_entry_qty):
-                profile = self.company_profile
-
-                def get_cred():
-                    cred = {}
-                    cred['email'] = profile['data']['email']
-                    cred['password'] = profile['data']['password']
-                    return cred
-
-                self.new_cred('company', get_cred())
-
-                result = requests.post(
-                    self.gen_url('companies'),
-                    json=profile
-                )
-
-                if not result.status_code == 201:
-                    return False
-
-            self.write('company')
-            return True
-
-        self.assertEqual(gen_company_profiles(), True)
+        self.assertEqual(
+            self.create_users('companies', 'company', self.single_entry_qty),
+            True)
 
     def test_d_admin_authentication(self):
-        def authenticate_admins():
-            for i, admin in enumerate(self.__class__.admin_cred):
-                result = requests.get(self.gen_url('admins/auth'), json={
-                    'email': admin['email'],
-                    'password': admin['password']
-                })
-
-                if not result.status_code == 200:
-                    return False
-
-                response = result.json()
-                self.set_token('admin', i, response['data']['token'])
-
-            return True
-
-        self.assertEqual(authenticate_admins(), True)
+        self.assertEqual(
+            self.authenticate_users('admins/auth', 'admin'),
+            True)
 
     def test_e_worker_authentication(self):
-        def authenticate_workers():
-            for i, worker in enumerate(self.__class__.worker_cred):
-                result = requests.get(self.gen_url('workers/auth'), json={
-                    'email': worker['email'],
-                    'password': worker['password']
-                })
-
-                if not result.status_code == 200:
-                    return False
-
-                response = result.json()
-                self.set_token('worker', i, response['data']['token'])
-
-            return True
-
-        self.assertEqual(authenticate_workers(), True)
+        self.assertEqual(
+            self.authenticate_users('workers/auth', 'worker'),
+            True)
 
     def test_f_company_authentication(self):
-        def authenticate_companies():
-            for i, company in enumerate(self.__class__.company_cred):
-                result = requests.get(self.gen_url('companies/auth'), json={
-                    'email': company['email'],
-                    'password': company['password']
-                })
-
-                if not result.status_code == 200:
-                    return False
-
-                response = result.json()
-                self.set_token('company', i, response['data']['token'])
-
-            return True
-
-        self.assertEqual(authenticate_companies(), True)
+        self.assertEqual(
+            self.authenticate_users('companies/auth', 'company'),
+            True)
 
     def test_g_proposal_creation(self):
         def create_proposals():
@@ -394,9 +333,6 @@ class TestRoutes(unittest.TestCase):
             return True
 
         self.assertEqual(create_proposals(), True)
-
-    def test_h_opened_proposals_listing(self):
-        pass
 
 
 if __name__ == '__main__':
