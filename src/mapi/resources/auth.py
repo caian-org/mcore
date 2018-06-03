@@ -34,6 +34,9 @@ class Validator:
 class Authorizer:
     @staticmethod
     def validate(kind, payload, elements):
+        if not payload:
+            return True, response.bad_request
+
         # Verifica a estrutura da payload recebida
         if not Validator.check_struct(payload, elements):
             return True, response.bad_request
