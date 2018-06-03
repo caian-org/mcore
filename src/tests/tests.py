@@ -205,35 +205,28 @@ class TestRoutes(unittest.TestCase):
     def company_profile(self):
         return self.__class__.fake.company
 
-    def inc_cred(self, kind, credential):
+    def get_person_obj(self, kind):
         if kind == 'admin':
-            self.__class__.admin_cred.append(credential)
+            return self.__class__.admin_cred
 
         elif kind == 'worker':
-            self.__class__.worker_cred.append(credential)
+            return self.__class__.worker_cred
 
         elif kind == 'company':
-            self.__class__.company_cred.append(credential)
+            return self.__class__.company_cred
 
-    def ins_token(self, kind, index, token):
-        if kind == 'admin':
-            self.__class__.admin_cred[index]['token'] = token
 
-        elif kind == 'worker':
-            self.__class__.worker_cred[index]['token'] = token
+    def new_cred(self, kind, credential):
+        person_cred = self.get_person_obj(kind)
+        person_cred.append(credential)
 
-        elif kind == 'company':
-            self.__class__.company_cred[index]['token'] = token
+    def set_token(self, kind, index, token):
+        person_cred = self.get_person_obj(kind)
+        person_cred[index]['token'] = token
 
     def get_token(self, kind, index):
-        if kind == 'admin':
-            return self.__class__.admin_cred[index]['token']
-
-        elif kind == 'worker':
-            return self.__class__.worker_cred[index]['token']
-
-        elif kind == 'company':
-            return self.__class__.company_cred[index]['token']
+        person_cred = self.get_person_obj(kind)
+        return person_cred[index]['token']
 
     def gen_url(self, resource):
         return '{0}:{1}{2}'.format(
@@ -267,7 +260,7 @@ class TestRoutes(unittest.TestCase):
                     cred['password'] = profile['data']['password']
                     return cred
 
-                self.inc_cred('admin', get_cred())
+                self.new_cred('admin', get_cred())
 
                 result = requests.post(
                     self.gen_url('admins'),
@@ -293,7 +286,7 @@ class TestRoutes(unittest.TestCase):
                     cred['password'] = profile['data']['password']
                     return cred
 
-                self.inc_cred('worker', get_cred())
+                self.new_cred('worker', get_cred())
 
                 result = requests.post(
                     self.gen_url('workers'),
@@ -319,7 +312,7 @@ class TestRoutes(unittest.TestCase):
                     cred['password'] = profile['data']['password']
                     return cred
 
-                self.inc_cred('company', get_cred())
+                self.new_cred('company', get_cred())
 
                 result = requests.post(
                     self.gen_url('companies'),
@@ -346,7 +339,7 @@ class TestRoutes(unittest.TestCase):
                     return False
 
                 response = result.json()
-                self.ins_token('admin', i, response['data']['token'])
+                self.set_token('admin', i, response['data']['token'])
 
             return True
 
@@ -364,7 +357,7 @@ class TestRoutes(unittest.TestCase):
                     return False
 
                 response = result.json()
-                self.ins_token('worker', i, response['data']['token'])
+                self.set_token('worker', i, response['data']['token'])
 
             return True
 
@@ -382,7 +375,7 @@ class TestRoutes(unittest.TestCase):
                     return False
 
                 response = result.json()
-                self.ins_token('company', i, response['data']['token'])
+                self.set_token('company', i, response['data']['token'])
 
             return True
 
