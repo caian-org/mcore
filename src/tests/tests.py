@@ -334,6 +334,21 @@ class TestRoutes(unittest.TestCase):
 
         self.assertEqual(create_proposals(), True)
 
+    def test_h_list_of_open_proposals(self):
+        def assert_both(result):
+            code = result.status_code
+            content = result.json()['data']
+
+            return code is 200 and len(content) == self.single_entry_qty / 2
+
+        company_cred = random.choice(self.get_person_credentials('company'))
+        result = requests.get(
+            self.gen_url('proposals'),
+            json={ 'auth': { 'token': company_cred['token'] } }
+        )
+
+        self.assertTrue(assert_both(result))
+
 
 if __name__ == '__main__':
     unittest.main()
