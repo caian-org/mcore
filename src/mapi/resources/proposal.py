@@ -156,3 +156,8 @@ class ProposalRecord(Resource):
 
     def put(self):
         pass
+
+
+class ProposalOffer(Resource):
+    def get(self, uid):
+        pass
