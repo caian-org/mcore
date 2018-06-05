@@ -118,11 +118,3 @@ class WorkerRecord(PersonRecord):
         worker = Worker.query.get(uid)
         if not worker:
             return response.not_found
-
-
-class WorkerAddresses(Resource):
-    pass
-
-
-class WorkerVehicles(Resource):
-    pass

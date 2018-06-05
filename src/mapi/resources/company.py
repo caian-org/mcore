@@ -98,7 +98,3 @@ class CompanyRecord(PersonRecord):
 
     def put(self):
         pass
-
-
-class CompanyProposals(Resource):
-    pass
