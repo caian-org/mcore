@@ -187,7 +187,7 @@ class Fake:
 class TestRoutes(unittest.TestCase):
     fake = Fake()
 
-    single_entry_qty = 10
+    entries = 10
 
     admin_cred = []
     worker_cred = []
@@ -282,34 +282,22 @@ class TestRoutes(unittest.TestCase):
         return True
 
     def test_a_admin_creation(self):
-        self.assertEqual(
-            self.create_users('admins', 'admin', self.single_entry_qty),
-            True)
+        self.assertTrue(self.create_users('admins', 'admin', self.entries))
 
     def test_b_worker_creation(self):
-        self.assertEqual(
-            self.create_users('workers', 'worker', self.single_entry_qty),
-            True)
+        self.assertTrue(self.create_users('workers', 'worker', self.entries))
 
     def test_c_company_creation(self):
-        self.assertEqual(
-            self.create_users('companies', 'company', self.single_entry_qty),
-            True)
+        self.assertTrue(self.create_users('companies', 'company', self.entries))
 
     def test_d_admin_authentication(self):
-        self.assertEqual(
-            self.authenticate_users('admins/auth', 'admin'),
-            True)
+        self.assertTrue(self.authenticate_users('admins/auth', 'admin'))
 
     def test_e_worker_authentication(self):
-        self.assertEqual(
-            self.authenticate_users('workers/auth', 'worker'),
-            True)
+        self.assertTrue(self.authenticate_users('workers/auth', 'worker'))
 
     def test_f_company_authentication(self):
-        self.assertEqual(
-            self.authenticate_users('companies/auth', 'company'),
-            True)
+        self.assertTrue(self.authenticate_users('companies/auth', 'company'))
 
     def test_g_proposal_creation(self):
         def create_proposals():
@@ -332,14 +320,14 @@ class TestRoutes(unittest.TestCase):
 
             return True
 
-        self.assertEqual(create_proposals(), True)
+        self.assertTrue(create_proposals())
 
     def test_h_list_of_open_proposals(self):
         def assert_both(result):
             code = result.status_code
             content = result.json()['data']
 
-            return code is 200 and len(content) == self.single_entry_qty / 2
+            return code is 200 and len(content) == self.entries / 2
 
         company_cred = random.choice(self.get_person_credentials('company'))
         result = requests.get(
