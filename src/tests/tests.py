@@ -168,7 +168,7 @@ class Fake:
         )
 
         items = []
-        for _ in range(0, 5):
+        for _ in range(0, 2):
             items.append(self.item)
 
         auth = {}
@@ -336,6 +336,27 @@ class TestRoutes(unittest.TestCase):
         )
 
         self.assertTrue(assert_both(result))
+
+    def test_i_proposal_bidding(self):
+        def bid():
+            worker_cred = random.choice(self.get_person_credentials('worker'))
+
+            for i in range(0, self.entries):
+                id_ = i + 1
+                result = requests.post(
+                    self.gen_url('proposals/{0}/offer'.format(id_)),
+                    json={
+                        'auth': { 'token': worker_cred['token'] },
+                        'data': { 'workerId': id_,
+                                  'price': random.randint(1, 15) * 10000 }
+                    })
+
+                if not result.status_code == 201:
+                    return False
+
+            return True
+
+        self.assertTrue(bid())
 
 
 if __name__ == '__main__':
