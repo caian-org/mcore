@@ -14,6 +14,8 @@ from . import joinedload
 from . import Proposal
 from . import Company
 from . import Address
+from . import Worker
+from . import Offer
 from . import Item
 
 # ...
@@ -177,4 +179,33 @@ class ProposalRecord(Resource):
 
 class ProposalOffer(Resource):
     def post(self, uid):
-        pass
+        # Verifica a estrutura da requisição, se o usuário está autenticado e é
+        # de um perfil de motorista.
+        payload = request.get_json()
+        err, res = Authorizer.validate('worker', payload, ['auth', 'data'])
+        if err:
+            return res
+
+        # Verifica pelas estruturas de endereço de origem e destino
+        data = payload['data']
+        params = [
+            data.get('workerId'),
+            data.get('price')]
+        if not Validator.check_payload(params):
+            return response.bad_request
+
+        # Pesquisa e armazena o objeto da proposta
+        proposal = Proposal.query.get(uid)
+
+        # Pesquisa e armazena o objeto do motorista
+        worker = Worker.query.get(data['workerId'])
+
+        # Cria a oferta no banco.
+        offer = Offer(price=data['price'],
+                      bidder=worker,
+                      proposal=proposal)
+
+        db.session.add(offer)
+        db.session.commit()
+
+        return response.created('offers', offer.uid)
