@@ -72,7 +72,7 @@ class OfferSchema(Schema):
     bidder = Nested(BidderSchema)
 
     class Meta:
-        fields = ('uid', 'bidder')
+        fields = ('uid', 'price', 'bidder')
         model = Offer
 
 
