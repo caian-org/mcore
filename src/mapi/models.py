@@ -222,7 +222,7 @@ class Item(Entity):
 class Offer(Entity):
     __tablename__ = 'offer'
 
-    price = Col(Float, nullable=False)
+    price = Col(Int, nullable=False)
 
     # Foreign keys
     bidder_uid = Col(Int, FK('worker.uid'))
