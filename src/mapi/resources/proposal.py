@@ -39,6 +39,9 @@ class ProposalResource(Resource):
         "em aberto". Requer autenticação e só pode ser consumido através de uma
         conta corporativa (companu account).
         '''
+
+        # Verifica a estrutura da requisição, se o usuário está autenticado e é
+        # de um perfil empresarial.
         payload = request.get_json()
         err, res = Authorizer.validate('company', payload, ['auth'])
         if err:
@@ -58,6 +61,9 @@ class ProposalResource(Resource):
         dados necessários. Requer autenticação e só pode ser consumido através
         de uma conta corporativa (company account).
         '''
+
+        # Verifica a estrutura da requisição, se o usuário está autenticado e é
+        # de um perfil empresarial.
         payload = request.get_json()
         err, res = Authorizer.validate('company', payload, ['auth', 'data'])
         if err:
@@ -148,16 +154,27 @@ class ProposalResource(Resource):
         return response.created('proposals', proposal.uid)
 
 class ProposalRecord(Resource):
-    def delete(self):
-        pass
+    def get(self, uid):
+        # Verifica a estrutura da requisição, se o usuário está autenticado e é
+        # de um perfil empresarial.
+        payload = request.get_json()
+        err, res = Authorizer.validate('company', payload, ['auth'])
+        if err:
+            return res
 
-    def get(self):
-        pass
+        proposal = Proposal.query.filter_by(uid=uid).all()
+        proposal_schema = ProposalSchema(many=True)
+
+        data = proposal_schema.dump(proposal)
+        return response.ok(data[0])
 
     def put(self):
         pass
 
+    def delete(self):
+        pass
+
 
 class ProposalOffer(Resource):
-    def get(self, uid):
+    def post(self, uid):
         pass
