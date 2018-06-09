@@ -6,26 +6,26 @@ from datetime import datetime
 # ...
 from . import CEP
 
-# Database connection
+# ...
 from . import db
 from . import joinedload
 
-# Proposal model
+# ...
 from . import Proposal
 from . import Company
 from . import Address
 from . import Item
 
-# Proposal datatype schema
+# ...
 from . import ProposalSchema
 from . import ProposalsListSchema
 
-# HTTP-related
+# ...
 from . import Resource
 from . import request
 from . import response
 
-# Form/JSON data validator
+# ...
 from .auth import Validator
 from .auth import Authorizer
 

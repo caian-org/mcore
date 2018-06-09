@@ -15,10 +15,10 @@ from mapi import Resource   # Classe de recurso REST
 from mapi import Formatter  # Classe utilitária para formatação de rotas REST
 from mapi import joinedload # Clausula de combinação entre modelos (JOIN)
 
-from mapi.cep import CEP
+from mapi.cep import CEP    # ...
 
-from mapi.models import *
-from mapi.schemas import *
+from mapi.models import *   # ...
+from mapi.schemas import *  #...
 
 # Objeto de geração de respostas JSON
 from mapi.resources.responder import response

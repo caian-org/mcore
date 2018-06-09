@@ -3,28 +3,28 @@
 # ...
 from datetime import datetime
 
-# Database connection
+# ...
 from . import db
 
-# Worker model
+# ...
 from . import Company
 from . import Address
 from . import CompanyHasAddresses
 
-# Worker datatype schema
+# ...
 from . import CompanySchema
 
-# HTTP-related
+# ...
 from . import Resource
 from . import request
 from . import response
 
-# Authentication logic
+# ...
 from .person import PersonNew
 from .person import PersonAuth
 from .person import PersonRecord
 
-# Form/JSON data validator
+# ...
 from .auth import Validator
 
 

@@ -13,6 +13,7 @@ from mapi.models import Proposal
 from mapi.models import Vehicle
 from mapi.models import Worker
 
+
 class AdminSchema(Schema):
     '''Schema de representação de dados da entidade Admin.'''
     class Meta:
@@ -69,7 +70,6 @@ class WorkerSchema(Schema):
 #  | '_ \ '_/ _ \ '_ \/ _ (_-</ _` | (_-<
 #  | .__/_| \___/ .__/\___/__/\__,_|_/__/
 #  |_|          |_|
-
 class ProposalAddressSchema(Schema):
     '''Schema de representação dos endereços de uma proposta.'''
     class Meta:

@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
-# Worker model
+# ...
 from . import Person
 
-# Person datatype schema
+# ...
 from . import PersonSchema
 
-# HTTP-related
-from . import (Resource, request, response)
+# ...
+from . import Resource
+from . import request
+from . import response
 
-# Form/JSON data validator
+# ...
 from .auth import Validator
 
 

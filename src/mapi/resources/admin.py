@@ -3,28 +3,28 @@
 # ...
 from datetime import datetime
 
-# Database connection
+# ...
 from . import db
 
-# Admin model and related ones
+# ...
 from . import Admin
 from . import Address
 from . import AdminHasAddresses
 
-# Admin datatype schema
+# ...
 from . import AdminSchema
 
-# HTTP-related
+# ...
 from . import Resource
 from . import request
 from . import response
 
-# Authentication logic
+# ...
 from .person import PersonNew
 from .person import PersonAuth
 from .person import PersonRecord
 
-# Form/JSON data validator
+# ...
 from .auth import Validator
 
 
