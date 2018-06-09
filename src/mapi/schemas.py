@@ -35,13 +35,8 @@ class CompanySchema(Schema):
 class ItemSchema(Schema):
     '''Schema de representação de dados da entidade Item.'''
     class Meta:
+        fields = ('title', 'width', 'weight', 'height', 'fragile')
         model = Item
-
-
-class OfferSchema(Schema):
-    '''Schema de representação de dados da entidade Offer.'''
-    class Meta:
-        model = Offer
 
 
 class PersonSchema(Schema):
@@ -65,6 +60,22 @@ class WorkerSchema(Schema):
         model = Worker
 
 
+class BidderSchema(Schema):
+    '''Schema de representação do motorista que realizou o lance de proposta.'''
+    class Meta:
+        fields = ('uid', 'name')
+        model = Worker
+
+
+class OfferSchema(Schema):
+    '''Schema de representação de um lance em uma proposta.'''
+    bidder = Nested(BidderSchema)
+
+    class Meta:
+        fields = ('uid', 'bidder')
+        model = Offer
+
+
 #                                   _
 #   _ __ _ _ ___ _ __  ___ ___ __ _| |___
 #  | '_ \ '_/ _ \ '_ \/ _ (_-</ _` | (_-<
@@ -84,20 +95,24 @@ class ProposalCompanySchema(Schema):
         model = Company
 
 
+class ProposalSchema(Schema):
+    '''Schema de representação de uma única proposta.'''
+    items = Nested(ItemSchema, many=True)
+    offers = Nested(OfferSchema, many=True)
+    origin = Nested(ProposalAddressSchema)
+    company = Nested(ProposalCompanySchema)
+    destination = Nested(ProposalAddressSchema)
+
+    class Meta:
+        fields = ('uid', 'title', 'status', 'deadline', 'description',
+                  'items', 'offers', 'origin', 'company', 'destination')
+        model = Proposal
+
+
 class ProposalsListSchema(Schema):
     '''Schema de representação da lista de propostas abertas.'''
     company = Nested(ProposalCompanySchema)
 
     class Meta:
         fields = ('uid', 'title', 'deadline', 'company')
-        model = Proposal
-
-
-class ProposalSchema(Schema):
-    '''Schema de representação de uma única proposta.'''
-    origin = Nested(ProposalAddressSchema)
-    destination = Nested(ProposalAddressSchema)
-
-    class Meta:
-        fields = ('uid', 'deadline', 'origin', 'destination')
         model = Proposal
