@@ -208,4 +208,6 @@ class ProposalOffer(Resource):
         db.session.add(offer)
         db.session.commit()
 
-        return response.created('offers', offer.uid)
+        return response.created('proposals/{0}/offers/{1}'.format(
+            uid, offer.uid
+        ), offer.uid)
