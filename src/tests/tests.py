@@ -344,7 +344,7 @@ class TestRoutes(unittest.TestCase):
             for i in range(0, self.entries):
                 id_ = i + 1
                 result = requests.post(
-                    self.gen_url('proposals/{0}/offer'.format(id_)),
+                    self.gen_url('proposals/{0}/offers'.format(id_)),
                     json={
                         'auth': { 'token': worker_cred['token'] },
                         'data': { 'workerId': id_,
