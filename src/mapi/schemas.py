@@ -48,14 +48,17 @@ class PersonSchema(Schema):
 class VehicleSchema(Schema):
     '''Schema de representação de dados da entidade Vehicle.'''
     class Meta:
+        fields = ('brand', 'model', 'plate', 'year')
         model = Vehicle
 
 
 class WorkerSchema(Schema):
     '''Schema de representação de dados da entidade Worker.'''
+    vehicles = Nested(VehicleSchema, many=True)
+
     class Meta:
-        fields = ('name', 'email', 'telephone', 'rg', 'cpf', 'license_type',
-                  'address_assoc')
+        fields = ('name', 'email', 'telephone', 'rg', 'cpf', 'gender',
+                  'birthday', 'license_id', 'license_type', 'vehicles')
 
         model = Worker
 
