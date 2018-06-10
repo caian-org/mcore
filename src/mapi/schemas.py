@@ -29,6 +29,9 @@ class AddressSchema(Schema):
 class CompanySchema(Schema):
     '''Schema de representação de dados da entidade Company.'''
     class Meta:
+        fields = (
+            'name', 'email', 'telephone', 'cnpj', 'opening'
+        )
         model = Company
 
 
