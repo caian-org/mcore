@@ -15,7 +15,6 @@ from . import AdminHasAddresses
 from . import AdminSchema
 
 # ...
-from . import Resource
 from . import request
 from . import response
 
@@ -94,6 +93,9 @@ class AdminNew(PersonNew):
 
         return response.created('admins', admin.uid)
 
+
 class AdminRecord(PersonRecord):
+    access_kind = 'admin'
     entity = Admin
     schema = AdminSchema
+    addresses = AdminHasAddresses
