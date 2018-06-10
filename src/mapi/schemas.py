@@ -35,7 +35,9 @@ class CompanySchema(Schema):
 class ItemSchema(Schema):
     '''Schema de representação de dados da entidade Item.'''
     class Meta:
-        fields = ('title', 'width', 'weight', 'height', 'fragile')
+        fields = (
+            'title', 'width', 'weight', 'height', 'fragile'
+        )
         model = Item
 
 
@@ -48,7 +50,9 @@ class PersonSchema(Schema):
 class VehicleSchema(Schema):
     '''Schema de representação de dados da entidade Vehicle.'''
     class Meta:
-        fields = ('brand', 'model', 'plate', 'year')
+        fields = (
+            'brand', 'model', 'plate', 'year'
+        )
         model = Vehicle
 
 
@@ -57,16 +61,19 @@ class WorkerSchema(Schema):
     vehicles = Nested(VehicleSchema, many=True)
 
     class Meta:
-        fields = ('name', 'email', 'telephone', 'rg', 'cpf', 'gender',
-                  'birthday', 'license_id', 'license_type', 'vehicles')
-
+        fields = (
+            'name', 'email', 'telephone', 'rg', 'cpf', 'gender',
+            'birthday', 'license_id', 'license_type', 'vehicles'
+        )
         model = Worker
 
 
 class BidderSchema(Schema):
     '''Schema de representação do motorista que realizou o lance de proposta.'''
     class Meta:
-        fields = ('uid', 'name')
+        fields = (
+            'uid', 'name'
+        )
         model = Worker
 
 
@@ -75,7 +82,9 @@ class OfferSchema(Schema):
     bidder = Nested(BidderSchema)
 
     class Meta:
-        fields = ('uid', 'price', 'bidder')
+        fields = (
+            'uid', 'price', 'bidder'
+        )
         model = Offer
 
 
@@ -87,14 +96,18 @@ class OfferSchema(Schema):
 class ProposalAddressSchema(Schema):
     '''Schema de representação dos endereços de uma proposta.'''
     class Meta:
-        fields = ('complement', 'number', 'postcode')
+        fields = (
+            'complement', 'number', 'postcode'
+        )
         model = Address
 
 
 class ProposalCompanySchema(Schema):
     '''Schema de representação da empresa emissora da proposta.'''
     class Meta:
-        fields = ('uid', 'name')
+        fields = (
+            'uid', 'name'
+        )
         model = Company
 
 
@@ -107,8 +120,10 @@ class ProposalSchema(Schema):
     destination = Nested(ProposalAddressSchema)
 
     class Meta:
-        fields = ('uid', 'title', 'status', 'deadline', 'description',
-                  'items', 'offers', 'origin', 'company', 'destination')
+        fields = (
+            'uid', 'title', 'status', 'deadline', 'description',
+            'items', 'offers', 'origin', 'company', 'destination'
+        )
         model = Proposal
 
 
@@ -117,5 +132,7 @@ class ProposalsListSchema(Schema):
     company = Nested(ProposalCompanySchema)
 
     class Meta:
-        fields = ('uid', 'title', 'deadline', 'company')
+        fields = (
+            'uid', 'title', 'deadline', 'company'
+        )
         model = Proposal
