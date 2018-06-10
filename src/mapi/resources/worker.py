@@ -114,8 +114,4 @@ class WorkerNew(PersonNew):
 class WorkerRecord(PersonRecord):
     entity = Worker
     schema = WorkerSchema
-
-    def get(self, uid):
-        worker = Worker.query.get(uid)
-        if not worker:
-            return response.not_found
+    addresses = WorkerHasAddresses
