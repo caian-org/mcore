@@ -15,7 +15,6 @@ from . import CompanyHasAddresses
 from . import CompanySchema
 
 # ...
-from . import Resource
 from . import request
 from . import response
 
@@ -92,9 +91,4 @@ class CompanyNew(PersonNew):
 class CompanyRecord(PersonRecord):
     entity = Company
     schema = CompanySchema
-
-    def delete(self):
-        pass
-
-    def put(self):
-        pass
+    addresses = CompanyHasAddresses
