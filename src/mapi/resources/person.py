@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 
 # ...
+from . import db
+
+# ...
 from . import Person
 
 # ...
 from . import PersonSchema
+from . import AddressSchema
 
 # ...
 from . import Resource
@@ -13,6 +17,7 @@ from . import response
 
 # ...
 from .auth import Validator
+from .auth import Authorizer
 
 
 class PersonAuth(Resource):
@@ -58,10 +63,9 @@ class PersonAuth(Resource):
             return response.incorrect_email_or_password
 
         token = person.generate_token()
-
-        data = {}
-        data['token'] = token.decode('ascii')
-        return response.SUCCESS(200, data)
+        return response.ok({
+            'token': token.decode('ascii')
+        })
 
 
 class PersonNew(Resource):
@@ -73,23 +77,43 @@ class PersonNew(Resource):
 
 
 class PersonRecord(Resource):
+    access_kind = 'any'
     entity = Person
     schema = PersonSchema
+    addresses = None
 
     def delete(self):
         pass
 
     def get(self, uid):
+        # Verifica a estrutura da requisição, se o usuário está autenticado e é
+        # de um perfil de motorista.
         payload = request.get_json()
-        success, result = PersonRecord.authenticate(payload)
-
-        if not success:
-            return result
+        err, res = Authorizer.validate(self.access_kind, payload, ['auth'])
+        if err:
+            return res
 
         person = self.entity.query.get(uid)
+        person_schema = self.schema()
+        person_data = person_schema.dump(person)
 
-        data = self.schema().dump(person).data
-        return response.SUCCESS(200, data)
+        addresses = db.session\
+            .query(self.addresses)\
+            .join(self.entity)\
+            .filter(self.entity.uid == uid)\
+            .all()
+
+        person_addresses = []
+        for rel in addresses:
+            person_addresses.append({
+                'number': rel.address.number,
+                'postcode': rel.address.postcode,
+                'complement': rel.address.complement
+            })
+
+        person_data = person_data[0]
+        person_data['addresses'] = person_addresses
+        return response.ok(person_data)
 
     def put(self):
         pass
