@@ -50,7 +50,7 @@ class Authorizer:
             return True, response.forbidden
 
         # Verifica se o token pertence ao tipo de usuário indicado
-        if user_token['kind'] != kind or user_token['kind'] != 'any':
+        if user_token['kind'] != kind and user_token['kind'] != 'any':
             return True, response.forbidden
 
         return False, None
