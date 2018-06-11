@@ -7,12 +7,19 @@ from mapi import Formatter
 # ...
 from mapi.resources.admin import AdminNew
 from mapi.resources.admin import AdminAuth
+from mapi.resources.admin import AdminRecord
+
+# ...
 from mapi.resources.worker import WorkerNew
 from mapi.resources.worker import WorkerAuth
 from mapi.resources.worker import WorkerRecord
+
+# ...
 from mapi.resources.company import CompanyNew
 from mapi.resources.company import CompanyAuth
 from mapi.resources.company import CompanyRecord
+
+# ...
 from mapi.resources.proposal import ProposalOffer
 from mapi.resources.proposal import ProposalRecord
 from mapi.resources.proposal import ProposalResource
@@ -29,6 +36,7 @@ class Router:
         # Admins
         Router.include(AdminNew, 'admins')
         Router.include(AdminAuth, 'admins/auth')
+        Router.include(AdminRecord, 'admins/<int:uid>')
 
         # Workers
         Router.include(WorkerNew, 'workers')
