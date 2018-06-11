@@ -17,6 +17,10 @@ from mapi.models import Worker
 class AdminSchema(Schema):
     '''Schema de representação de dados da entidade Admin.'''
     class Meta:
+        fields = (
+            'name', 'email', 'telephone', 'rg', 'cpf', 'gender',
+            'birthday', 'authority_level'
+        )
         model = Admin
 
 
