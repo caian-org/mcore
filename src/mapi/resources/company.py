@@ -9,12 +9,15 @@ from . import db
 # ...
 from . import Company
 from . import Address
+from . import Proposal
 from . import CompanyHasAddresses
 
 # ...
 from . import CompanySchema
+from . import ProposalsListSchema
 
 # ...
+from . import Resource
 from . import request
 from . import response
 
@@ -25,6 +28,7 @@ from .person import PersonRecord
 
 # ...
 from .auth import Validator
+from .auth import Authorizer
 
 
 class CompanyAuth(PersonAuth):
@@ -92,3 +96,21 @@ class CompanyRecord(PersonRecord):
     entity = Company
     schema = CompanySchema
     addresses = CompanyHasAddresses
+
+
+class CompanyProposals(Resource):
+    def get(self, uid):
+        payload = request.get_json()
+        err, res = Authorizer.validate('company', payload, ['auth'])
+        if err:
+            return res
+
+        company = Company.query.get(uid)
+        if not company:
+            return response.not_found
+
+        proposals = Proposal.query.filter_by(company=company).all()
+        proposal_schema = ProposalsListSchema(many=True)
+
+        data = proposal_schema.dump(proposals)
+        return response.ok(data[0])
