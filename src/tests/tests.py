@@ -411,6 +411,26 @@ class TestRoutes(unittest.TestCase):
 
         self.assertTrue(check_worker_offers())
 
+    def test_l_ride_creation(self):
+        def create_rides():
+            company_cred = random.choice(self.get_person_credentials('company'))
+
+            for i in range(0, self.entries):
+                id_ = i + 1
+                result = requests.post(
+                    self.gen_url('rides'),
+                    json={
+                        'auth': { 'token': company_cred['token'] },
+                        'data': { 'offerId': id_ }
+                    })
+
+                if not result.status_code == 201:
+                    return False
+
+            return True
+
+        self.assertTrue(create_rides())
+
 
 if __name__ == '__main__':
     unittest.main()
