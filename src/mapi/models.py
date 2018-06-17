@@ -237,19 +237,23 @@ class Offer(Entity):
     proposal_uid = Col(Int, FK('proposal.uid'))
 
     # Relacionamentos
-    bidder = Rel(Worker, back_populates='offers')
-    proposal = Rel(Proposal, back_populates='offers')
+    ride = Rel('Ride', back_populates='offer')
+    bidder = Rel('Worker', back_populates='offers')
+    proposal = Rel('Proposal', back_populates='offers')
 
 
 class Ride(Entity):
     __tablename__ = 'ride'
 
     # Colunas
-    end_date = Col(Dat, nullable=False)
+    end_date = Col(Dat, nullable=True)
     start_date = Col(Dat, nullable=False)
 
     # Chaves estrangeiras
     offer_uid = Col(Int, FK('offer.uid'), nullable=False)
+
+    # Relacionamentos
+    offer = Rel('Offer', back_populates='ride')
 
 
 class Invoice(Entity):
