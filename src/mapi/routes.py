@@ -13,6 +13,7 @@ from mapi.resources.admin import AdminRecord
 from mapi.resources.worker import WorkerNew
 from mapi.resources.worker import WorkerAuth
 from mapi.resources.worker import WorkerRecord
+from mapi.resources.worker import WorkerOffers
 
 # ...
 from mapi.resources.company import CompanyNew
@@ -24,6 +25,9 @@ from mapi.resources.company import CompanyProposals
 from mapi.resources.proposal import ProposalOffer
 from mapi.resources.proposal import ProposalRecord
 from mapi.resources.proposal import ProposalResource
+
+# ...
+from mapi.resources.ride import RideRecord
 
 
 class Router:
@@ -43,6 +47,7 @@ class Router:
         Router.include(WorkerNew, 'workers')
         Router.include(WorkerAuth, 'workers/auth')
         Router.include(WorkerRecord, 'workers/<int:uid>')
+        Router.include(WorkerOffers, 'workers/<int:uid>/offers')
 
         # Companies
         Router.include(CompanyNew, 'companies')
@@ -54,3 +59,6 @@ class Router:
         Router.include(ProposalResource, 'proposals')
         Router.include(ProposalRecord, 'proposals/<int:uid>')
         Router.include(ProposalOffer, 'proposals/<int:uid>/offers')
+
+        # Rides
+        Router.include(RideRecord, 'rides')
