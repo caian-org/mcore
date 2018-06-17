@@ -14,7 +14,7 @@ from . import CompanyHasAddresses
 
 # ...
 from . import CompanySchema
-from . import ProposalsListSchema
+from . import CompanyProposalsSchema
 
 # ...
 from . import Resource
@@ -92,12 +92,6 @@ class CompanyNew(PersonNew):
         return response.created('companies', company.uid)
 
 
-class CompanyRecord(PersonRecord):
-    entity = Company
-    schema = CompanySchema
-    addresses = CompanyHasAddresses
-
-
 class CompanyProposals(Resource):
     def get(self, uid):
         payload = request.get_json()
@@ -110,7 +104,13 @@ class CompanyProposals(Resource):
             return response.not_found
 
         proposals = Proposal.query.filter_by(company=company).all()
-        proposal_schema = ProposalsListSchema(many=True)
+        proposal_schema = CompanyProposalsSchema(many=True)
 
         data = proposal_schema.dump(proposals)
         return response.ok(data[0])
+
+
+class CompanyRecord(PersonRecord):
+    entity = Company
+    schema = CompanySchema
+    addresses = CompanyHasAddresses
