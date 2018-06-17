@@ -281,23 +281,40 @@ class TestRoutes(unittest.TestCase):
 
         return True
 
+    #             _ _     _          _
+    #   _  _ _ _ (_) |_  | |_ ___ __| |_ ___
+    #  | || | ' \| |  _| |  _/ -_|_-<  _(_-<
+    #   \_,_|_||_|_|\__|  \__\___/__/\__/__/
+
     def test_a_admin_creation(self):
-        self.assertTrue(self.create_users('admins', 'admin', self.entries))
+        self.assertTrue(
+            self.create_users('admins', 'admin', self.entries)
+        )
 
     def test_b_worker_creation(self):
-        self.assertTrue(self.create_users('workers', 'worker', self.entries))
+        self.assertTrue(
+            self.create_users('workers', 'worker', self.entries)
+        )
 
     def test_c_company_creation(self):
-        self.assertTrue(self.create_users('companies', 'company', self.entries))
+        self.assertTrue(
+            self.create_users('companies', 'company', self.entries)
+        )
 
     def test_d_admin_authentication(self):
-        self.assertTrue(self.authenticate_users('admins/auth', 'admin'))
+        self.assertTrue(
+            self.authenticate_users('admins/auth', 'admin')
+        )
 
     def test_e_worker_authentication(self):
-        self.assertTrue(self.authenticate_users('workers/auth', 'worker'))
+        self.assertTrue(
+            self.authenticate_users('workers/auth', 'worker')
+        )
 
     def test_f_company_authentication(self):
-        self.assertTrue(self.authenticate_users('companies/auth', 'company'))
+        self.assertTrue(
+            self.authenticate_users('companies/auth', 'company')
+        )
 
     def test_g_proposal_creation(self):
         def create_proposals():
@@ -357,6 +374,42 @@ class TestRoutes(unittest.TestCase):
             return True
 
         self.assertTrue(bid())
+
+    def test_j_list_of_company_proposals(self):
+        def check_company_proposals():
+            company_cred = random.choice(self.get_person_credentials('company'))
+
+            for i in range(0, self.entries):
+                id_ = i + 1
+                result = requests.get(
+                    self.gen_url('companies/{0}/proposals'.format(id_)),
+                    json={ 'auth': { 'token': company_cred['token'] } }
+                )
+
+                if not result.status_code == 200:
+                    return False
+
+            return True
+
+        self.assertTrue(check_company_proposals())
+
+    def test_k_list_of_worker_offers(self):
+        def check_worker_offers():
+            worker_cred = random.choice(self.get_person_credentials('worker'))
+
+            for i in range(0, self.entries):
+                id_ = i + 1
+                result = requests.get(
+                    self.gen_url('workers/{0}/offers'.format(id_)),
+                    json={ 'auth': { 'token': worker_cred['token'] } }
+                )
+
+                if not result.status_code == 200:
+                    return False
+
+            return True
+
+        self.assertTrue(check_worker_offers())
 
 
 if __name__ == '__main__':
