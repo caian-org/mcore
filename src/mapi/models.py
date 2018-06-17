@@ -241,8 +241,8 @@ class Offer(Entity):
     proposal = Rel(Proposal, back_populates='offers')
 
 
-class Job(Entity):
-    __tablename__ = 'job'
+class Ride(Entity):
+    __tablename__ = 'ride'
 
     # Colunas
     end_date = Col(Dat, nullable=False)
@@ -259,7 +259,7 @@ class Invoice(Entity):
     bill = Col(Float, nullable=False)
 
     # Chaves estrangeiras
-    job_uid = Col(Int, FK('job.uid'), nullable=False, unique=True)
+    ride_uid = Col(Int, FK('ride.uid'), nullable=False, unique=True)
 
 
 #           _      _   _             _    _
