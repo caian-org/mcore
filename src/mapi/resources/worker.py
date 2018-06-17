@@ -3,11 +3,11 @@
 # ...
 from datetime import datetime
 
-# Database connection
 # ...
 from . import db
 
 # ...
+from . import Offer
 from . import Worker
 from . import Vehicle
 from . import Address
@@ -15,6 +15,7 @@ from . import WorkerHasAddresses
 
 # ...
 from . import WorkerSchema
+from . import WorkerOfferSchema
 
 # ...
 from . import Resource
@@ -28,6 +29,7 @@ from .person import PersonRecord
 
 # ...
 from .auth import Validator
+from .auth import Authorizer
 
 
 class WorkerAuth(PersonAuth):
@@ -109,6 +111,24 @@ class WorkerNew(PersonNew):
         db.session.commit()
 
         return response.created('workers', worker.uid)
+
+
+class WorkerOffers(Resource):
+    def get(self, uid):
+        payload = request.get_json()
+        err, res = Authorizer.validate('worker', payload, ['auth'])
+        if err:
+            return res
+
+        worker = Worker.query.get(uid)
+        if not worker:
+            return response.not_found
+
+        offers = Offer.query.filter_by(bidder=worker).all()
+        offer_schema = WorkerOfferSchema(many=True)
+
+        data = offer_schema.dump(offers)
+        return response.ok(data[0])
 
 
 class WorkerRecord(PersonRecord):
