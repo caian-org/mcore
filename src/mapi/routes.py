@@ -18,6 +18,7 @@ from mapi.resources.worker import WorkerRecord
 from mapi.resources.company import CompanyNew
 from mapi.resources.company import CompanyAuth
 from mapi.resources.company import CompanyRecord
+from mapi.resources.company import CompanyProposals
 
 # ...
 from mapi.resources.proposal import ProposalOffer
@@ -47,6 +48,7 @@ class Router:
         Router.include(CompanyNew, 'companies')
         Router.include(CompanyAuth, 'companies/auth')
         Router.include(CompanyRecord, 'companies/<int:uid>')
+        Router.include(CompanyProposals, 'companies/<int:uid>/proposals')
 
         # Proposals
         Router.include(ProposalResource, 'proposals')
