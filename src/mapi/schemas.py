@@ -39,6 +39,16 @@ class CompanySchema(Schema):
         model = Company
 
 
+class CompanyProposalsSchema(Schema):
+    '''Schema de representação das propostas abertas por uma empresa.'''
+    class Meta:
+        fields = (
+            'uid', 'deadline', 'title'
+        )
+
+        model = Proposal
+
+
 class ItemSchema(Schema):
     '''Schema de representação de dados da entidade Item.'''
     class Meta:
@@ -73,6 +83,19 @@ class WorkerSchema(Schema):
             'birthday', 'license_id', 'license_type', 'vehicles'
         )
         model = Worker
+
+
+class WorkerOfferSchema(Schema):
+    '''Schema de representação das ofertas enviadas por um motorista.'''
+    proposal = Nested('ProposalSchema', exclude=(
+        'title', 'status', 'deadline', 'description', 'company',
+        'origin', 'destination', 'items', 'offers'
+    ))
+
+    class Meta:
+        fields = (
+            'price', 'proposal'
+        )
 
 
 class BidderSchema(Schema):
