@@ -91,6 +91,7 @@ class Person(Entity):
 class Human(Person):
     __abstract__ = True
 
+    # Colunas
     rg = Col(Str(9), nullable=False, index=True, unique=True)
     cpf = Col(Str(11), nullable=False, index=True, unique=True)
     gender = Col(Str(1), nullable=False, default='M')
@@ -105,11 +106,12 @@ class Human(Person):
 class Address(Entity):
     __tablename__ = 'address'
 
+    # Colunas
     number = Col(Str(8))
     postcode = Col(Str(8), index=True)
     complement = Col(Str(16), nullable=True)
 
-    # Relations
+    # Relacionamentos
     admins = Rel('Admin', secondary='admin_has_addresses')
     workers = Rel('Worker', secondary='worker_has_addresses')
     companies = Rel('Company', secondary='company_has_addresses')
@@ -125,18 +127,18 @@ class GenericPerson(Person):
 class Admin(Human):
     __tablename__ = 'administrator'
 
-    # Fields
+    # Colunas
     authority_level = Col(Int, nullable=False, index=True)
 
 
 class Worker(Human):
     __tablename__ = 'worker'
 
-    # Fields
+    # Colunas
     license_id = Col(Str(11), nullable=False, index=True, unique=True)
     license_type = Col(Str, nullable=False)
 
-    # Relations
+    # Relacionamentos
     vehicles = Rel('Vehicle', back_populates='owner')
     offers = Rel('Offer', back_populates='bidder')
 
@@ -147,16 +149,16 @@ class Worker(Human):
 class Vehicle(Entity):
     __tablename__ = 'vehicle'
 
-    # Fields
+    # Colunas
     year = Col(Int, nullable=False)
     model = Col(Str(32), nullable=False)
     brand = Col(Str(24), nullable=False)
     plate = Col(Str(8), nullable=False)
 
-    # Foreign keys
+    # Chaves estrangeiras
     owner_uid = Col(Int, FK('worker.uid'))
 
-    # Relations
+    # Relacionamentos
     owner = Rel(Worker, back_populates='vehicles')
 
     def __repr__(self):
@@ -166,11 +168,11 @@ class Vehicle(Entity):
 class Company(Person):
     __tablename__ = 'company'
 
-    # Fields
+    # Campos
     cnpj = Col(Str(14), nullable=False, index=True, unique=True)
     opening = Col(Dat, nullable=False)
 
-    # Relations
+    # Relacionamentos
     proposals = Rel('Proposal', back_populates='company')
 
     def __repr__(self):
@@ -180,23 +182,27 @@ class Company(Person):
 class Proposal(Entity):
     __tablename__ = 'proposal'
 
-    # Fields
+    # Colunas
     title = Col(Str, nullable=False)
     status = Col(Bool, nullable=False)
     deadline = Col(Dat, nullable=False)
     description = Col(Str, nullable=True)
 
-    # Foreign keys
+    # Chaves estrangeiras
     company_uid = Col(Int, FK('company.uid'))
     origin_addr_uid = Col(Int, FK('address.uid'))
     destin_addr_uid = Col(Int, FK('address.uid'))
 
-    # Relations
-    origin = Rel(Address, foreign_keys='Proposal.origin_addr_uid',
-                 backref=BR('orig_assoc', uselist=False))
+    # Relacionamentos
+    origin = Rel(
+        Address, foreign_keys='Proposal.origin_addr_uid',
+        backref=BR('orig_assoc', uselist=False)
+    )
 
-    destination = Rel(Address, foreign_keys='Proposal.destin_addr_uid',
-                      backref=BR('dest_assoc', uselist=False))
+    destination = Rel(
+        Address, foreign_keys='Proposal.destin_addr_uid',
+        backref=BR('dest_assoc', uselist=False)
+    )
 
     items = Rel('Item', back_populates='proposal')
     offers = Rel('Offer', back_populates='proposal')
@@ -206,29 +212,31 @@ class Proposal(Entity):
 class Item(Entity):
     __tablename__ = 'item'
 
+    # Colunas
     title = Col(Str, nullable=False)
     width = Col(Float, nullable=False)
     weight = Col(Float, nullable=False)
     height = Col(Float, nullable=False)
     fragile = Col(Bool, nullable=False)
 
-    # Foreign keys
+    # Chaves estrangeiras
     proposal_uid = Col(Int, FK('proposal.uid'))
 
-    # Relations
+    # Relacionamentos
     proposal = Rel('Proposal', back_populates='items')
 
 
 class Offer(Entity):
     __tablename__ = 'offer'
 
+    # Colunas
     price = Col(Int, nullable=False)
 
-    # Foreign keys
+    # Chaves estrangeiras
     bidder_uid = Col(Int, FK('worker.uid'))
     proposal_uid = Col(Int, FK('proposal.uid'))
 
-    # Relations
+    # Relacionamentos
     bidder = Rel(Worker, back_populates='offers')
     proposal = Rel(Proposal, back_populates='offers')
 
@@ -236,17 +244,21 @@ class Offer(Entity):
 class Job(Entity):
     __tablename__ = 'job'
 
-    cost = Col(Float, nullable=False)
+    # Colunas
     end_date = Col(Dat, nullable=False)
-    offer_uid = Col(Int, FK('offer.uid'), nullable=False)
     start_date = Col(Dat, nullable=False)
-    proposal_uid = Col(Int, FK('proposal.uid'), nullable=False)
+
+    # Chaves estrangeiras
+    offer_uid = Col(Int, FK('offer.uid'), nullable=False)
 
 
 class Invoice(Entity):
     __tablename__ = 'invoice'
 
+    # Colunas
     bill = Col(Float, nullable=False)
+
+    # Chaves estrangeiras
     job_uid = Col(Int, FK('job.uid'), nullable=False, unique=True)
 
 
@@ -258,11 +270,9 @@ class Invoice(Entity):
 class WorkerHasAddresses(Relation):
     __tablename__ = 'worker_has_addresses'
 
-    # Foreign keys
     worker_uid = Col(Int, FK('worker.uid'), primary_key=True)
     address_uid = Col(Int, FK('address.uid'), primary_key=True)
 
-    # Relations
     worker = Rel(Worker, backref=BR('address_assoc'))
     address = Rel(Address, backref=BR('worker_assoc'))
 
@@ -270,11 +280,9 @@ class WorkerHasAddresses(Relation):
 class CompanyHasAddresses(Relation):
     __tablename__ = 'company_has_addresses'
 
-    # Foreign keys
     company_uid = Col(Int, FK('company.uid'), primary_key=True)
     address_uid = Col(Int, FK('address.uid'), primary_key=True)
 
-    # Relations
     company = Rel(Company, backref=BR('address_assoc'))
     address = Rel(Address, backref=BR('company_assoc'))
 
@@ -282,10 +290,8 @@ class CompanyHasAddresses(Relation):
 class AdminHasAddresses(Relation):
     __tablename__ = 'admin_has_addresses'
 
-    # Foreign keys
     admin_uid = Col(Int, FK('administrator.uid'), primary_key=True)
     address_uid = Col(Int, FK('address.uid'), primary_key=True)
 
-    # Relations
     admin = Rel(Admin, backref=BR('address_assoc'))
     address = Rel(Address, backref=BR('admin_assoc'))
