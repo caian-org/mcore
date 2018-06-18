@@ -1,9 +1,9 @@
 # MakeYourFrete: Core API
 
-O projeto da API foi desenvolvido com o sistema GNU/Debian 9. As instruções a
-seguir foram descritas levando este sistema em consideração. Distribuições
-GNU/Linux baseadas em Debian como o Ubuntu ou Linux Mint são candidatos, embora
-alguns comandos possam diferir.
+O projeto da API foi desenvolvido com o sistema **GNU/Debian 9**. As instruções
+a seguir foram descritas levando este sistema em consideração. Distribuições
+GNU/Linux baseadas em Debian como o **Ubuntu** ou **Linux Mint** são
+candidatos, embora alguns comandos possam diferir.
 
 Os comandos partem da premissa que o usuário possui permissões de superusuário.
 Caso o usuário não possua permissão para escrever no sistema, utilize `sudo` ou
@@ -14,10 +14,10 @@ altere para outro que possua as permissões necessárias.
 
 Os seguintes softwares são necessários para a execução do projeto:
 
-- Python 3.5
-- pip3
-- pipenv
-- SQLite
+- [Python 3.5](https://www.python.org/downloads/release/python-350/)
+- [pip3](https://pip.pypa.io/en/stable/)
+- [pipenv](https://docs.pipenv.org/)
+- [SQLite](https://www.sqlite.org/)
 
 ### Instalando o Python 3.5
 
@@ -46,19 +46,19 @@ $ apt-get install sqlite3 libsqlite3-dev
 
 ## Instalação das dependências
 
-- Acesse o repositório do projeto
+- **Acesse o repositório do projeto**
 
 ```sh
 $ cd /caminho/do/repositorio
 ```
 
-- Crie o ambiente virtual & instale as dependências
+- **Crie o ambiente virtual & instale as dependências**
 
 ```sh
 $ pipenv install
 ```
 
-- Instale as dependências de desenvolvimento
+- **Instale as dependências de desenvolvimento**
 
 ```sh
 $ pipenv install --dev
@@ -72,25 +72,25 @@ testes.*
 
 Já dentro do repositório do projeto...
 
-- Invoque o ambiente virtual
+- **Invoque o ambiente virtual**
 
 ```sh
 $ make env
 ```
 
-- Execute o servidor
+- **Execute o servidor**
 
 ```sh
 $ make run
 ```
 
-*O servidor estará escutando as requisições na porta 8080.*
+*PS: O servidor estará escutando as requisições na porta 8080.*
 
 ## Execução dos testes
 
 Já dentro do repositório do projeto, tendo invocado o ambiente virtual...
 
-- Execute os testes
+- **Execute os testes**
 
 ```sh
 $ make test
