@@ -99,3 +99,9 @@ $ make test
 Cada teste é executado contra um dos recursos REST da API, de modo automático.
 Ao final da execução dos testes, o banco estará populado com informações
 aleatórias geradas em tempo de execução.
+
+
+## Documentação da API
+
+A documentação de uso dos recursos e rotas da API estão disponíveis
+[aqui](https://caianrais.github.io/mcore-docs/).
