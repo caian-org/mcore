@@ -9,6 +9,18 @@ Os comandos partem da premissa que o usuário possui permissões de superusuári
 Caso o usuário não possua permissão para escrever no sistema, utilize `sudo` ou
 altere para outro que possua as permissões necessárias.
 
+## Índice
+
+- [Instalação dos requerimentos](#instalação-dos-requerimentos)
+  - [Instalando o Python 3.5](#instalando-o-python-35)
+  - [Instalando o pip3](#instalando-o-pip3)
+  - [Instalando o pipenv](#instalando-o-pipenv)
+  - [Instalando o SQLite](#instalando-o-sqlite)
+- [Instalação das dependências](#instalação-das-dependências)
+- [Execução do servidor](#execução-do-servidor)
+- [Execução dos testes](#execução-dos-testes)
+- [Documentação da API](#documentação-da-api)
+
 
 ## Instalação dos requerimentos
 
